@@ -18,16 +18,21 @@ namespace RogueSharpRLNetSamples
       {
          // Use RogueSharp to create a new cave map the same size as the screen.
          _map = Map.Create( new CaveMapCreationStrategy<Map>( _screenWidth, _screenHeight, 45, 4, 3 ) );
+         // This must be the exact name of the bitmap font file we are using or it will error.
+         string fontFileName = "terminal8x8.png";
+         // The title will appear at the top of the console window
+         string consoleTitle = "RougeSharp RLNet Tutorial";
          // Tell RLNet to use the bitmap font that we specified and that each tile is 8 x 8 pixels
-         _rootConsole = new RLRootConsole( @"terminal8x8.png", _screenWidth, _screenHeight, 8, 8, 1f, "RougeSharp RLNet Tutorial" );
-         // Set up an event handler for RLNET's Update call
+         _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
+         // Set up a handler for RLNET's Update event
          _rootConsole.Update += OnRootConsoleUpdate;
-         // Set up an event handler for RLNET's Render call
+         // Set up a handler for RLNET's Render event
          _rootConsole.Render += OnRootConsoleRender;
          // Begin RLNET's game loop
          _rootConsole.Run();
       }
 
+      // Event handler for RLNET's Update event
       private static void OnRootConsoleUpdate( object sender, UpdateEventArgs e )
       {
          RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
@@ -68,6 +73,7 @@ namespace RogueSharpRLNetSamples
          }
       }
 
+      // Event handler for RLNET's Render event
       private static void OnRootConsoleRender( object sender, UpdateEventArgs e )
       {
          _rootConsole.Clear();
