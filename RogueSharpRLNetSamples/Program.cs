@@ -1,18 +1,33 @@
-﻿using RLNET;
+﻿using System.Collections.Generic;
+using System.Linq;
+using RLNET;
 using RogueSharp;
 
 namespace RogueSharpRLNetSamples
 {
    public class Program
    {
+      private enum SelectionType
+      {
+         Radius = 0,
+         Area = 1,
+         RadiusBorder = 2,
+         AreaBorder = 3,
+         Column = 4,
+         Row = 5,
+         ColumnAndRow = 6,
+      }
+
       // The screen height and width are in number of tiles
       private static readonly int _screenWidth = 50;
       private static readonly int _screenHeight = 50;
-      // The starting position for the player
-      private static int _playerX = 25;
-      private static int _playerY = 25;
+
       private static RLRootConsole _rootConsole;
       private static IMap _map;
+
+      private static SelectionType _currentSelectionType;
+      private static bool _highlightWalls = false;
+      private static int _selectionSize = 5;
 
       public static void Main()
       {
@@ -35,40 +50,13 @@ namespace RogueSharpRLNetSamples
       // Event handler for RLNET's Update event
       private static void OnRootConsoleUpdate( object sender, UpdateEventArgs e )
       {
-         RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
-         if ( keyPress != null )
+         if ( _rootConsole.Mouse.GetLeftClick() )
          {
-            // Check for the Up key press
-            if ( keyPress.Key == RLKey.Up )
+            _currentSelectionType++;
+
+            if ( (int) _currentSelectionType == 7 )
             {
-               // Check the RogueSharp map to make sure the Cell is walkable before moving
-               if ( _map.GetCell( _playerX, _playerY - 1 ).IsWalkable )
-               {
-                  // Update the player position
-                  _playerY--;
-               }
-            }
-            // Repeat for the other directions
-            else if ( keyPress.Key == RLKey.Down )
-            {
-               if ( _map.GetCell( _playerX, _playerY + 1 ).IsWalkable )
-               {
-                  _playerY++;
-               }
-            }
-            else if ( keyPress.Key == RLKey.Left )
-            {
-               if ( _map.GetCell( _playerX - 1, _playerY ).IsWalkable )
-               {
-                  _playerX--;
-               }
-            }
-            else if ( keyPress.Key == RLKey.Right )
-            {
-               if ( _map.GetCell( _playerX + 1, _playerY ).IsWalkable )
-               {
-                  _playerX++;
-               }
+               _currentSelectionType = SelectionType.Radius;
             }
          }
       }
@@ -78,43 +66,74 @@ namespace RogueSharpRLNetSamples
       {
          _rootConsole.Clear();
 
-         // Use RogueSharp to calculate the current field-of-view for the player
-         _map.ComputeFov( _playerX, _playerY, 50, true );
-
          foreach ( var cell in _map.GetAllCells() )
          {
-            // When a Cell is in the field-of-view set it to a brighter color
-            if ( cell.IsInFov )
+            _map.SetCellProperties( cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, true );
+            if ( cell.IsWalkable )
             {
-               _map.SetCellProperties( cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, true );
-               if ( cell.IsWalkable )
-               {
-                  _rootConsole.Set( cell.X, cell.Y, RLColor.Gray, null, '.' );
-               }
-               else
-               {
-                  _rootConsole.Set( cell.X, cell.Y, RLColor.LightGray, null, '#' );
-               }
+               _rootConsole.Set( cell.X, cell.Y, RLColor.Gray, null, '.' );
             }
-            // If the Cell is not in the field-of-view but has been explored set it darker
-            else if ( cell.IsExplored )
+            else
             {
-               if ( cell.IsWalkable )
-               {
-                  _rootConsole.Set( cell.X, cell.Y, new RLColor( 30, 30, 30 ), null, '.' );
-               }
-               else
-               {
-                  _rootConsole.Set( cell.X, cell.Y, RLColor.Gray, null, '#' );
-               }
+               _rootConsole.Set( cell.X, cell.Y, RLColor.LightGray, null, '#' );
             }
          }
 
-         // Set the player's symbol after the map symbol to make sure it is draw
-         _rootConsole.Set( _playerX, _playerY, RLColor.LightGreen, null, '@' );
+         foreach ( var cell in SelectCellsAroundMouse() )
+         {
+            _rootConsole.SetBackColor( cell.X, cell.Y, RLColor.LightBlue );
+         }
 
          // Tell RLNET to draw the console that we set
          _rootConsole.Draw();
+      }
+
+      private static IEnumerable<Cell> SelectCellsAroundMouse()
+      {
+         int x = _rootConsole.Mouse.X;
+         int y = _rootConsole.Mouse.Y;
+         IEnumerable<Cell> selectedCells;
+         switch ( _currentSelectionType )
+         {
+            case SelectionType.Radius:
+            {
+               selectedCells = _map.GetCellsInRadius( x, y, _selectionSize );
+               break;
+            }
+            case SelectionType.Area:
+            {
+               selectedCells = _map.GetCellsInArea( x, y, _selectionSize );
+               break;
+            }
+            case SelectionType.Row:
+            {
+               selectedCells = _map.GetCellsInRows( y );
+               break;
+            }
+            case SelectionType.Column:
+            {
+               selectedCells = _map.GetCellsInColumns( x );
+               break;
+            }
+            default:
+            {
+               selectedCells = _map.GetCellsInRadius( x, y, _selectionSize );
+               break;
+            }
+         }
+         if ( _highlightWalls )
+         {
+            return selectedCells;
+         }
+         else
+         {
+            return FilterWalls( selectedCells );
+         }
+      }
+
+      private static IEnumerable<Cell> FilterWalls( IEnumerable<Cell> cells )
+      {
+         return cells.Where( c => c.IsWalkable );
       }
    }
 }

@@ -37,7 +37,7 @@
     </Reference>
     <Reference Include="RLNET, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RLNET.1.0.5.1\lib\RLNET.dll</HintPath>
+      <HintPath>..\packages\RLNET.1.0.5.2\lib\RLNET.dll</HintPath>
     </Reference>
     <Reference Include="RogueSharp">
       <HintPath>..\packages\RogueSharp.2.0.0.0\lib\portable-net40+sl50+win+wpa81+wp80\RogueSharp.dll</HintPath>
