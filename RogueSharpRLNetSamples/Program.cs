@@ -16,9 +16,9 @@ namespace RogueSharpRLNetSamples
          Column = 4,
          Row = 5,
          ColumnAndRow = 6,
+         Cross = 7
       }
 
-      // The screen height and width are in number of tiles
       private static readonly int _screenWidth = 50;
       private static readonly int _screenHeight = 50;
 
@@ -26,42 +26,58 @@ namespace RogueSharpRLNetSamples
       private static IMap _map;
 
       private static SelectionType _currentSelectionType;
-      private static bool _highlightWalls = false;
+      private static bool _highlightWalls;
       private static int _selectionSize = 5;
 
       public static void Main()
       {
-         // Use RogueSharp to create a new cave map the same size as the screen.
          _map = Map.Create( new CaveMapCreationStrategy<Map>( _screenWidth, _screenHeight, 45, 4, 3 ) );
-         // This must be the exact name of the bitmap font file we are using or it will error.
          string fontFileName = "terminal8x8.png";
-         // The title will appear at the top of the console window
          string consoleTitle = "RougeSharp RLNet Tutorial";
-         // Tell RLNet to use the bitmap font that we specified and that each tile is 8 x 8 pixels
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
-         // Set up a handler for RLNET's Update event
          _rootConsole.Update += OnRootConsoleUpdate;
-         // Set up a handler for RLNET's Render event
          _rootConsole.Render += OnRootConsoleRender;
-         // Begin RLNET's game loop
          _rootConsole.Run();
       }
 
-      // Event handler for RLNET's Update event
       private static void OnRootConsoleUpdate( object sender, UpdateEventArgs e )
       {
          if ( _rootConsole.Mouse.GetLeftClick() )
          {
             _currentSelectionType++;
 
-            if ( (int) _currentSelectionType == 7 )
+            if ( (int) _currentSelectionType == 8 )
             {
                _currentSelectionType = SelectionType.Radius;
             }
          }
+
+         RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
+         if ( keyPress != null )
+         {
+            if ( keyPress.Key == RLKey.W )
+            {
+               _highlightWalls = !_highlightWalls;
+            }
+            else if ( keyPress.Key == RLKey.Q )
+            {
+               _selectionSize--;
+               if ( _selectionSize == 0 )
+               {
+                  _selectionSize = 1;
+               }
+            }
+            else if ( keyPress.Key == RLKey.E )
+            {
+               _selectionSize++;
+               if ( _selectionSize == 51 )
+               {
+                  _selectionSize = 50;
+               }
+            }
+         }
       }
 
-      // Event handler for RLNET's Render event
       private static void OnRootConsoleRender( object sender, UpdateEventArgs e )
       {
          _rootConsole.Clear();
@@ -81,10 +97,9 @@ namespace RogueSharpRLNetSamples
 
          foreach ( var cell in SelectCellsAroundMouse() )
          {
-            _rootConsole.SetBackColor( cell.X, cell.Y, RLColor.LightBlue );
+            _rootConsole.SetBackColor( cell.X, cell.Y, RLColor.Yellow );
          }
 
-         // Tell RLNET to draw the console that we set
          _rootConsole.Draw();
       }
 
@@ -92,6 +107,10 @@ namespace RogueSharpRLNetSamples
       {
          int x = _rootConsole.Mouse.X;
          int y = _rootConsole.Mouse.Y;
+         if ( x < 0 || x >= _screenWidth || y < 0 || y >= _screenHeight )
+         {
+            return new List<Cell>();
+         }
          IEnumerable<Cell> selectedCells;
          switch ( _currentSelectionType )
          {
@@ -105,6 +124,16 @@ namespace RogueSharpRLNetSamples
                selectedCells = _map.GetCellsInArea( x, y, _selectionSize );
                break;
             }
+            case SelectionType.RadiusBorder:
+            {
+               selectedCells = _map.GetBorderCellsInRadius( x, y, _selectionSize );
+               break;
+            }
+            case SelectionType.AreaBorder:
+            {
+               selectedCells = _map.GetBorderCellsInArea( x, y, _selectionSize );
+               break;
+            }
             case SelectionType.Row:
             {
                selectedCells = _map.GetCellsInRows( y );
@@ -113,6 +142,24 @@ namespace RogueSharpRLNetSamples
             case SelectionType.Column:
             {
                selectedCells = _map.GetCellsInColumns( x );
+               break;
+            }
+            case SelectionType.ColumnAndRow:
+            {
+               List<Cell> rowCells = _map.GetCellsInRows( y ).ToList();
+               rowCells.AddRange( _map.GetCellsInColumns( x ) );
+               selectedCells = rowCells;
+               break;
+            }
+            case SelectionType.Cross:
+            {
+               if ( x < 1 || x >= _screenWidth -1 || y < 1 || y >= _screenHeight - 1 )
+               {
+                  return new List<Cell>();
+               }
+               List<Cell> rowCells = _map.GetCellsInRows( y + 1, y - 1 ).ToList();
+               rowCells.AddRange( _map.GetCellsInColumns( x + 1, x - 1 ) );
+               selectedCells = rowCells;
                break;
             }
             default:
@@ -125,10 +172,7 @@ namespace RogueSharpRLNetSamples
          {
             return selectedCells;
          }
-         else
-         {
-            return FilterWalls( selectedCells );
-         }
+         return FilterWalls( selectedCells );
       }
 
       private static IEnumerable<Cell> FilterWalls( IEnumerable<Cell> cells )
