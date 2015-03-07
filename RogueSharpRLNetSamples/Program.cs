@@ -6,9 +6,12 @@ namespace RogueSharpRLNetSamples
    {
       private static readonly int _screenWidth = 80;
       private static readonly int _screenHeight = 50;
+      private static readonly int _mapWidth = 80;
+      private static readonly int _mapHeight = 45;
       private static int _playerX = 25;
       private static int _playerY = 25;
       private static RLRootConsole _rootConsole;
+      private static RLConsole _mapConsole;
 
       public static void Main()
       {
@@ -54,5 +57,28 @@ namespace RogueSharpRLNetSamples
          _rootConsole.Set( _playerX, _playerY, RLColor.White, null, '@' );
          _rootConsole.Draw();
       }
+   }
+
+   public class Tile
+   {
+      public bool BlocksMovement { get; set; }
+      public bool BlocksSight { get; set; }
+
+      public Tile( bool blocksMovement, bool blocksSight )
+      {
+         BlocksMovement = blocksMovement;
+         BlocksSight = blocksSight;
+      }
+
+      public Tile( bool blocksMovement )
+      {
+         BlocksMovement = blocksMovement;
+         BlocksSight = blocksMovement;
+      }
+   }
+
+   public class Entity
+   {
+      
    }
 }
