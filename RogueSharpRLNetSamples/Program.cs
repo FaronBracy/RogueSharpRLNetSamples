@@ -27,6 +27,7 @@ namespace RogueSharpRLNetSamples
          _map = mapCreationStrategy.CreateMap();
          _playerX = _map.Rooms[0].Center.X;
          _playerY = _map.Rooms[0].Center.Y;
+         UpdateFov();
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;
@@ -44,6 +45,7 @@ namespace RogueSharpRLNetSamples
                {
                   _playerY--;
                   OpenDoor( _playerX, _playerY );
+                  UpdateFov();
                }
             }
             else if ( keyPress.Key == RLKey.Down )
@@ -52,6 +54,7 @@ namespace RogueSharpRLNetSamples
                {
                   _playerY++;
                   OpenDoor( _playerX, _playerY );
+                  UpdateFov();
                }
             }
             else if ( keyPress.Key == RLKey.Left )
@@ -60,6 +63,7 @@ namespace RogueSharpRLNetSamples
                {
                   _playerX--;
                   OpenDoor( _playerX, _playerY );
+                  UpdateFov();
                }
             }
             else if ( keyPress.Key == RLKey.Right )
@@ -68,6 +72,7 @@ namespace RogueSharpRLNetSamples
                {
                   _playerX++;
                   OpenDoor( _playerX, _playerY );
+                  UpdateFov();
                }
             }
             else if ( keyPress.Key == RLKey.Escape )
@@ -79,10 +84,23 @@ namespace RogueSharpRLNetSamples
 
       private static void OpenDoor( int x, int y )
       {
-         Door door = _map.GetDoor( x, y );  
+         Door door = _map.GetDoor( x, y );
          if ( door != null )
          {
             door.IsOpen = true;
+            _map.SetCellProperties( x, y, true, true, true );
+         }
+      }
+
+      private static void UpdateFov()
+      {
+         _map.ComputeFov( _playerX, _playerY, 20, true );
+         foreach ( Cell cell in _map.GetAllCells() )
+         {
+            if ( _map.IsInFov( cell.X, cell.Y ) )
+            {
+               _map.SetCellProperties( cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, true );
+            }
          }
       }
 
@@ -91,27 +109,64 @@ namespace RogueSharpRLNetSamples
          _rootConsole.Clear();
          foreach ( Cell cell in _map.GetAllCells() )
          {
-            if ( cell.IsWalkable )
+            if ( !cell.IsExplored )
             {
-               _rootConsole.Set( cell.X, cell.Y, RLColor.LightGray, null, '.' );
+               continue;
+            }
+            if ( _map.IsInFov( cell.X, cell.Y ) )
+            {
+               if ( cell.IsWalkable )
+               {
+                  _rootConsole.Set( cell.X, cell.Y, Colors.FloorFov, Colors.FloorBackgroundFov, '.' );
+               }
+               else
+               {
+                  _rootConsole.Set( cell.X, cell.Y, Colors.WallFov, Colors.WallBackgroundFov, '#' );
+               }
             }
             else
             {
-               _rootConsole.Set( cell.X, cell.Y, RLColor.Gray, null, '#' );
+               if ( cell.IsWalkable )
+               {
+                  _rootConsole.Set( cell.X, cell.Y, Colors.Floor, Colors.FloorBackground, '.' );
+               }
+               else
+               {
+                  _rootConsole.Set( cell.X, cell.Y, Colors.Wall, Colors.WallBackground, '#' );
+               }
             }
          }
          foreach ( Door door in _map.Doors )
          {
-            if ( door.IsOpen )
+            if ( !_map.GetCell( door.X, door.Y ).IsExplored )
             {
-               _rootConsole.Set( door.X, door.Y, RLColor.Brown, null, '/' );
+               continue;
+            }
+            if ( _map.IsInFov( door.X, door.Y ) )
+            {
+               if ( door.IsOpen )
+               {
+                  _rootConsole.Set( door.X, door.Y, Colors.DoorFov, Colors.DoorBackgroundFov, '-' );
+               }
+               else
+               {
+                  _rootConsole.Set( door.X, door.Y, Colors.DoorFov, Colors.DoorBackgroundFov, '+' );
+               }
             }
             else
             {
-               _rootConsole.Set( door.X, door.Y, RLColor.Brown, null, '=' );
+               if ( door.IsOpen )
+               {
+                  _rootConsole.Set( door.X, door.Y, Colors.Door, Colors.DoorBackground, '-' );
+               }
+               else
+               {
+                  _rootConsole.Set( door.X, door.Y, Colors.Door, Colors.DoorBackground, '+' );
+               }
             }
+
          }
-         _rootConsole.Set( _playerX, _playerY, RLColor.White, null, '@' );
+         _rootConsole.Set( _playerX, _playerY, Colors.Player, null, '@' );
          _rootConsole.Draw();
       }
    }
@@ -125,7 +180,7 @@ namespace RogueSharpRLNetSamples
       private readonly int _roomMinSize;
       private readonly int _width;
       private readonly DungeonMap _map;
-      
+
       public DungeonMapCreationStrategy( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, IRandom random )
       {
          _width = width;
@@ -144,7 +199,7 @@ namespace RogueSharpRLNetSamples
          for ( int r = 0; r < _maxRooms; r++ )
          {
             int roomWidth = _random.Next( _roomMinSize, _roomMaxSize );
-            int roomHeight =  _random.Next( _roomMinSize, _roomMaxSize );
+            int roomHeight = _random.Next( _roomMinSize, _roomMaxSize );
             int roomXPosition = _random.Next( 0, _width - roomWidth - 1 );
             int roomYPosition = _random.Next( 0, _height - roomHeight - 1 );
 
@@ -237,10 +292,9 @@ namespace RogueSharpRLNetSamples
             if ( IsPotentialDoor( cell ) )
             {
                _map.SetCellProperties( cell.X, cell.Y, false, true );
-               _map.Doors.Add( new Door
-               {
-                  X = cell.X, 
-                  Y = cell.Y, 
+               _map.Doors.Add( new Door {
+                  X = cell.X,
+                  Y = cell.Y,
                   IsOpen = false
                } );
             }
@@ -302,5 +356,51 @@ namespace RogueSharpRLNetSamples
       public int X { get; set; }
       public int Y { get; set; }
       public bool IsOpen { get; set; }
+   }
+
+   public static class Colors
+   {
+      public static RLColor DoorBackground = Swatch.ComplimentDarkest;
+      public static RLColor Door = Swatch.ComplimentLighter;
+      public static RLColor DoorBackgroundFov = Swatch.ComplimentDarker;
+      public static RLColor DoorFov = Swatch.ComplimentLightest;
+      public static RLColor FloorBackground = RLColor.Black;
+      public static RLColor Floor = Swatch.AlternateDarkest;
+      public static RLColor FloorBackgroundFov = RLColor.Black;
+      public static RLColor FloorFov = Swatch.Alternate;
+      public static RLColor WallBackground = Swatch.SecondaryDarkest;
+      public static RLColor Wall = Swatch.Secondary;
+      public static RLColor WallBackgroundFov = Swatch.SecondaryDarker;
+      public static RLColor WallFov = Swatch.SecondaryLighter;
+      public static RLColor Player = RLColor.White;
+   }
+
+   public static class Swatch
+   {
+      // http://paletton.com/#uid=73d0u0k5qgb2NnT41jT74c8bJ8X
+
+      public static RLColor PrimaryLightest = new RLColor( 110, 121, 119 );
+      public static RLColor PrimaryLighter = new RLColor( 88, 100, 98 );
+      public static RLColor Primary = new RLColor( 68, 82, 79 );
+      public static RLColor PrimaryDarker = new RLColor( 48, 61, 59 );
+      public static RLColor PrimaryDarkest = new RLColor( 29, 45, 42 );
+
+      public static RLColor SecondaryLightest = new RLColor( 116, 120, 126 );
+      public static RLColor SecondaryLighter = new RLColor( 93, 97, 105 );
+      public static RLColor Secondary = new RLColor( 72, 77, 85 );
+      public static RLColor SecondaryDarker = new RLColor( 51, 56, 64 );
+      public static RLColor SecondaryDarkest = new RLColor( 31, 38, 47 );
+
+      public static RLColor AlternateLightest = new RLColor( 190, 184, 174 );
+      public static RLColor AlternateLighter = new RLColor( 158, 151, 138 );
+      public static RLColor Alternate = new RLColor( 129, 121, 107 );
+      public static RLColor AlternateDarker = new RLColor( 97, 89, 75 );
+      public static RLColor AlternateDarkest = new RLColor( 71, 62, 45 );
+
+      public static RLColor ComplimentLightest = new RLColor( 190, 180, 174 );
+      public static RLColor ComplimentLighter = new RLColor( 158, 147, 138 );
+      public static RLColor Compliment = new RLColor( 129, 116, 107 );
+      public static RLColor ComplimentDarker = new RLColor( 97, 84, 75 );
+      public static RLColor ComplimentDarkest = new RLColor( 71, 56, 45 );
    }
 }
