@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Xml.Linq;
 using RLNET;
 using RogueSharp;
 using RogueSharp.Random;
@@ -194,17 +192,6 @@ namespace RogueSharpRLNetSamples
 
          return _map;
       }
-
-      private int EnsureOdd( int checkValue )
-      {
-         return checkValue % 2 != 0 ? checkValue : checkValue + 1;
-      }
-
-      private int EnsureEven( int checkValue )
-      {
-         return checkValue % 2 == 0 ? checkValue : checkValue + 1;
-      }
-
 
       private void MakeRoom( Rectangle room )
       {
