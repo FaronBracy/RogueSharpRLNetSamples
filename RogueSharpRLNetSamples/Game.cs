@@ -13,10 +13,14 @@ namespace RogueSharpRLNetSamples
       private static readonly int _screenHeight = 50;
       private static readonly int _mapWidth = 80;
       private static readonly int _mapHeight = 45;
+      private static readonly int _messageHeight = 5;
+      private static readonly int _messageWidth = 80;
       private static RLRootConsole _rootConsole;
       private static RLConsole _mapConsole;
+      private static RLConsole _messageConsole;
       private static DungeonMap _map;
       private static Player _player;
+      private static Messages _messages;
 
       public static void Main()
       {
@@ -24,14 +28,16 @@ namespace RogueSharpRLNetSamples
          string consoleTitle = "RougeSharp RLNet Tutorial";
          DungeonMapCreationStrategy mapCreationStrategy = new DungeonMapCreationStrategy( _mapWidth, _mapHeight, 20, 13, 7, Singleton.DefaultRandom );
          _map = mapCreationStrategy.CreateMap();
-         _player = new Player
-         {
-            X = _map.Rooms[0].Center.X, 
+         _messages = new Messages();
+         _player = new Player {
+            X = _map.Rooms[0].Center.X,
             Y = _map.Rooms[0].Center.Y
          };
          UpdatePlayerFieldOfView();
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
-         _mapConsole = new RLConsole( _mapWidth, _mapHeight );  
+         _mapConsole = new RLConsole( _mapWidth, _mapHeight );
+         _messageConsole = new RLConsole( _messageWidth, _messageHeight );
+         _messages.Add( "The rogue arrives on level 1" );
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;
          _rootConsole.Run();
@@ -83,6 +89,7 @@ namespace RogueSharpRLNetSamples
          {
             door.IsOpen = true;
             _map.SetCellProperties( x, y, true, true, true );
+            _messages.Add( "Opened a door" );
          }
       }
 
@@ -101,77 +108,12 @@ namespace RogueSharpRLNetSamples
       private static void OnRootConsoleRender( object sender, UpdateEventArgs e )
       {
          _mapConsole.Clear();
-         foreach ( Cell cell in _map.GetAllCells() )
-         {
-            SetConsoleSymbolForCell( _mapConsole, cell );
-         }
-         _mapConsole.Set( _player.X, _player.Y, Colors.Player, null, '@' );
-         RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, 0 );  
+         _map.Draw( _mapConsole );
+         _player.Draw( _mapConsole );
+         _messages.Draw( _messageConsole );
+         RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, 0 );
+         RLConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight, _rootConsole, 0, _screenHeight - _messageHeight );
          _rootConsole.Draw();
-      }
-
-      private static void SetConsoleSymbolForCell( RLConsole console, Cell cell )
-      {
-         if ( !cell.IsExplored )
-         {
-            return;
-         }
-
-         Door door = _map.GetDoor( cell.X, cell.Y );
-         if ( door != null )
-         {
-            SetConsoleSymbolForDoor( console, door );
-            return;
-         }
-
-         if ( _map.IsInFov( cell.X, cell.Y ) )
-         {
-            if ( cell.IsWalkable )
-            {
-               console.Set( cell.X, cell.Y, Colors.FloorFov, Colors.FloorBackgroundFov, '.' );
-            }
-            else
-            {
-               console.Set( cell.X, cell.Y, Colors.WallFov, Colors.WallBackgroundFov, '#' );
-            }
-         }
-         else
-         {
-            if ( cell.IsWalkable )
-            {
-               console.Set( cell.X, cell.Y, Colors.Floor, Colors.FloorBackground, '.' );
-            }
-            else
-            {
-               console.Set( cell.X, cell.Y, Colors.Wall, Colors.WallBackground, '#' );
-            }
-         }
-      }
-
-      private static void SetConsoleSymbolForDoor( RLConsole console, Door door )
-      {
-         if ( _map.IsInFov( door.X, door.Y ) )
-         {
-            if ( door.IsOpen )
-            {
-               console.Set( door.X, door.Y, Colors.DoorFov, Colors.DoorBackgroundFov, '-' );
-            }
-            else
-            {
-               console.Set( door.X, door.Y, Colors.DoorFov, Colors.DoorBackgroundFov, '+' );
-            }
-         }
-         else
-         {
-            if ( door.IsOpen )
-            {
-               console.Set( door.X, door.Y, Colors.Door, Colors.DoorBackground, '-' );
-            }
-            else
-            {
-               console.Set( door.X, door.Y, Colors.Door, Colors.DoorBackground, '+' );
-            }
-         }
       }
    }
 
@@ -248,6 +190,17 @@ namespace RogueSharpRLNetSamples
          {
             MakeDoors( room );
          }
+
+         _map.StairsUp = new Stairs {
+            X = _map.Rooms.First().Center.X + 1,
+            Y = _map.Rooms.First().Center.Y,
+            IsUp = true
+         };
+         _map.StairsDown = new Stairs {
+            X = _map.Rooms.Last().Center.X,
+            Y = _map.Rooms.Last().Center.Y,
+            IsUp = false
+         };
 
          return _map;
       }
@@ -342,6 +295,8 @@ namespace RogueSharpRLNetSamples
    {
       public List<Rectangle> Rooms;
       public List<Door> Doors;
+      public Stairs StairsUp;
+      public Stairs StairsDown;
 
       public DungeonMap()
       {
@@ -353,6 +308,54 @@ namespace RogueSharpRLNetSamples
       {
          return Doors.SingleOrDefault( d => d.X == x && d.Y == y );
       }
+
+      public void Draw( RLConsole console )
+      {
+         console.Clear();
+         foreach ( Cell cell in GetAllCells() )
+         {
+            SetConsoleSymbolForCell( console, cell );
+         }
+
+         foreach ( Door door in Doors )
+         {
+            door.Draw( console, this );
+         }
+
+         StairsUp.Draw( console, this );
+         StairsDown.Draw( console, this );
+      }
+
+      private void SetConsoleSymbolForCell( RLConsole console, Cell cell )
+      {
+         if ( !cell.IsExplored )
+         {
+            return;
+         }
+
+         if ( IsInFov( cell.X, cell.Y ) )
+         {
+            if ( cell.IsWalkable )
+            {
+               console.Set( cell.X, cell.Y, Colors.FloorFov, Colors.FloorBackgroundFov, '.' );
+            }
+            else
+            {
+               console.Set( cell.X, cell.Y, Colors.WallFov, Colors.WallBackgroundFov, '#' );
+            }
+         }
+         else
+         {
+            if ( cell.IsWalkable )
+            {
+               console.Set( cell.X, cell.Y, Colors.Floor, Colors.FloorBackground, '.' );
+            }
+            else
+            {
+               console.Set( cell.X, cell.Y, Colors.Wall, Colors.WallBackground, '#' );
+            }
+         }
+      }
    }
 
    public class Door
@@ -360,12 +363,115 @@ namespace RogueSharpRLNetSamples
       public int X { get; set; }
       public int Y { get; set; }
       public bool IsOpen { get; set; }
+
+      public void Draw( RLConsole console, IMap map )
+      {
+         if ( !map.GetCell( X, Y ).IsExplored )
+         {
+            return;
+         }
+
+         if ( map.IsInFov( X, Y ) )
+         {
+            if ( IsOpen )
+            {
+               console.Set( X, Y, Colors.DoorFov, Colors.DoorBackgroundFov, '-' );
+            }
+            else
+            {
+               console.Set( X, Y, Colors.DoorFov, Colors.DoorBackgroundFov, '+' );
+            }
+         }
+         else
+         {
+            if ( IsOpen )
+            {
+               console.Set( X, Y, Colors.Door, Colors.DoorBackground, '-' );
+            }
+            else
+            {
+               console.Set( X, Y, Colors.Door, Colors.DoorBackground, '+' );
+            }
+         }
+      }
    }
 
    public class Player
    {
       public int X { get; set; }
       public int Y { get; set; }
+
+      public void Draw( RLConsole console )
+      {
+         console.Set( X, Y, Colors.Player, null, '@' );
+      }
+   }
+
+   public class Stairs
+   {
+      public int X { get; set; }
+      public int Y { get; set; }
+      public bool IsUp { get; set; }
+
+      public void Draw( RLConsole console, IMap map )
+      {
+         if ( !map.GetCell( X, Y ).IsExplored )
+         {
+            return;
+         }
+
+         if ( map.IsInFov( X, Y ) )
+         {
+            if ( IsUp )
+            {
+               console.Set( X, Y, Colors.Player, null, '<' );
+            }
+            else
+            {
+               console.Set( X, Y, Colors.Player, null, '>' );
+            }
+         }
+         else
+         {
+            if ( IsUp )
+            {
+               console.Set( X, Y, Colors.Floor, null, '<' );
+            }
+            else
+            {
+               console.Set( X, Y, Colors.Floor, null, '>' );
+            }
+         }
+      }
+   }
+
+   public class Messages
+   {
+      private readonly Queue<string> _lines;
+
+      public Messages()
+      {
+         _lines = new Queue<string>();
+      }
+
+      public void Add( string message )
+      {
+         _lines.Enqueue( message );
+         if ( _lines.Count > 5 )
+         {
+            _lines.Dequeue();
+         }
+      }
+
+      public void Draw( RLConsole console )
+      {
+         console.Clear();
+         string[] lines = _lines.ToArray();
+         for ( int i = 0; i < lines.Count(); i++ )
+         {
+            console.Print( 1, i, lines[i], RLColor.White );
+         }
+      }
    }
 
    public static class Colors
