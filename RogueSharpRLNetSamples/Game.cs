@@ -9,15 +9,18 @@ namespace RogueSharpRLNetSamples
 {
    public static class Game
    {
-      private static readonly int _screenWidth = 80;
+      private static readonly int _screenWidth = 100;
       private static readonly int _screenHeight = 50;
       private static readonly int _mapWidth = 80;
       private static readonly int _mapHeight = 45;
       private static readonly int _messageHeight = 5;
       private static readonly int _messageWidth = 80;
+      private static readonly int _statWidth = 20;
+      private static readonly int _statHeight = 50;
       private static RLRootConsole _rootConsole;
       private static RLConsole _mapConsole;
       private static RLConsole _messageConsole;
+      private static RLConsole _statConsole;
       private static DungeonMap _map;
       private static Player _player;
       private static Messages _messages;
@@ -37,6 +40,7 @@ namespace RogueSharpRLNetSamples
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
          _mapConsole = new RLConsole( _mapWidth, _mapHeight );
          _messageConsole = new RLConsole( _messageWidth, _messageHeight );
+         _statConsole = new RLConsole( _statWidth, _statHeight );
          _messages.Add( "The rogue arrives on level 1" );
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;
@@ -110,8 +114,10 @@ namespace RogueSharpRLNetSamples
          _mapConsole.Clear();
          _map.Draw( _mapConsole );
          _player.Draw( _mapConsole );
+         _player.DrawStats( _statConsole );  
          _messages.Draw( _messageConsole );
          RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, 0 );
+         RLConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _rootConsole, _mapWidth, 0 );  
          RLConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight, _rootConsole, 0, _screenHeight - _messageHeight );
          _rootConsole.Draw();
       }
@@ -400,6 +406,21 @@ namespace RogueSharpRLNetSamples
    {
       public int X { get; set; }
       public int Y { get; set; }
+
+      public int Gold { get; set; }
+      public int Health { get; set; }
+      public int MaxHealth { get; set; }
+      public int Armor { get; set; }
+      public int Attack { get; set; }
+
+      public void DrawStats( RLConsole console )
+      {
+         console.Clear();
+         console.Print( 1, 1, string.Format( "Health: {0}/{1}", Health, MaxHealth ), RLColor.White );
+         console.Print( 1, 3, string.Format( "Attack: {0}", Attack ), RLColor.White );
+         console.Print( 1, 5, string.Format( "Armor: {0}", Armor ), RLColor.White );
+         console.Print( 1, 7, string.Format( "Gold: {0}", Armor ), RLColor.Yellow );
+      }
 
       public void Draw( RLConsole console )
       {
