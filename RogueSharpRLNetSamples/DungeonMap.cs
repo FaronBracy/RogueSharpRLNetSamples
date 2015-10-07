@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using RLNET;
 using RogueSharp;
 
@@ -7,6 +8,7 @@ namespace RogueSharpRLNetSamples
 {
    public class DungeonMap : Map
    {
+      public Player Player;
       public List<Rectangle> Rooms;
       public List<Door> Doors;
       public List<Monster> Monsters; 
@@ -25,26 +27,29 @@ namespace RogueSharpRLNetSamples
          return Doors.SingleOrDefault( d => d.X == x && d.Y == y );
       }
 
-      public void Draw( RLConsole console )
+      public void Draw( RLConsole mapConsole, RLConsole statConsole )
       {
-         console.Clear();
+         mapConsole.Clear();
          foreach ( Cell cell in GetAllCells() )
          {
-            SetConsoleSymbolForCell( console, cell );
+            SetConsoleSymbolForCell( mapConsole, cell );
          }
 
          foreach ( Door door in Doors )
          {
-            door.Draw( console, this );
+            door.Draw( mapConsole, this );
          }
 
-         StairsUp.Draw( console, this );
-         StairsDown.Draw( console, this );
+         StairsUp.Draw( mapConsole, this );
+         StairsDown.Draw( mapConsole, this );
 
          foreach ( Monster monster in Monsters )
          {
-            monster.Draw( console, this );
+            monster.Draw( mapConsole, this );
          }
+
+         Player.Draw( mapConsole );
+         Player.DrawStats( statConsole ); 
       }
 
       private void SetConsoleSymbolForCell( RLConsole console, Cell cell )

@@ -19,7 +19,6 @@ namespace RogueSharpRLNetSamples
       private static RLConsole _messageConsole;
       private static RLConsole _statConsole;
       private static DungeonMap _map;
-      private static Player _player;
       private static Messages _messages;
 
       public static void Main()
@@ -29,10 +28,6 @@ namespace RogueSharpRLNetSamples
          DungeonMapCreationStrategy mapCreationStrategy = new DungeonMapCreationStrategy( _mapWidth, _mapHeight, 20, 13, 7, Singleton.DefaultRandom );
          _map = mapCreationStrategy.CreateMap();
          _messages = new Messages();
-         _player = new Player {
-            X = _map.Rooms[0].Center.X,
-            Y = _map.Rooms[0].Center.Y
-         };
          UpdatePlayerFieldOfView();
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
          _mapConsole = new RLConsole( _mapWidth, _mapHeight );
@@ -47,23 +42,24 @@ namespace RogueSharpRLNetSamples
       private static void OnRootConsoleUpdate( object sender, UpdateEventArgs e )
       {
          RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
+         Player rogue = _map.Player;
          if ( keyPress != null )
          {
             if ( keyPress.Key == RLKey.Up )
             {
-               MovePlayer( _player.X, _player.Y - 1 );
+               MovePlayer( rogue.X, rogue.Y - 1 );
             }
             else if ( keyPress.Key == RLKey.Down )
             {
-               MovePlayer( _player.X, _player.Y + 1 );
+               MovePlayer( rogue.X, rogue.Y + 1 );
             }
             else if ( keyPress.Key == RLKey.Left )
             {
-               MovePlayer( _player.X - 1, _player.Y );
+               MovePlayer( rogue.X - 1, rogue.Y );
             }
             else if ( keyPress.Key == RLKey.Right )
             {
-               MovePlayer( _player.X + 1, _player.Y );
+               MovePlayer( rogue.X + 1, rogue.Y );
             }
             else if ( keyPress.Key == RLKey.Escape )
             {
@@ -76,8 +72,8 @@ namespace RogueSharpRLNetSamples
       {
          if ( _map.GetCell( x, y ).IsWalkable )
          {
-            _player.X = x;
-            _player.Y = y;
+            _map.Player.X = x;
+            _map.Player.Y = y;
             OpenDoor( x, y );
             UpdatePlayerFieldOfView();
          }
@@ -96,7 +92,7 @@ namespace RogueSharpRLNetSamples
 
       private static void UpdatePlayerFieldOfView()
       {
-         _map.ComputeFov( _player.X, _player.Y, 20, true );
+         _map.ComputeFov( _map.Player.X, _map.Player.Y, 20, true );
          foreach ( Cell cell in _map.GetAllCells() )
          {
             if ( _map.IsInFov( cell.X, cell.Y ) )
@@ -109,9 +105,7 @@ namespace RogueSharpRLNetSamples
       private static void OnRootConsoleRender( object sender, UpdateEventArgs e )
       {
          _mapConsole.Clear();
-         _map.Draw( _mapConsole );
-         _player.Draw( _mapConsole );
-         _player.DrawStats( _statConsole );  
+         _map.Draw( _mapConsole, _statConsole ); 
          _messages.Draw( _messageConsole );
          RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, 0 );
          RLConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _rootConsole, _mapWidth, 0 );  

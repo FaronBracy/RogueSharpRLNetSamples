@@ -86,7 +86,17 @@ namespace RogueSharpRLNetSamples
 
          MakeMonsters();
 
+         MakePlayer();
+
          return _map;
+      }
+
+      private void MakePlayer()
+      {
+         _map.Player = new Player {
+            X = _map.Rooms[0].Center.X,
+            Y = _map.Rooms[0].Center.Y
+         };
       }
 
       private void MakeRoom( Rectangle room )
