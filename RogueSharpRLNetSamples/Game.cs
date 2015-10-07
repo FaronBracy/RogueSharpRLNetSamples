@@ -331,7 +331,7 @@ namespace RogueSharpRLNetSamples
             MaxHealth = 10,
             Name = "Goblin",
             Symbol = 'g',
-            Color = RLColor.Green,
+            Color = Colors.GoblinColor,
             X = location.X,
             Y = location.Y
          };
@@ -339,8 +339,8 @@ namespace RogueSharpRLNetSamples
 
       private Point GetRandomLocationInRoom( Rectangle room )
       {
-         int x = _random.Next( room.Width - 1 ) + room.X;
-         int y = _random.Next( room.Height - 1 ) + room.Y;
+         int x = _random.Next( 1, room.Width - 2 ) + room.X;
+         int y = _random.Next( 1, room.Height - 2 ) + room.Y;
          return new Point( x, y );
       }
    }
@@ -584,6 +584,7 @@ namespace RogueSharpRLNetSamples
       public static RLColor Wall = Swatch.Secondary;
       public static RLColor WallBackgroundFov = Swatch.SecondaryDarker;
       public static RLColor WallFov = Swatch.SecondaryLighter;
+      public static RLColor GoblinColor = RLColor.Green;
       public static RLColor Player = RLColor.White;
    }
 
