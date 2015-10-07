@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using RLNET;
 using RogueSharp;
 
@@ -20,6 +19,29 @@ namespace RogueSharpRLNetSamples
          Rooms = new List<Rectangle>();
          Doors = new List<Door>();
          Monsters = new List<Monster>();
+      }
+
+      public void MovePlayer( int x, int y )
+      {
+         if ( GetCell( x, y ).IsWalkable )
+         {
+            Player.X = x;
+            Player.Y = y;
+            OpenDoor( x, y );
+            UpdatePlayerFieldOfView();
+         }
+      }
+
+      public void UpdatePlayerFieldOfView()
+      {
+         ComputeFov( Player.X, Player.Y, 20, true );
+         foreach ( Cell cell in GetAllCells() )
+         {
+            if ( IsInFov( cell.X, cell.Y ) )
+            {
+               SetCellProperties( cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, true );
+            }
+         }
       }
 
       public Door GetDoor( int x, int y )
@@ -51,6 +73,18 @@ namespace RogueSharpRLNetSamples
          Player.Draw( mapConsole );
          Player.DrawStats( statConsole ); 
       }
+
+      private void OpenDoor( int x, int y )
+      {
+         Door door = GetDoor( x, y );
+         if ( door != null )
+         {
+            door.IsOpen = true;
+            SetCellProperties( x, y, true, true, true );
+            Game.Messages.Add( "Opened a door" );
+         }
+      }
+
 
       private void SetConsoleSymbolForCell( RLConsole console, Cell cell )
       {
