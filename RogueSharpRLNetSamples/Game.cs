@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RLNET;
 using RogueSharp;
+using RogueSharp.DiceNotation;
 using RogueSharp.MapCreation;
 using RogueSharp.Random;
 
@@ -198,16 +199,9 @@ namespace RogueSharpRLNetSamples
             MakeDoors( room );
          }
 
-         _map.StairsUp = new Stairs {
-            X = _map.Rooms.First().Center.X + 1,
-            Y = _map.Rooms.First().Center.Y,
-            IsUp = true
-         };
-         _map.StairsDown = new Stairs {
-            X = _map.Rooms.Last().Center.X,
-            Y = _map.Rooms.Last().Center.Y,
-            IsUp = false
-         };
+         MakeStairs();
+
+         MakeMonsters();
 
          return _map;
       }
@@ -296,12 +290,66 @@ namespace RogueSharpRLNetSamples
          }
          return false;
       }
+
+      private void MakeStairs()
+      {
+         _map.StairsUp = new Stairs {
+            X = _map.Rooms.First().Center.X + 1,
+            Y = _map.Rooms.First().Center.Y,
+            IsUp = true
+         };
+         _map.StairsDown = new Stairs {
+            X = _map.Rooms.Last().Center.X,
+            Y = _map.Rooms.Last().Center.Y,
+            IsUp = false
+         };
+      }
+
+      private void MakeMonsters()
+      {
+         // Place encounters that are well thought out in rooms
+
+         // Place random monsters anywhere on floor tiles
+
+         // Add a few more monsters to rooms
+         foreach ( var room in _map.Rooms )
+         {
+            if ( Dice.Roll( "1D10" ) < 7 )
+            {
+               _map.Monsters.Add( MakeGoblin( GetRandomLocationInRoom( room ) ) );
+            }
+         }
+      }
+
+      private Monster MakeGoblin( Point location )
+      {
+         return new Monster 
+         {
+            Armor = 3,
+            Attack = 3,
+            Health = 10,
+            MaxHealth = 10,
+            Name = "Goblin",
+            Symbol = 'g',
+            Color = RLColor.Green,
+            X = location.X,
+            Y = location.Y
+         };
+      }
+
+      private Point GetRandomLocationInRoom( Rectangle room )
+      {
+         int x = _random.Next( room.Width - 1 ) + room.X;
+         int y = _random.Next( room.Height - 1 ) + room.Y;
+         return new Point( x, y );
+      }
    }
 
    public class DungeonMap : Map
    {
       public List<Rectangle> Rooms;
       public List<Door> Doors;
+      public List<Monster> Monsters; 
       public Stairs StairsUp;
       public Stairs StairsDown;
 
@@ -309,6 +357,7 @@ namespace RogueSharpRLNetSamples
       {
          Rooms = new List<Rectangle>();
          Doors = new List<Door>();
+         Monsters = new List<Monster>();
       }
 
       public Door GetDoor( int x, int y )
@@ -331,6 +380,11 @@ namespace RogueSharpRLNetSamples
 
          StairsUp.Draw( console, this );
          StairsDown.Draw( console, this );
+
+         foreach ( Monster monster in Monsters )
+         {
+            monster.Draw( console );
+         }
       }
 
       private void SetConsoleSymbolForCell( RLConsole console, Cell cell )
@@ -418,14 +472,34 @@ namespace RogueSharpRLNetSamples
       {
          console.Clear();
          console.Print( 1, 1, string.Format( "Health: {0}/{1}", Health, MaxHealth ), RLColor.White );
-         console.Print( 1, 3, string.Format( "Attack: {0}", Attack ), RLColor.White );
-         console.Print( 1, 5, string.Format( "Armor: {0}", Armor ), RLColor.White );
-         console.Print( 1, 7, string.Format( "Gold: {0}", Armor ), RLColor.Yellow );
+         console.Print( 1, 3, string.Format( "Attack:  {0}", Attack ), RLColor.White );
+         console.Print( 1, 5, string.Format( "Armor:   {0}", Armor ), RLColor.White );
+         console.Print( 1, 7, string.Format( "Gold:    {0}", Armor ), RLColor.Yellow );
       }
 
       public void Draw( RLConsole console )
       {
          console.Set( X, Y, Colors.Player, null, '@' );
+      }
+   }
+
+   public class Monster
+   {
+      public int X { get; set; }
+      public int Y { get; set; }
+
+      public char Symbol { get; set; }
+      public RLColor Color { get; set; }
+
+      public string Name { get; set; }
+      public int Health { get; set; }
+      public int MaxHealth { get; set; }
+      public int Armor { get; set; }
+      public int Attack { get; set; }
+
+      public void Draw( RLConsole console )
+      {
+         console.Set( X, Y, Color, null, Symbol );
       }
    }
 
