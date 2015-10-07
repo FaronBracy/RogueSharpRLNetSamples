@@ -52,8 +52,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Colors.cs" />
+    <Compile Include="Door.cs" />
+    <Compile Include="DungeonMap.cs" />
+    <Compile Include="DungeonMapCreationStrategy.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Messages.cs" />
+    <Compile Include="Monster.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stairs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
