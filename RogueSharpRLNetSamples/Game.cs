@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RLNET;
 using RogueSharp;
+using RogueSharp.MapCreation;
 using RogueSharp.Random;
 
 namespace RogueSharpRLNetSamples
