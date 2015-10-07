@@ -1,4 +1,5 @@
 ﻿using RLNET;
+using RogueSharp;
 
 namespace RogueSharpRLNetSamples
 {
@@ -16,9 +17,17 @@ namespace RogueSharpRLNetSamples
       public int Armor { get; set; }
       public int Attack { get; set; }
 
-      public void Draw( RLConsole console )
+      public void Draw( RLConsole console, IMap map )
       {
-         console.Set( X, Y, Color, null, Symbol );
+         if ( !map.GetCell( X, Y ).IsExplored )
+         {
+            return;
+         }
+
+         if ( map.IsInFov( X, Y ) )
+         {
+            console.Set( X, Y, Color, null, Symbol );
+         }
       }
    }
 }

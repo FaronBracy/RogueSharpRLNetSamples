@@ -43,7 +43,7 @@ namespace RogueSharpRLNetSamples
 
          foreach ( Monster monster in Monsters )
          {
-            monster.Draw( console );
+            monster.Draw( console, this );
          }
       }
 
