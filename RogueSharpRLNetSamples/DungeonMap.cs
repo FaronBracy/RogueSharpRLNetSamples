@@ -7,10 +7,11 @@ namespace RogueSharpRLNetSamples
 {
    public class DungeonMap : Map
    {
+      private List<Monster> _monsters;
+
       public Player Player;
       public List<Rectangle> Rooms;
       public List<Door> Doors;
-      public List<Monster> Monsters; 
       public Stairs StairsUp;
       public Stairs StairsDown;
 
@@ -18,7 +19,14 @@ namespace RogueSharpRLNetSamples
       {
          Rooms = new List<Rectangle>();
          Doors = new List<Door>();
-         Monsters = new List<Monster>();
+         _monsters = new List<Monster>();
+      }
+
+      public void AddMonster( Monster monster )
+      {
+         _monsters.Add( monster );
+         Cell cell = GetCell( monster.X, monster.Y );
+         SetCellProperties( cell.X, cell.Y, cell.IsTransparent, false, cell.IsExplored );
       }
 
       public void MovePlayer( int x, int y )
@@ -65,7 +73,7 @@ namespace RogueSharpRLNetSamples
          StairsUp.Draw( mapConsole, this );
          StairsDown.Draw( mapConsole, this );
 
-         foreach ( Monster monster in Monsters )
+         foreach ( Monster monster in _monsters )
          {
             monster.Draw( mapConsole, this );
          }
@@ -84,7 +92,6 @@ namespace RogueSharpRLNetSamples
             Game.Messages.Add( "Opened a door" );
          }
       }
-
 
       private void SetConsoleSymbolForCell( RLConsole console, Cell cell )
       {

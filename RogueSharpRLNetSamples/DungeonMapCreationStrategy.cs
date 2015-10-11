@@ -211,7 +211,7 @@ namespace RogueSharpRLNetSamples
          {
             if ( Dice.Roll( "1D10" ) < 7 )
             {
-               _map.Monsters.Add( MakeGoblin( GetRandomLocationInRoom( room ) ) );
+               _map.AddMonster( MakeGoblin( GetRandomLocationInRoom( room ) ) );
             }
          }
       }
