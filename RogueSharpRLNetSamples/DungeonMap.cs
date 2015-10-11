@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using RLNET;
 using RogueSharp;
@@ -27,15 +26,13 @@ namespace RogueSharpRLNetSamples
       public void AddMonster( Monster monster )
       {
          _monsters.Add( monster );
-         Cell cell = GetCell( monster.X, monster.Y );
-         SetCellProperties( cell.X, cell.Y, cell.IsTransparent, false, cell.IsExplored );
+         SetIsWalkable( monster.X, monster.Y, false );
       }
 
       public void AddPlayer( Player player )
       {
          _player = player;
-         Cell cell = GetCell( player.X, player.Y );
-         SetCellProperties( cell.X, cell.Y, cell.IsTransparent, false, cell.IsExplored );
+         SetIsWalkable( _player.X, _player.Y, false );
          UpdatePlayerFieldOfView();
       }
 
@@ -78,12 +75,10 @@ namespace RogueSharpRLNetSamples
 
          if ( GetCell( x, y ).IsWalkable )
          {
-            Cell cell = GetCell( _player.X, _player.Y );
-            SetCellProperties( cell.X, cell.Y, cell.IsTransparent, true, cell.IsExplored );
+            SetIsWalkable( _player.X, _player.Y, true );
             _player.X = x;
             _player.Y = y;
-            cell = GetCell( _player.X, _player.Y );
-            SetCellProperties( cell.X, cell.Y, cell.IsTransparent, false, cell.IsExplored );
+            SetIsWalkable( _player.X, _player.Y, false );
             OpenDoor( x, y );
             UpdatePlayerFieldOfView();
          }
@@ -129,6 +124,12 @@ namespace RogueSharpRLNetSamples
 
          _player.Draw( mapConsole );
          _player.DrawStats( statConsole ); 
+      }
+
+      private void SetIsWalkable( int x, int y, bool isWalkable )
+      {
+         Cell cell = GetCell( x, y );
+         SetCellProperties( cell.X, cell.Y, cell.IsTransparent, isWalkable, cell.IsExplored );
       }
 
       private void OpenDoor( int x, int y )
