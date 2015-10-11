@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Colors.cs" />
+    <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="DungeonMap.cs" />
     <Compile Include="DungeonMapCreationStrategy.cs" />

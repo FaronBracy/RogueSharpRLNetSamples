@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RLNET;
 using RogueSharp;
@@ -7,9 +8,9 @@ namespace RogueSharpRLNetSamples
 {
    public class DungeonMap : Map
    {
-      private List<Monster> _monsters;
+      private readonly List<Monster> _monsters;
+      private Player _player;
 
-      public Player Player;
       public List<Rectangle> Rooms;
       public List<Door> Doors;
       public Stairs StairsUp;
@@ -17,9 +18,10 @@ namespace RogueSharpRLNetSamples
 
       public DungeonMap()
       {
+         _monsters = new List<Monster>();
+
          Rooms = new List<Rectangle>();
          Doors = new List<Door>();
-         _monsters = new List<Monster>();
       }
 
       public void AddMonster( Monster monster )
@@ -29,12 +31,59 @@ namespace RogueSharpRLNetSamples
          SetCellProperties( cell.X, cell.Y, cell.IsTransparent, false, cell.IsExplored );
       }
 
-      public void MovePlayer( int x, int y )
+      public void AddPlayer( Player player )
       {
+         _player = player;
+         Cell cell = GetCell( player.X, player.Y );
+         SetCellProperties( cell.X, cell.Y, cell.IsTransparent, false, cell.IsExplored );
+         UpdatePlayerFieldOfView();
+      }
+
+      public void MovePlayer( Direction direction )
+      {
+         int x;
+         int y;
+
+         switch ( direction )
+         {
+            case Direction.Up:
+            {
+               x = _player.X;
+               y = _player.Y - 1;
+               break;
+            }
+            case Direction.Down:
+            {
+               x = _player.X;
+               y = _player.Y + 1;
+               break;
+            }
+            case Direction.Left:
+            {
+               x = _player.X - 1;
+               y = _player.Y;
+               break;
+            }
+            case Direction.Right:
+            {
+               x = _player.X + 1;
+               y = _player.Y;
+               break;
+            }
+            default:
+            {
+               return;
+            }
+         }
+
          if ( GetCell( x, y ).IsWalkable )
          {
-            Player.X = x;
-            Player.Y = y;
+            Cell cell = GetCell( _player.X, _player.Y );
+            SetCellProperties( cell.X, cell.Y, cell.IsTransparent, true, cell.IsExplored );
+            _player.X = x;
+            _player.Y = y;
+            cell = GetCell( _player.X, _player.Y );
+            SetCellProperties( cell.X, cell.Y, cell.IsTransparent, false, cell.IsExplored );
             OpenDoor( x, y );
             UpdatePlayerFieldOfView();
          }
@@ -42,7 +91,7 @@ namespace RogueSharpRLNetSamples
 
       public void UpdatePlayerFieldOfView()
       {
-         ComputeFov( Player.X, Player.Y, 20, true );
+         ComputeFov( _player.X, _player.Y, 20, true );
          foreach ( Cell cell in GetAllCells() )
          {
             if ( IsInFov( cell.X, cell.Y ) )
@@ -78,8 +127,8 @@ namespace RogueSharpRLNetSamples
             monster.Draw( mapConsole, this );
          }
 
-         Player.Draw( mapConsole );
-         Player.DrawStats( statConsole ); 
+         _player.Draw( mapConsole );
+         _player.DrawStats( statConsole ); 
       }
 
       private void OpenDoor( int x, int y )

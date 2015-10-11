@@ -41,24 +41,23 @@ namespace RogueSharpRLNetSamples
       private static void OnRootConsoleUpdate( object sender, UpdateEventArgs e )
       {
          RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
-         Player rogue = _map.Player;
          if ( keyPress != null )
          {
             if ( keyPress.Key == RLKey.Up )
             {
-               _map.MovePlayer( rogue.X, rogue.Y - 1 );
+               _map.MovePlayer( Direction.Up );
             }
             else if ( keyPress.Key == RLKey.Down )
             {
-               _map.MovePlayer( rogue.X, rogue.Y + 1 );
+               _map.MovePlayer( Direction.Down );
             }
             else if ( keyPress.Key == RLKey.Left )
             {
-               _map.MovePlayer( rogue.X - 1, rogue.Y );
+               _map.MovePlayer( Direction.Left );
             }
             else if ( keyPress.Key == RLKey.Right )
             {
-               _map.MovePlayer( rogue.X + 1, rogue.Y );
+               _map.MovePlayer( Direction.Right );
             }
             else if ( keyPress.Key == RLKey.Escape )
             {
