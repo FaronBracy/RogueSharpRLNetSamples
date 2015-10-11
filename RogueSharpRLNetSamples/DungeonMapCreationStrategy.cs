@@ -94,6 +94,11 @@ namespace RogueSharpRLNetSamples
       private void MakePlayer()
       {
          _map.AddPlayer( new Player {
+            Armor = 10,
+            Attack = 10,
+            Gold = 0,
+            Health = 100,
+            MaxHealth = 100,
             X = _map.Rooms[0].Center.X,
             Y = _map.Rooms[0].Center.Y
          } );
