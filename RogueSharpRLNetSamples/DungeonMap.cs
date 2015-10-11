@@ -126,6 +126,11 @@ namespace RogueSharpRLNetSamples
          _player.DrawStats( statConsole ); 
       }
 
+      private bool MonsterAt( int x, int y )
+      {
+         return _monsters.Exists( m => m.X == x && m.Y == y );
+      }
+
       private void SetIsWalkable( int x, int y, bool isWalkable )
       {
          Cell cell = GetCell( x, y );
@@ -167,7 +172,7 @@ namespace RogueSharpRLNetSamples
             {
                console.Set( cell.X, cell.Y, Colors.Floor, Colors.FloorBackground, '.' );
             }
-            else
+            else if ( !MonsterAt( cell.X, cell.Y ) )
             {
                console.Set( cell.X, cell.Y, Colors.Wall, Colors.WallBackground, '#' );
             }
