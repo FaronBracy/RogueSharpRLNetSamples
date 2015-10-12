@@ -18,8 +18,9 @@ namespace RogueSharpRLNetSamples
       private static RLConsole _messageConsole;
       private static RLConsole _statConsole;
       private static DungeonMap _map;
+      private static bool _renderRequired = true;
 
-      public  static Messages Messages;
+      public static Messages Messages;
 
       public static void Main()
       {
@@ -43,6 +44,7 @@ namespace RogueSharpRLNetSamples
          RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
          if ( keyPress != null )
          {
+            _renderRequired = true;
             if ( keyPress.Key == RLKey.Up )
             {
                _map.MovePlayer( Direction.Up );
@@ -68,13 +70,18 @@ namespace RogueSharpRLNetSamples
 
       private static void OnRootConsoleRender( object sender, UpdateEventArgs e )
       {
-         _mapConsole.Clear();
-         _map.Draw( _mapConsole, _statConsole ); 
-         Messages.Draw( _messageConsole );
-         RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, 0 );
-         RLConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _rootConsole, _mapWidth, 0 );  
-         RLConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight, _rootConsole, 0, _screenHeight - _messageHeight );
-         _rootConsole.Draw();
+         if ( _renderRequired )
+         {
+            _mapConsole.Clear();
+            _map.Draw( _mapConsole, _statConsole );
+            Messages.Draw( _messageConsole );
+            RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, 0 );
+            RLConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _rootConsole, _mapWidth, 0 );
+            RLConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight, _rootConsole, 0, _screenHeight - _messageHeight );
+            _rootConsole.Draw();
+
+            _renderRequired = false;
+         }
       }
    }
 }

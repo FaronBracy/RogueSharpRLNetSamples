@@ -1,4 +1,5 @@
-﻿using RLNET;
+﻿using System;
+using RLNET;
 using RogueSharp;
 
 namespace RogueSharpRLNetSamples
@@ -21,7 +22,11 @@ namespace RogueSharpRLNetSamples
       {
          int yPosition = 9 + ( position * 2 );
          statConsole.Print( 1, yPosition, Symbol.ToString(), Color );
-         statConsole.Print( 2, yPosition, string.Format( ": {0} {1}/{2}", Name, Health, MaxHealth ), RLColor.White );
+         int width = Convert.ToInt32( ( (double) Health / (double) MaxHealth ) * 16.0 );
+         int remainingWidth = 16 - width;
+         statConsole.SetBackColor( 3, yPosition, width, 1, Swatch.Primary );
+         statConsole.SetBackColor( 3 + width, yPosition, remainingWidth, 1, Swatch.PrimaryDarkest );  
+         statConsole.Print( 2, yPosition, string.Format( ": {0}", Name ), RLColor.White );
       }
 
       public void Draw( RLConsole mapConsole, IMap map )

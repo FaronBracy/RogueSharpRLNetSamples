@@ -82,6 +82,14 @@ namespace RogueSharpRLNetSamples
             OpenDoor( x, y );
             UpdatePlayerFieldOfView();
          }
+         else
+         {
+            Monster monster = MonsterAt( x, y );
+            if ( monster != null )
+            {
+               monster.Health--;
+            }
+         }
       }
 
       public void UpdatePlayerFieldOfView()
@@ -133,9 +141,9 @@ namespace RogueSharpRLNetSamples
          _player.DrawStats( statConsole ); 
       }
 
-      private bool MonsterAt( int x, int y )
+      private Monster MonsterAt( int x, int y )
       {
-         return _monsters.Exists( m => m.X == x && m.Y == y );
+         return _monsters.SingleOrDefault( m => m.X == x && m.Y == y );
       }
 
       private void SetIsWalkable( int x, int y, bool isWalkable )
