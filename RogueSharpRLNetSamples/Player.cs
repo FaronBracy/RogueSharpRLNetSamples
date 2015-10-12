@@ -13,18 +13,17 @@ namespace RogueSharpRLNetSamples
       public int Armor { get; set; }
       public int Attack { get; set; }
 
-      public void DrawStats( RLConsole console )
+      public void DrawStats( RLConsole statConsole )
       {
-         console.Clear();
-         console.Print( 1, 1, string.Format( "Health:  {0}/{1}", Health, MaxHealth ), RLColor.White );
-         console.Print( 1, 3, string.Format( "Attack:  {0}", Attack ), RLColor.White );
-         console.Print( 1, 5, string.Format( "Armor:   {0}", Armor ), RLColor.White );
-         console.Print( 1, 7, string.Format( "Gold:    {0}", Armor ), RLColor.Yellow );
+         statConsole.Print( 1, 1, string.Format( "Health:  {0}/{1}", Health, MaxHealth ), RLColor.White );
+         statConsole.Print( 1, 3, string.Format( "Attack:  {0}", Attack ), RLColor.White );
+         statConsole.Print( 1, 5, string.Format( "Armor:   {0}", Armor ), RLColor.White );
+         statConsole.Print( 1, 7, string.Format( "Gold:    {0}", Armor ), RLColor.Yellow );
       }
 
-      public void Draw( RLConsole console )
+      public void Draw( RLConsole mapConsole )
       {
-         console.Set( X, Y, Colors.Player, null, '@' );
+         mapConsole.Set( X, Y, Colors.Player, null, '@' );
       }
    }
 }

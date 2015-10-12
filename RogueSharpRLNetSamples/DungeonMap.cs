@@ -117,9 +117,16 @@ namespace RogueSharpRLNetSamples
          StairsUp.Draw( mapConsole, this );
          StairsDown.Draw( mapConsole, this );
 
+         statConsole.Clear();
+         int i = 0;
          foreach ( Monster monster in _monsters )
          {
             monster.Draw( mapConsole, this );
+            if ( IsInFov( monster.X, monster.Y ) )
+            {
+               monster.DrawStats( statConsole, i );
+               i++;
+            }
          }
 
          _player.Draw( mapConsole );
@@ -172,7 +179,7 @@ namespace RogueSharpRLNetSamples
             {
                console.Set( cell.X, cell.Y, Colors.Floor, Colors.FloorBackground, '.' );
             }
-            else if ( !MonsterAt( cell.X, cell.Y ) )
+            else
             {
                console.Set( cell.X, cell.Y, Colors.Wall, Colors.WallBackground, '#' );
             }
