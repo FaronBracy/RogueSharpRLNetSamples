@@ -217,7 +217,14 @@ namespace RogueSharpRLNetSamples
                var numberOfMonsters = Dice.Roll( "1D4" );
                for ( int i = 0; i < numberOfMonsters; i++ )
                {
-                  _map.AddMonster( MakeGoblin( GetRandomLocationInRoom( room ) ) );
+                  if ( DoesRoomHaveWalkableSpace( room ) )
+                  {
+                     Point randomRoomLocation = GetRandomLocationInRoom( room );
+                     if ( randomRoomLocation != null )
+                     {
+                        _map.AddMonster( MakeGoblin( GetRandomLocationInRoom( room ) ) );
+                     }
+                  }
                }
             }
          }
@@ -243,7 +250,26 @@ namespace RogueSharpRLNetSamples
       {
          int x = _random.Next( 1, room.Width - 2 ) + room.X;
          int y = _random.Next( 1, room.Height - 2 ) + room.Y;
+         if ( !_map.IsWalkable( x, y ) )
+         {
+            GetRandomLocationInRoom( room );
+         }
          return new Point( x, y );
+      }
+
+      private bool DoesRoomHaveWalkableSpace( Rectangle room )
+      {
+         for ( int x = 1; x <= room.Width - 2; x++ )
+         {
+            for ( int y = 1; y <= room.Height - 2; y++ )
+            {
+               if ( _map.IsWalkable( x + room.X, y + room.Y ) )
+               {
+                  return true;
+               }
+            }
+         }
+         return false;
       }
    }
 }
