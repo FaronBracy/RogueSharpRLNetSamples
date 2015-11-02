@@ -2,6 +2,7 @@
 using System.Linq;
 using RLNET;
 using RogueSharp;
+using RogueSharp.DiceNotation;
 
 namespace RogueSharpRLNetSamples
 {
@@ -27,6 +28,12 @@ namespace RogueSharpRLNetSamples
       {
          _monsters.Add( monster );
          SetIsWalkable( monster.X, monster.Y, false );
+      }
+
+      public void RemoveMonster( Monster monster )
+      {
+         _monsters.Remove( monster );
+         SetIsWalkable( monster.X, monster.Y, true );
       }
 
       public void AddPlayer( Player player )
@@ -87,7 +94,14 @@ namespace RogueSharpRLNetSamples
             Monster monster = MonsterAt( x, y );
             if ( monster != null )
             {
-               monster.Health--;
+               int damage = Dice.Roll( "1D10" );  
+               Game.Messages.Add( string.Format( "{0} was hit for {1} damage", monster.Name, damage ) );
+               monster.Health = monster.Health - damage;
+               if ( monster.Health <= 0 )
+               {
+                  RemoveMonster( monster );
+                  Game.Messages.Add( string.Format( "{0} died", monster.Name ) );
+               }
             }
          }
       }

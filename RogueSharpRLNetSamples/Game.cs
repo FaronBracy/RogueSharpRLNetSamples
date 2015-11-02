@@ -1,4 +1,5 @@
-﻿using RLNET;
+﻿using System;
+using RLNET;
 using RogueSharp.Random;
 
 namespace RogueSharpRLNetSamples
@@ -26,7 +27,8 @@ namespace RogueSharpRLNetSamples
       {
          string fontFileName = "terminal8x8.png";
          string consoleTitle = "RougeSharp RLNet Tutorial";
-         DungeonMapCreationStrategy mapCreationStrategy = new DungeonMapCreationStrategy( _mapWidth, _mapHeight, 20, 13, 7, Singleton.DefaultRandom );
+         int seed = (int) DateTime.UtcNow.Ticks;
+         DungeonMapCreationStrategy mapCreationStrategy = new DungeonMapCreationStrategy( _mapWidth, _mapHeight, 20, 13, 7, new DotNetRandom( seed ) );
          _map = mapCreationStrategy.CreateMap();
          Messages = new Messages();
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
@@ -34,6 +36,7 @@ namespace RogueSharpRLNetSamples
          _messageConsole = new RLConsole( _messageWidth, _messageHeight );
          _statConsole = new RLConsole( _statWidth, _statHeight );
          Messages.Add( "The rogue arrives on level 1" );
+         Messages.Add( string.Format( "Level created with seed '{0}'", seed ) );
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;
          _rootConsole.Run();
