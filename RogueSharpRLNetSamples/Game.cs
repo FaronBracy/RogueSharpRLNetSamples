@@ -21,6 +21,7 @@ namespace RogueSharpRLNetSamples
       private static DungeonMap _map;
       private static bool _renderRequired = true;
 
+      public static bool IsPlayerTurn = false;
       public static Messages Messages;
 
       public static void Main()
@@ -44,30 +45,39 @@ namespace RogueSharpRLNetSamples
 
       private static void OnRootConsoleUpdate( object sender, UpdateEventArgs e )
       {
-         RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
-         if ( keyPress != null )
+         if ( IsPlayerTurn )
          {
-            _renderRequired = true;
-            if ( keyPress.Key == RLKey.Up )
+            RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
+            if ( keyPress != null )
             {
-               _map.MovePlayer( Direction.Up );
+               _renderRequired = true;
+               if ( keyPress.Key == RLKey.Up )
+               {
+                  _map.MovePlayer( Direction.Up );
+               }
+               else if ( keyPress.Key == RLKey.Down )
+               {
+                  _map.MovePlayer( Direction.Down );
+               }
+               else if ( keyPress.Key == RLKey.Left )
+               {
+                  _map.MovePlayer( Direction.Left );
+               }
+               else if ( keyPress.Key == RLKey.Right )
+               {
+                  _map.MovePlayer( Direction.Right );
+               }
+               else if ( keyPress.Key == RLKey.Escape )
+               {
+                  _rootConsole.Close();
+               }
+               IsPlayerTurn = false;
+               _map.ActivateNextActor();
             }
-            else if ( keyPress.Key == RLKey.Down )
-            {
-               _map.MovePlayer( Direction.Down );
-            }
-            else if ( keyPress.Key == RLKey.Left )
-            {
-               _map.MovePlayer( Direction.Left );
-            }
-            else if ( keyPress.Key == RLKey.Right )
-            {
-               _map.MovePlayer( Direction.Right );
-            }
-            else if ( keyPress.Key == RLKey.Escape )
-            {
-               _rootConsole.Close();
-            }
+         }
+         else
+         {
+            _map.ActivateNextActor();
          }
       }
 

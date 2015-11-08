@@ -10,6 +10,7 @@ namespace RogueSharpRLNetSamples
    {
       private readonly List<Monster> _monsters;
       private Player _player;
+      private ActorSchedule _actorSchedule;
 
       public List<Rectangle> Rooms;
       public List<Door> Doors;
@@ -19,6 +20,7 @@ namespace RogueSharpRLNetSamples
       public DungeonMap()
       {
          _monsters = new List<Monster>();
+         _actorSchedule = new ActorSchedule();
 
          Rooms = new List<Rectangle>();
          Doors = new List<Door>();
@@ -28,12 +30,14 @@ namespace RogueSharpRLNetSamples
       {
          _monsters.Add( monster );
          SetIsWalkable( monster.X, monster.Y, false );
+         _actorSchedule.Add( monster );
       }
 
       public void RemoveMonster( Monster monster )
       {
          _monsters.Remove( monster );
          SetIsWalkable( monster.X, monster.Y, true );
+         _actorSchedule.Remove( monster );
       }
 
       public void AddPlayer( Player player )
@@ -41,6 +45,7 @@ namespace RogueSharpRLNetSamples
          _player = player;
          SetIsWalkable( _player.X, _player.Y, false );
          UpdatePlayerFieldOfView();
+         _actorSchedule.Add( player );
       }
 
       public void MovePlayer( Direction direction )
@@ -94,7 +99,7 @@ namespace RogueSharpRLNetSamples
             Monster monster = MonsterAt( x, y );
             if ( monster != null )
             {
-               int damage = Dice.Roll( "1D10" );  
+               int damage = Dice.Roll( "1D10" );
                Game.Messages.Add( string.Format( "{0} was hit for {1} damage", monster.Name, damage ) );
                monster.Health = monster.Health - damage;
                if ( monster.Health <= 0 )
@@ -102,6 +107,28 @@ namespace RogueSharpRLNetSamples
                   RemoveMonster( monster );
                   Game.Messages.Add( string.Format( "{0} died", monster.Name ) );
                }
+            }
+         }
+      }
+
+      public void MoveMonster( Monster monster, Cell cell )
+      {
+         Cell realCell = this.GetCell( cell.X, cell.Y ); 
+         if ( realCell.IsWalkable )
+         {
+            SetIsWalkable( monster.X, monster.Y, true );
+            monster.X = realCell.X;
+            monster.Y = realCell.Y;
+            SetIsWalkable( monster.X, monster.Y, false );
+         }
+         else if ( realCell.X == _player.X && realCell.Y == _player.Y )
+         {
+            int damage = Dice.Roll( "1D4" );
+            Game.Messages.Add( string.Format( "Player was hit for {0} damage", damage ) );
+            _player.Health = _player.Health - damage;
+            if ( _player.Health <= 0 )
+            {
+               Game.Messages.Add( "Player was killed, GAME OVER MAN!" );
             }
          }
       }
@@ -152,7 +179,7 @@ namespace RogueSharpRLNetSamples
          }
 
          _player.Draw( mapConsole );
-         _player.DrawStats( statConsole ); 
+         _player.DrawStats( statConsole );
       }
 
       private Monster MonsterAt( int x, int y )
@@ -205,6 +232,34 @@ namespace RogueSharpRLNetSamples
             {
                console.Set( cell.X, cell.Y, Colors.Wall, Colors.WallBackground, '#' );
             }
+         }
+      }
+
+      public void ActivateNextActor()
+      {
+         IActor actor = _actorSchedule.Get();
+         if ( actor is Player )
+         {
+            Game.IsPlayerTurn = true;
+            _actorSchedule.Add( _player );
+         }
+         else
+         {
+            Monster monster = actor as Monster;
+            PerformAction( monster );
+            _actorSchedule.Add( monster );
+         }
+      }
+
+      private void PerformAction( Monster monster )
+      {
+         FieldOfView monsterFov = new FieldOfView( this );
+         monsterFov.ComputeFov( monster.X, monster.Y, 15, true );
+         if ( monsterFov.IsInFov( _player.X, _player.Y ) )
+         {
+            PathFinder pathFinder = new PathFinder( this );
+            Path path = pathFinder.ShortestPath( GetCell( monster.X, monster.Y ), GetCell( _player.X, _player.Y ) );
+            MoveMonster( monster, path.StepForward() );
          }
       }
    }

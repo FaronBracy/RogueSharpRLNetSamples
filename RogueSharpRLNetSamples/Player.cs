@@ -2,16 +2,9 @@ using RLNET;
 
 namespace RogueSharpRLNetSamples
 {
-   public class Player
+   public class Player : Actor
    {
-      public int X { get; set; }
-      public int Y { get; set; }
-
       public int Gold { get; set; }
-      public int Health { get; set; }
-      public int MaxHealth { get; set; }
-      public int Armor { get; set; }
-      public int Attack { get; set; }
 
       public void DrawStats( RLConsole statConsole )
       {

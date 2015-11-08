@@ -99,6 +99,7 @@ namespace RogueSharpRLNetSamples
             Gold = 0,
             Health = 100,
             MaxHealth = 100,
+            Speed = 10,
             X = _map.Rooms[0].Center.X,
             Y = _map.Rooms[0].Center.Y
          } );
@@ -239,6 +240,7 @@ namespace RogueSharpRLNetSamples
             Health = 10,
             MaxHealth = 10,
             Name = "Goblin",
+            Speed = 12,
             Symbol = 'g',
             Color = Colors.GoblinColor,
             X = location.X,
