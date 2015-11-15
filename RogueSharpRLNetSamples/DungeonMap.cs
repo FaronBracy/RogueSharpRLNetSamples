@@ -113,7 +113,7 @@ namespace RogueSharpRLNetSamples
 
       public void MoveMonster( Monster monster, Cell cell )
       {
-         Cell realCell = this.GetCell( cell.X, cell.Y ); 
+         Cell realCell = this.GetCell( cell.X, cell.Y );
          if ( realCell.IsWalkable )
          {
             SetIsWalkable( monster.X, monster.Y, true );
@@ -260,7 +260,14 @@ namespace RogueSharpRLNetSamples
          {
             PathFinder pathFinder = new PathFinder( this );
             Path path = pathFinder.ShortestPath( GetCell( monster.X, monster.Y ), GetCell( _player.X, _player.Y ) );
-            MoveMonster( monster, path.StepForward() );
+            try
+            {
+               MoveMonster( monster, path.StepForward() );
+            }
+            catch ( NoMoreStepsException )
+            {
+               Game.Messages.Add( string.Format( "{0} waits for a turn", monster.Name ) );
+            }
          }
       }
    }
