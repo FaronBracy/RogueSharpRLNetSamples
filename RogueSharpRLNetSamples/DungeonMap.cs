@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.Configuration;
 using RLNET;
 using RogueSharp;
 using RogueSharp.DiceNotation;
@@ -9,6 +10,7 @@ namespace RogueSharpRLNetSamples
    public class DungeonMap : Map
    {
       private readonly List<Monster> _monsters;
+      private readonly List<Gold> _goldPiles;
       private Player _player;
       private ActorSchedule _actorSchedule;
 
@@ -20,6 +22,7 @@ namespace RogueSharpRLNetSamples
       public DungeonMap()
       {
          _monsters = new List<Monster>();
+         _goldPiles = new List<Gold>();
          _actorSchedule = new ActorSchedule();
 
          Rooms = new List<Rectangle>();
@@ -46,6 +49,11 @@ namespace RogueSharpRLNetSamples
          SetIsWalkable( _player.X, _player.Y, false );
          UpdatePlayerFieldOfView();
          _actorSchedule.Add( player );
+      }
+
+      public void AddGold( int x, int y, int amount )
+      {
+         _goldPiles.Add( new Gold( x, y, amount ) );
       }
 
       public void MovePlayer( Direction direction )
@@ -87,6 +95,7 @@ namespace RogueSharpRLNetSamples
 
          if ( GetCell( x, y ).IsWalkable )
          {
+            PickUpGold( x, y );
             SetIsWalkable( _player.X, _player.Y, true );
             _player.X = x;
             _player.Y = y;
@@ -104,10 +113,23 @@ namespace RogueSharpRLNetSamples
                monster.Health = monster.Health - damage;
                if ( monster.Health <= 0 )
                {
+                  AddGold( monster.X, monster.Y, monster.Gold );
                   RemoveMonster( monster );
-                  Game.Messages.Add( string.Format( "{0} died", monster.Name ) );
+
+                  Game.Messages.Add( string.Format( "{0} died and dropped {1} gold", monster.Name, monster.Gold ) );
                }
             }
+         }
+      }
+
+      private void PickUpGold( int x, int y )
+      {
+         List<Gold> goldAtLocation = _goldPiles.Where( g => g.X == x && g.Y == y ).ToList();
+         foreach ( Gold gold in goldAtLocation )
+         {
+            _player.Gold += gold.Amount;
+            Game.Messages.Add( string.Format( "Player picked up {0} gold", gold.Amount ) );
+            _goldPiles.Remove( gold );
          }
       }
 
@@ -166,6 +188,11 @@ namespace RogueSharpRLNetSamples
          StairsUp.Draw( mapConsole, this );
          StairsDown.Draw( mapConsole, this );
 
+         foreach ( Gold gold in _goldPiles )
+         {
+            gold.Draw( mapConsole );
+         }
+
          statConsole.Clear();
          int i = 0;
          foreach ( Monster monster in _monsters )
@@ -200,7 +227,7 @@ namespace RogueSharpRLNetSamples
          {
             door.IsOpen = true;
             SetCellProperties( x, y, true, true, true );
-            Game.Messages.Add( "Opened a door" );
+            Game.Messages.Add( "Player opened a door" );
          }
       }
 

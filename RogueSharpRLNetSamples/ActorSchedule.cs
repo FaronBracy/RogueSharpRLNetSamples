@@ -4,38 +4,6 @@ using RLNET;
 
 namespace RogueSharpRLNetSamples
 {
-   public interface IActor
-   {
-      int X { get; set; }
-      int Y { get; set; }
-      char Symbol { get; set; }
-      RLColor Color { get; set; }
-      string Name { get; set; }
-      int Health { get; set; }
-      int MaxHealth { get; set; }
-      int Armor { get; set; }
-      int Attack { get; set; }
-      int Speed { get; set; }
-      int Awareness { get; set; }
-   }
-
-   public class Actor : IActor
-   {
-      public int X { get; set; }
-      public int Y { get; set; }
-
-      public char Symbol { get; set; }
-      public RLColor Color { get; set; }
-
-      public string Name { get; set; }
-      public int Health { get; set; }
-      public int MaxHealth { get; set; }
-      public int Armor { get; set; }
-      public int Attack { get; set; }
-      public int Speed { get; set; }
-      public int Awareness { get; set; }
-   }
-
    public class ActorSchedule
    {
       private int _time;

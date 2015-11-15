@@ -97,10 +97,12 @@ namespace RogueSharpRLNetSamples
             Armor = 10,
             Attack = 10,
             Awareness = 15,
+            Color = Colors.Player,
             Gold = 0,
             Health = 100,
             MaxHealth = 100,
             Speed = 10,
+            Symbol = '@',
             X = _map.Rooms[0].Center.X,
             Y = _map.Rooms[0].Center.Y
          } );
@@ -239,12 +241,13 @@ namespace RogueSharpRLNetSamples
             Armor = 3,
             Attack = 3,
             Awareness = 10,
+            Color = Colors.GoblinColor,
+            Gold = Dice.Roll( "1D20" ),  
             Health = 10,
             MaxHealth = 10,
             Name = "Goblin",
             Speed = 12,
             Symbol = 'g',
-            Color = Colors.GoblinColor,
             X = location.X,
             Y = location.Y
          };
