@@ -196,7 +196,7 @@ namespace RogueSharpRLNetSamples
       private void OpenDoor( int x, int y )
       {
          Door door = GetDoor( x, y );
-         if ( door != null )
+         if ( door != null && !door.IsOpen )
          {
             door.IsOpen = true;
             SetCellProperties( x, y, true, true, true );
@@ -235,7 +235,7 @@ namespace RogueSharpRLNetSamples
          }
       }
 
-      public void ActivateNextActor()
+      public void ActivateMonsters()
       {
          IActor actor = _actorSchedule.Get();
          if ( actor is Player )
@@ -248,6 +248,7 @@ namespace RogueSharpRLNetSamples
             Monster monster = actor as Monster;
             PerformAction( monster );
             _actorSchedule.Add( monster );
+            ActivateMonsters();
          }
       }
 

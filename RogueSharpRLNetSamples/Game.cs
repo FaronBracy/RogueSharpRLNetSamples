@@ -72,12 +72,12 @@ namespace RogueSharpRLNetSamples
                   _rootConsole.Close();
                }
                IsPlayerTurn = false;
-               _map.ActivateNextActor();
+               _map.ActivateMonsters();
             }
          }
          else
          {
-            _map.ActivateNextActor();
+            _map.ActivateMonsters();
          }
       }
 
