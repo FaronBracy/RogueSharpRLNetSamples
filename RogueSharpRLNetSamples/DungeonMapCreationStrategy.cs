@@ -96,6 +96,7 @@ namespace RogueSharpRLNetSamples
          _map.AddPlayer( new Player {
             Armor = 10,
             Attack = 10,
+            Awareness = 15,
             Gold = 0,
             Health = 100,
             MaxHealth = 100,
@@ -237,6 +238,7 @@ namespace RogueSharpRLNetSamples
          {
             Armor = 3,
             Attack = 3,
+            Awareness = 10,
             Health = 10,
             MaxHealth = 10,
             Name = "Goblin",

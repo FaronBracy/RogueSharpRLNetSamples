@@ -135,7 +135,7 @@ namespace RogueSharpRLNetSamples
 
       public void UpdatePlayerFieldOfView()
       {
-         ComputeFov( _player.X, _player.Y, 20, true );
+         ComputeFov( _player.X, _player.Y, _player.Awareness, true );
          foreach ( Cell cell in GetAllCells() )
          {
             if ( IsInFov( cell.X, cell.Y ) )
@@ -255,7 +255,7 @@ namespace RogueSharpRLNetSamples
       private void PerformAction( Monster monster )
       {
          FieldOfView monsterFov = new FieldOfView( this );
-         monsterFov.ComputeFov( monster.X, monster.Y, 15, true );
+         monsterFov.ComputeFov( monster.X, monster.Y, monster.Awareness, true );
          if ( monsterFov.IsInFov( _player.X, _player.Y ) )
          {
             PathFinder pathFinder = new PathFinder( this );

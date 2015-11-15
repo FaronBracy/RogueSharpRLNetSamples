@@ -16,6 +16,7 @@ namespace RogueSharpRLNetSamples
       int Armor { get; set; }
       int Attack { get; set; }
       int Speed { get; set; }
+      int Awareness { get; set; }
    }
 
    public class Actor : IActor
@@ -32,6 +33,7 @@ namespace RogueSharpRLNetSamples
       public int Armor { get; set; }
       public int Attack { get; set; }
       public int Speed { get; set; }
+      public int Awareness { get; set; }
    }
 
    public class ActorSchedule
