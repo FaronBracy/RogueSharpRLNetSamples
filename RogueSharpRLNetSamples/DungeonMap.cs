@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Configuration;
 using RLNET;
 using RogueSharp;
 using RogueSharp.DiceNotation;
@@ -106,18 +105,10 @@ namespace RogueSharpRLNetSamples
          else
          {
             Monster monster = MonsterAt( x, y );
+
             if ( monster != null )
             {
-               int damage = Dice.Roll( "1D10" );
-               Game.Messages.Add( string.Format( "{0} was hit for {1} damage", monster.Name, damage ) );
-               monster.Health = monster.Health - damage;
-               if ( monster.Health <= 0 )
-               {
-                  AddGold( monster.X, monster.Y, monster.Gold );
-                  RemoveMonster( monster );
-
-                  Game.Messages.Add( string.Format( "{0} died and dropped {1} gold", monster.Name, monster.Gold ) );
-               }
+               Game.CombatManager.Attack( _player, monster );
             }
          }
       }
@@ -128,7 +119,7 @@ namespace RogueSharpRLNetSamples
          foreach ( Gold gold in goldAtLocation )
          {
             _player.Gold += gold.Amount;
-            Game.Messages.Add( string.Format( "Player picked up {0} gold", gold.Amount ) );
+            Game.Messages.Add( string.Format( "{0} picked up {1} gold", _player.Name, gold.Amount ) );
             _goldPiles.Remove( gold );
          }
       }
@@ -145,13 +136,7 @@ namespace RogueSharpRLNetSamples
          }
          else if ( realCell.X == _player.X && realCell.Y == _player.Y )
          {
-            int damage = Dice.Roll( "1D4" );
-            Game.Messages.Add( string.Format( "Player was hit for {0} damage", damage ) );
-            _player.Health = _player.Health - damage;
-            if ( _player.Health <= 0 )
-            {
-               Game.Messages.Add( "Player was killed, GAME OVER MAN!" );
-            }
+            Game.CombatManager.Attack( monster, _player );
          }
       }
 
@@ -227,7 +212,7 @@ namespace RogueSharpRLNetSamples
          {
             door.IsOpen = true;
             SetCellProperties( x, y, true, true, true );
-            Game.Messages.Add( "Player opened a door" );
+            Game.Messages.Add( string.Format( "{0} opened a door", _player.Name ) );
          }
       }
 

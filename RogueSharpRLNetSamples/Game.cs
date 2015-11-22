@@ -23,6 +23,7 @@ namespace RogueSharpRLNetSamples
 
       public static bool IsPlayerTurn = false;
       public static Messages Messages;
+      public static CombatManager CombatManager;
 
       public static void Main()
       {
@@ -38,6 +39,7 @@ namespace RogueSharpRLNetSamples
          _statConsole = new RLConsole( _statWidth, _statHeight );
          Messages.Add( "The rogue arrives on level 1" );
          Messages.Add( string.Format( "Level created with seed '{0}'", seed ) );
+         CombatManager = new CombatManager( _map );
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;
          _rootConsole.Run();

@@ -94,13 +94,16 @@ namespace RogueSharpRLNetSamples
       private void MakePlayer()
       {
          _map.AddPlayer( new Player {
-            Armor = 10,
-            Attack = 10,
+            Attack = 4,
+            AttackChance = 60,
             Awareness = 15,
             Color = Colors.Player,
+            Defense = 4,
+            DefenseChance = 50,
             Gold = 0,
             Health = 100,
             MaxHealth = 100,
+            Name = "Rogue",
             Speed = 10,
             Symbol = '@',
             X = _map.Rooms[0].Center.X,
@@ -238,13 +241,15 @@ namespace RogueSharpRLNetSamples
       {
          return new Monster 
          {
-            Armor = 3,
-            Attack = 3,
+            Attack = 2,
+            AttackChance = 40,
             Awareness = 10,
             Color = Colors.GoblinColor,
+            Defense = 1,
+            DefenseChance = 30,
             Gold = Dice.Roll( "1D20" ),  
-            Health = 10,
-            MaxHealth = 10,
+            Health = 5,
+            MaxHealth = 5,
             Name = "Goblin",
             Speed = 12,
             Symbol = 'g',

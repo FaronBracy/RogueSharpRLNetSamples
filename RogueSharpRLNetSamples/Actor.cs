@@ -4,9 +4,11 @@ namespace RogueSharpRLNetSamples
 {
    public interface IActor
    {
-      int Armor { get; set; }
       int Attack { get; set; }
+      int AttackChance { get; set; }
       int Awareness { get; set; }
+      int Defense { get; set; }
+      int DefenseChance { get; set; }
       int Gold { get; set; }
       int Health { get; set; }
       int MaxHealth { get; set; }
@@ -24,10 +26,12 @@ namespace RogueSharpRLNetSamples
 
    public class Actor : IActor, IDrawable
    {
-      public int Armor { get; set; }
       public int Attack { get; set; }
+      public int AttackChance { get; set; }
       public int Awareness { get; set; }
       public RLColor Color { get; set; }
+      public int Defense { get; set; }
+      public int DefenseChance { get; set; }
       public int Gold { get; set; }
       public int Health { get; set; }
       public int MaxHealth { get; set; }
