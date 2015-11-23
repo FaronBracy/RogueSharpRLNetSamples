@@ -63,6 +63,7 @@
     <Compile Include="Gold.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Monster.cs" />
+    <Compile Include="MonsterMaker.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ActorSchedule.cs" />

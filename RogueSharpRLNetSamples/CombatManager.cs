@@ -26,7 +26,7 @@ namespace RogueSharpRLNetSamples
          foreach ( TermResult termResult in attackResult.Results )
          {
             attackMessage.Append( termResult.Value + ", " );
-            if ( termResult.Value <= attacker.AttackChance )
+            if ( termResult.Value >= 100 - attacker.AttackChance )
             {
                hits++;
             }
@@ -44,7 +44,7 @@ namespace RogueSharpRLNetSamples
             foreach ( TermResult termResult in defenseRoll.Results )
             {
                defenseMessage.Append( termResult.Value + ", " );
-               if ( termResult.Value <= defender.DefenseChance )
+               if ( termResult.Value >= 100 - defender.DefenseChance )
                {
                   blocks++;
                }

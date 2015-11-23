@@ -11,20 +11,22 @@ namespace RogueSharpRLNetSamples
    public class DungeonMapCreationStrategy : IMapCreationStrategy<DungeonMap>
    {
       private readonly IRandom _random;
+      private readonly int _width;
       private readonly int _height;
       private readonly int _maxRooms;
       private readonly int _roomMaxSize;
       private readonly int _roomMinSize;
-      private readonly int _width;
+      private readonly int _level;
       private readonly DungeonMap _map;
 
-      public DungeonMapCreationStrategy( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, IRandom random )
+      public DungeonMapCreationStrategy( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int level, IRandom random )
       {
          _width = width;
          _height = height;
          _maxRooms = maxRooms;
          _roomMaxSize = roomMaxSize;
          _roomMinSize = roomMinSize;
+         _level = level;
          _random = random;
          _map = new DungeonMap();
       }
@@ -229,33 +231,12 @@ namespace RogueSharpRLNetSamples
                      Point randomRoomLocation = GetRandomLocationInRoom( room );
                      if ( randomRoomLocation != null )
                      {
-                        _map.AddMonster( MakeGoblin( GetRandomLocationInRoom( room ) ) );
+                        _map.AddMonster( MonsterMaker.MakeMonster( _level, GetRandomLocationInRoom( room ) ) );
                      }
                   }
                }
             }
          }
-      }
-
-      private Monster MakeGoblin( Point location )
-      {
-         return new Monster 
-         {
-            Attack = 2,
-            AttackChance = 40,
-            Awareness = 10,
-            Color = Colors.GoblinColor,
-            Defense = 1,
-            DefenseChance = 30,
-            Gold = Dice.Roll( "1D20" ),  
-            Health = 5,
-            MaxHealth = 5,
-            Name = "Goblin",
-            Speed = 12,
-            Symbol = 'g',
-            X = location.X,
-            Y = location.Y
-         };
       }
 
       private Point GetRandomLocationInRoom( Rectangle room )
