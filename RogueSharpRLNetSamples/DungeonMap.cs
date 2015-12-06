@@ -157,7 +157,7 @@ namespace RogueSharpRLNetSamples
          return Doors.SingleOrDefault( d => d.X == x && d.Y == y );
       }
 
-      public void Draw( RLConsole mapConsole, RLConsole statConsole )
+      public void Draw( RLConsole mapConsole, RLConsole statConsole, RLConsole inventoryConsole )
       {
          mapConsole.Clear();
          foreach ( Cell cell in GetAllCells() )
@@ -192,6 +192,7 @@ namespace RogueSharpRLNetSamples
 
          _player.Draw( mapConsole );
          _player.DrawStats( statConsole );
+         _player.DrawInventory( inventoryConsole );
       }
 
       private Monster MonsterAt( int x, int y )

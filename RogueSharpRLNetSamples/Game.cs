@@ -7,17 +7,20 @@ namespace RogueSharpRLNetSamples
    public static class Game
    {
       private static readonly int _screenWidth = 100;
-      private static readonly int _screenHeight = 50;
+      private static readonly int _screenHeight = 65;
       private static readonly int _mapWidth = 80;
       private static readonly int _mapHeight = 45;
-      private static readonly int _messageHeight = 5;
       private static readonly int _messageWidth = 80;
+      private static readonly int _messageHeight = 10;
       private static readonly int _statWidth = 20;
-      private static readonly int _statHeight = 50;
+      private static readonly int _statHeight = 60;
+      private static readonly int _inventoryWidth = 80;
+      private static readonly int _inventoryHeight = 10;
       private static RLRootConsole _rootConsole;
       private static RLConsole _mapConsole;
       private static RLConsole _messageConsole;
       private static RLConsole _statConsole;
+      private static RLConsole _inventoryConsole;
       private static DungeonMap _map;
       private static bool _renderRequired = true;
 
@@ -37,6 +40,7 @@ namespace RogueSharpRLNetSamples
          _mapConsole = new RLConsole( _mapWidth, _mapHeight );
          _messageConsole = new RLConsole( _messageWidth, _messageHeight );
          _statConsole = new RLConsole( _statWidth, _statHeight );
+         _inventoryConsole = new RLConsole( _inventoryWidth, _inventoryHeight );  
          Messages.Add( "The rogue arrives on level 1" );
          Messages.Add( string.Format( "Level created with seed '{0}'", seed ) );
          CombatManager = new CombatManager( _map );
@@ -88,11 +92,12 @@ namespace RogueSharpRLNetSamples
          if ( _renderRequired )
          {
             _mapConsole.Clear();
-            _map.Draw( _mapConsole, _statConsole );
+            _map.Draw( _mapConsole, _statConsole, _inventoryConsole );
             Messages.Draw( _messageConsole );
-            RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, 0 );
+            RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, _inventoryHeight );
             RLConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _rootConsole, _mapWidth, 0 );
             RLConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight, _rootConsole, 0, _screenHeight - _messageHeight );
+            RLConsole.Blit( _inventoryConsole, 0, 0, _inventoryWidth, _inventoryHeight, _rootConsole, 0, 0 );  
             _rootConsole.Draw();
 
             _renderRequired = false;

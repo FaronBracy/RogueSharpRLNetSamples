@@ -36,7 +36,7 @@ namespace RogueSharpRLNetSamples
          if ( hits > 0 )
          {
             attackMessage.AppendFormat( "scoring {0} hits.", hits );
-            defenseMessage.AppendFormat( "{0} defends and rolls: ", defender.Name );
+            defenseMessage.AppendFormat( "  {0} defends and rolls: ", defender.Name );
             DiceExpression defenseDice = new DiceExpression()
                .Dice( defender.Defense, 100 );
 
@@ -68,22 +68,26 @@ namespace RogueSharpRLNetSamples
          {
             defender.Health = defender.Health - damage;
 
-            Game.Messages.Add( string.Format( "{0} was hit for {1} damage", defender.Name, damage ) );
+            Game.Messages.Add( string.Format( "  {0} was hit for {1} damage", defender.Name, damage ) );
 
             if ( defender.Health <= 0 )
             {
                if ( defender is Player )
                {
-                  Game.Messages.Add( string.Format( "{0} was killed, GAME OVER MAN!", defender.Name ) );
+                  Game.Messages.Add( string.Format( "  {0} was killed, GAME OVER MAN!", defender.Name ) );
                }
                else if ( defender is Monster )
                {
                   _dungeonMap.AddGold( defender.X, defender.Y, defender.Gold );
                   _dungeonMap.RemoveMonster( (Monster) defender );
 
-                  Game.Messages.Add( string.Format( "{0} died and dropped {1} gold", defender.Name, defender.Gold ) );
+                  Game.Messages.Add( string.Format( "  {0} died and dropped {1} gold", defender.Name, defender.Gold ) );
                }
             }
+         }
+         else
+         {
+            Game.Messages.Add( string.Format( "  {0} blocked all damage", defender.Name, damage ) );
          }
       }
    }

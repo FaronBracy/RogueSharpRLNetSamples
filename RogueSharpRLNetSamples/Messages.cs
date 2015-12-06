@@ -16,7 +16,7 @@ namespace RogueSharpRLNetSamples
       public void Add( string message )
       {
          _lines.Enqueue( message );
-         if ( _lines.Count > 5 )
+         if ( _lines.Count > 9 )
          {
             _lines.Dequeue();
          }
@@ -28,7 +28,7 @@ namespace RogueSharpRLNetSamples
          string[] lines = _lines.ToArray();
          for ( int i = 0; i < lines.Count(); i++ )
          {
-            console.Print( 1, i, lines[i], RLColor.White );
+            console.Print( 1, i + 1, lines[i], RLColor.White );
          }
       }
    }
