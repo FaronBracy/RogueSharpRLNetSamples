@@ -50,6 +50,11 @@ namespace RogueSharpRLNetSamples
          _actorSchedule.Add( player );
       }
 
+      public Player GetPlayer()
+      {
+         return _player;
+      }
+
       public void AddGold( int x, int y, int amount )
       {
          _goldPiles.Add( new Gold( x, y, amount ) );
@@ -111,6 +116,11 @@ namespace RogueSharpRLNetSamples
                Game.CombatManager.Attack( _player, monster );
             }
          }
+      }
+
+      public bool CanMoveDownToNextLevel()
+      {
+         return StairsDown.X == _player.X && StairsDown.Y == _player.Y;
       }
 
       private void PickUpGold( int x, int y )

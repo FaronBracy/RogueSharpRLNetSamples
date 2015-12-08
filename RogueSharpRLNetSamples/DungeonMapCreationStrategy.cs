@@ -19,7 +19,9 @@ namespace RogueSharpRLNetSamples
       private readonly int _level;
       private readonly DungeonMap _map;
 
-      public DungeonMapCreationStrategy( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int level, IRandom random )
+      private Player _player;
+
+      public DungeonMapCreationStrategy( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int level, IRandom random, Player player = null )
       {
          _width = width;
          _height = height;
@@ -29,6 +31,7 @@ namespace RogueSharpRLNetSamples
          _level = level;
          _random = random;
          _map = new DungeonMap();
+         _player = player;
       }
 
       public DungeonMap CreateMap()
@@ -95,22 +98,28 @@ namespace RogueSharpRLNetSamples
 
       private void MakePlayer()
       {
-         _map.AddPlayer( new Player {
-            Attack = 4,
-            AttackChance = 60,
-            Awareness = 15,
-            Color = Colors.Player,
-            Defense = 4,
-            DefenseChance = 50,
-            Gold = 0,
-            Health = 100,
-            MaxHealth = 100,
-            Name = "Rogue",
-            Speed = 10,
-            Symbol = '@',
-            X = _map.Rooms[0].Center.X,
-            Y = _map.Rooms[0].Center.Y
-         } );
+         if ( _player == null )
+         {
+            _player = new Player {
+               Attack = 4,
+               AttackChance = 60,
+               Awareness = 15,
+               Color = Colors.Player,
+               Defense = 4,
+               DefenseChance = 50,
+               Gold = 0,
+               Health = 100,
+               MaxHealth = 100,
+               Name = "Rogue",
+               Speed = 10,
+               Symbol = '@'
+            };
+         }
+
+         _player.X = _map.Rooms[0].Center.X;
+         _player.Y = _map.Rooms[0].Center.Y;
+
+         _map.AddPlayer( _player );
       }
 
       private void MakeRoom( Rectangle room )
