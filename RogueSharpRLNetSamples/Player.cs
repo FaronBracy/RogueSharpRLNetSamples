@@ -15,7 +15,7 @@ namespace RogueSharpRLNetSamples
 
       public void DrawInventory( RLConsole inventoryConsole )
       {
-         inventoryConsole.Print( 1, 1, "Armor", RLColor.White );
+         inventoryConsole.Print( 1, 1, "Equipment", RLColor.White );
          inventoryConsole.Print( 1, 3, "Head: Plate", RLColor.LightGray );
          inventoryConsole.Print( 1, 5, "Body: Chain", RLColor.LightGray );
          inventoryConsole.Print( 1, 7, "Hand: None", RLColor.LightGray );
