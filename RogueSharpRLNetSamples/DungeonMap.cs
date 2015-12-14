@@ -11,7 +11,7 @@ namespace RogueSharpRLNetSamples
       private readonly List<Monster> _monsters;
       private readonly List<Gold> _goldPiles;
       private Player _player;
-      private ActorSchedule _actorSchedule;
+      private ScheduleService _scheduleService;
 
       public List<Rectangle> Rooms;
       public List<Door> Doors;
@@ -22,7 +22,7 @@ namespace RogueSharpRLNetSamples
       {
          _monsters = new List<Monster>();
          _goldPiles = new List<Gold>();
-         _actorSchedule = new ActorSchedule();
+         _scheduleService = new ScheduleService();
 
          Rooms = new List<Rectangle>();
          Doors = new List<Door>();
@@ -32,14 +32,14 @@ namespace RogueSharpRLNetSamples
       {
          _monsters.Add( monster );
          SetIsWalkable( monster.X, monster.Y, false );
-         _actorSchedule.Add( monster );
+         _scheduleService.Add( monster );
       }
 
       public void RemoveMonster( Monster monster )
       {
          _monsters.Remove( monster );
          SetIsWalkable( monster.X, monster.Y, true );
-         _actorSchedule.Remove( monster );
+         _scheduleService.Remove( monster );
       }
 
       public void AddPlayer( Player player )
@@ -47,7 +47,7 @@ namespace RogueSharpRLNetSamples
          _player = player;
          SetIsWalkable( _player.X, _player.Y, false );
          UpdatePlayerFieldOfView();
-         _actorSchedule.Add( player );
+         _scheduleService.Add( player );
       }
 
       public Player GetPlayer()
@@ -260,17 +260,17 @@ namespace RogueSharpRLNetSamples
 
       public void ActivateMonsters()
       {
-         IActor actor = _actorSchedule.Get();
-         if ( actor is Player )
+         IScheduleable scheduleable = _scheduleService.Get();
+         if ( scheduleable is Player )
          {
             Game.IsPlayerTurn = true;
-            _actorSchedule.Add( _player );
+            _scheduleService.Add( _player );
          }
          else
          {
-            Monster monster = actor as Monster;
+            Monster monster = scheduleable as Monster;
             PerformAction( monster );
-            _actorSchedule.Add( monster );
+            _scheduleService.Add( monster );
             ActivateMonsters();
          }
       }

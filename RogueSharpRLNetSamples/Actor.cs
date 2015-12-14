@@ -24,7 +24,12 @@ namespace RogueSharpRLNetSamples
       int Y { get; set; }
    }
 
-   public class Actor : IActor, IDrawable
+   public interface IScheduleable
+   {
+      int Time { get; }
+   }
+
+   public class Actor : IActor, IDrawable, IScheduleable
    {
       public int Attack { get; set; }
       public int AttackChance { get; set; }
@@ -40,5 +45,9 @@ namespace RogueSharpRLNetSamples
       public char Symbol { get; set; }
       public int X { get; set; }
       public int Y { get; set; }
+      public  int Time { get
+      {
+         return Speed;
+      } }
    }
 }
