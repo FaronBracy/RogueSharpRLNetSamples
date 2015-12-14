@@ -2,7 +2,7 @@
 
 namespace RogueSharpRLNetSamples
 {
-   public interface IActor
+   public interface IHasStats
    {
       int Attack { get; set; }
       int AttackChance { get; set; }
@@ -29,12 +29,12 @@ namespace RogueSharpRLNetSamples
       int Time { get; }
    }
 
-   public class Actor : IActor, IDrawable, IScheduleable
+   public class Actor : IHasStats, IDrawable, IScheduleable
    {
+      // IHasStats
       public int Attack { get; set; }
       public int AttackChance { get; set; }
       public int Awareness { get; set; }
-      public RLColor Color { get; set; }
       public int Defense { get; set; }
       public int DefenseChance { get; set; }
       public int Gold { get; set; }
@@ -42,9 +42,14 @@ namespace RogueSharpRLNetSamples
       public int MaxHealth { get; set; }
       public string Name { get; set; }
       public int Speed { get; set; }
+
+      // IDrawable
+      public RLColor Color { get; set; }
       public char Symbol { get; set; }
       public int X { get; set; }
       public int Y { get; set; }
+
+      // IScheduleable
       public  int Time { get
       {
          return Speed;
