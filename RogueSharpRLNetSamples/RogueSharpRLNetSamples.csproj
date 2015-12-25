@@ -54,7 +54,7 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Colors.cs" />
-    <Compile Include="CombatManager.cs" />
+    <Compile Include="CommandService.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="DungeonMap.cs" />

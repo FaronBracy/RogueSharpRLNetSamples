@@ -3,11 +3,11 @@ using RogueSharp.DiceNotation;
 
 namespace RogueSharpRLNetSamples
 {
-   public class CombatManager
+   public class CommandService
    {
       private DungeonMap _dungeonMap;
 
-      public CombatManager( DungeonMap dungeonMap )
+      public CommandService( DungeonMap dungeonMap )
       {
          _dungeonMap = dungeonMap;
       }

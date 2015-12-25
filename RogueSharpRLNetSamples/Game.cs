@@ -26,7 +26,7 @@ namespace RogueSharpRLNetSamples
 
       public static bool IsPlayerTurn = false;
       public static Messages Messages;
-      public static CombatManager CombatManager;
+      public static CommandService CommandService;
 
       public static void Main()
       {
@@ -43,7 +43,7 @@ namespace RogueSharpRLNetSamples
          _inventoryConsole = new RLConsole( _inventoryWidth, _inventoryHeight );
          Messages.Add( "The rogue arrives on level 1" );
          Messages.Add( string.Format( "Level created with seed '{0}'", seed ) );
-         CombatManager = new CombatManager( _map );
+         CommandService = new CommandService( _map );
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;
          _rootConsole.Run();
@@ -84,7 +84,7 @@ namespace RogueSharpRLNetSamples
                      DungeonMapCreationStrategy mapCreationStrategy = new DungeonMapCreationStrategy( _mapWidth, _mapHeight, 20, 13, 7, 1, new DotNetRandom(), _map.GetPlayer() );
                      _map = mapCreationStrategy.CreateMap();
                      Messages = new Messages();
-                     CombatManager = new CombatManager( _map );
+                     CommandService = new CommandService( _map );
                   }
                }
                IsPlayerTurn = false;

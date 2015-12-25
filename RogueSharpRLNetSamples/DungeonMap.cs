@@ -113,7 +113,7 @@ namespace RogueSharpRLNetSamples
 
             if ( monster != null )
             {
-               Game.CombatManager.Attack( _player, monster );
+               Game.CommandService.Attack( _player, monster );
             }
          }
       }
@@ -146,7 +146,7 @@ namespace RogueSharpRLNetSamples
          }
          else if ( realCell.X == _player.X && realCell.Y == _player.Y )
          {
-            Game.CombatManager.Attack( monster, _player );
+            Game.CommandService.Attack( monster, _player );
          }
       }
 
