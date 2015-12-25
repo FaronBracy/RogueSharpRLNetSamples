@@ -240,7 +240,7 @@ namespace RogueSharpRLNetSamples
                      Point randomRoomLocation = GetRandomLocationInRoom( room );
                      if ( randomRoomLocation != null )
                      {
-                        _map.AddMonster( MonsterMaker.MakeMonster( _level, GetRandomLocationInRoom( room ) ) );
+                        _map.AddMonster( ActorCreationService.MakeMonster( _level, GetRandomLocationInRoom( room ) ) );
                      }
                   }
                }

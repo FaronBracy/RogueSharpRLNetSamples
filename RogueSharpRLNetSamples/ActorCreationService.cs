@@ -3,7 +3,7 @@ using RogueSharp.DiceNotation;
 
 namespace RogueSharpRLNetSamples
 {
-   public static class MonsterMaker
+   public static class ActorCreationService
    {
       public static Monster MakeMonster( int level, Point location )
       {
