@@ -8,7 +8,7 @@ using RogueSharp.Random;
 
 namespace RogueSharpRLNetSamples
 {
-   public class DungeonMapCreationStrategy : IMapCreationStrategy<DungeonMap>
+   public class MapCreationService : IMapCreationStrategy<DungeonMap>
    {
       private readonly IRandom _random;
       private readonly int _width;
@@ -21,7 +21,7 @@ namespace RogueSharpRLNetSamples
 
       private Player _player;
 
-      public DungeonMapCreationStrategy( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int level, IRandom random, Player player = null )
+      public MapCreationService( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int level, IRandom random, Player player = null )
       {
          _width = width;
          _height = height;

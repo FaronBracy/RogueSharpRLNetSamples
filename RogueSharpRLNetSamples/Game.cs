@@ -33,8 +33,8 @@ namespace RogueSharpRLNetSamples
          string fontFileName = "terminal8x8.png";
          string consoleTitle = "RougeSharp RLNet Tutorial";
          int seed = (int) DateTime.UtcNow.Ticks;
-         DungeonMapCreationStrategy mapCreationStrategy = new DungeonMapCreationStrategy( _mapWidth, _mapHeight, 20, 13, 7, 1, new DotNetRandom( seed ) );
-         _map = mapCreationStrategy.CreateMap();
+         MapCreationService mapCreationService = new MapCreationService( _mapWidth, _mapHeight, 20, 13, 7, 1, new DotNetRandom( seed ) );
+         _map = mapCreationService.CreateMap();
          Messages = new Messages();
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
          _mapConsole = new RLConsole( _mapWidth, _mapHeight );
@@ -81,8 +81,8 @@ namespace RogueSharpRLNetSamples
                {
                   if ( _map.CanMoveDownToNextLevel() )
                   {
-                     DungeonMapCreationStrategy mapCreationStrategy = new DungeonMapCreationStrategy( _mapWidth, _mapHeight, 20, 13, 7, 1, new DotNetRandom(), _map.GetPlayer() );
-                     _map = mapCreationStrategy.CreateMap();
+                     MapCreationService mapCreationService = new MapCreationService( _mapWidth, _mapHeight, 20, 13, 7, 1, new DotNetRandom(), _map.GetPlayer() );
+                     _map = mapCreationService.CreateMap();
                      Messages = new Messages();
                      CommandService = new CommandService( _map );
                   }

@@ -58,7 +58,7 @@
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="DungeonMap.cs" />
-    <Compile Include="DungeonMapCreationStrategy.cs" />
+    <Compile Include="MapCreationService.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Gold.cs" />
     <Compile Include="Messages.cs" />
