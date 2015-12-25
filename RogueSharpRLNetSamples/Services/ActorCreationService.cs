@@ -1,7 +1,7 @@
 using RogueSharp;
 using RogueSharp.DiceNotation;
 
-namespace RogueSharpRLNetSamples
+namespace RogueSharpRLNetSamples.Services
 {
    public static class ActorCreationService
    {

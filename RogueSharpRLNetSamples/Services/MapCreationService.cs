@@ -6,7 +6,7 @@ using RogueSharp.DiceNotation;
 using RogueSharp.MapCreation;
 using RogueSharp.Random;
 
-namespace RogueSharpRLNetSamples
+namespace RogueSharpRLNetSamples.Services
 {
    public class MapCreationService : IMapCreationStrategy<DungeonMap>
    {

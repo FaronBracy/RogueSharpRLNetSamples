@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace RogueSharpRLNetSamples
+namespace RogueSharpRLNetSamples.Services
 {
    public class ScheduleService
    {

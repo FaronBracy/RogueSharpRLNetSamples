@@ -54,19 +54,19 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Colors.cs" />
-    <Compile Include="CommandService.cs" />
+    <Compile Include="Services\CommandService.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="DungeonMap.cs" />
-    <Compile Include="MapCreationService.cs" />
+    <Compile Include="Services\MapCreationService.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Gold.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Monster.cs" />
-    <Compile Include="ActorCreationService.cs" />
+    <Compile Include="Services\ActorCreationService.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScheduleService.cs" />
+    <Compile Include="Services\ScheduleService.cs" />
     <Compile Include="Stairs.cs" />
   </ItemGroup>
   <ItemGroup>

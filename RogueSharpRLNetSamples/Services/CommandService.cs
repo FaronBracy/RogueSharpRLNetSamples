@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using RogueSharp.DiceNotation;
 
-namespace RogueSharpRLNetSamples
+namespace RogueSharpRLNetSamples.Services
 {
    public class CommandService
    {

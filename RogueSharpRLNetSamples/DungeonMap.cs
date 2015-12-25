@@ -3,6 +3,7 @@ using System.Linq;
 using RLNET;
 using RogueSharp;
 using RogueSharp.DiceNotation;
+using RogueSharpRLNetSamples.Services;
 
 namespace RogueSharpRLNetSamples
 {
