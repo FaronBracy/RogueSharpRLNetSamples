@@ -41,6 +41,11 @@ namespace RogueSharpRLNetSamples
          Game.ScheduleService.Remove( monster );
       }
 
+      public Monster MonsterAt( int x, int y )
+      {
+         return _monsters.SingleOrDefault( m => m.X == x && m.Y == y );
+      }
+
       public void AddPlayer( Player player )
       {
          _player = player;
@@ -54,9 +59,16 @@ namespace RogueSharpRLNetSamples
          return _player;
       }
 
-      public void AddGold( int x, int y, int amount )
+      public void UpdatePlayerFieldOfView()
       {
-         _goldPiles.Add( new Gold( x, y, amount ) );
+         ComputeFov( _player.X, _player.Y, _player.Awareness, true );
+         foreach ( Cell cell in GetAllCells() )
+         {
+            if ( IsInFov( cell.X, cell.Y ) )
+            {
+               SetCellProperties( cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, true );
+            }
+         }
       }
 
       public bool SetActorPosition( Actor actor, int x, int y )
@@ -78,9 +90,25 @@ namespace RogueSharpRLNetSamples
          return false;
       }
 
-      public bool CanMoveDownToNextLevel()
+      public Door GetDoor( int x, int y )
       {
-         return StairsDown.X == _player.X && StairsDown.Y == _player.Y;
+         return Doors.SingleOrDefault( d => d.X == x && d.Y == y );
+      }
+
+      private void OpenDoor( Actor actor, int x, int y )
+      {
+         Door door = GetDoor( x, y );
+         if ( door != null && !door.IsOpen )
+         {
+            door.IsOpen = true;
+            SetCellProperties( x, y, true, true, true );
+            Game.Messages.Add( string.Format( "{0} opened a door", actor.Name ) );
+         }
+      }
+
+      public void AddGold( int x, int y, int amount )
+      {
+         _goldPiles.Add( new Gold( x, y, amount ) );
       }
 
       private void PickUpGold( Actor actor, int x, int y )
@@ -94,37 +122,15 @@ namespace RogueSharpRLNetSamples
          }
       }
 
-      public void MoveMonster( Monster monster, Cell cell )
+      public bool CanMoveDownToNextLevel()
       {
-         Cell realCell = this.GetCell( cell.X, cell.Y );
-         if ( realCell.IsWalkable )
-         {
-            SetIsWalkable( monster.X, monster.Y, true );
-            monster.X = realCell.X;
-            monster.Y = realCell.Y;
-            SetIsWalkable( monster.X, monster.Y, false );
-         }
-         else if ( realCell.X == _player.X && realCell.Y == _player.Y )
-         {
-            Game.CommandService.Attack( monster, _player );
-         }
+         return StairsDown.X == _player.X && StairsDown.Y == _player.Y;
       }
-
-      public void UpdatePlayerFieldOfView()
+      
+      private void SetIsWalkable( int x, int y, bool isWalkable )
       {
-         ComputeFov( _player.X, _player.Y, _player.Awareness, true );
-         foreach ( Cell cell in GetAllCells() )
-         {
-            if ( IsInFov( cell.X, cell.Y ) )
-            {
-               SetCellProperties( cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, true );
-            }
-         }
-      }
-
-      public Door GetDoor( int x, int y )
-      {
-         return Doors.SingleOrDefault( d => d.X == x && d.Y == y );
+         Cell cell = GetCell( x, y );
+         SetCellProperties( cell.X, cell.Y, cell.IsTransparent, isWalkable, cell.IsExplored );
       }
 
       public void Draw( RLConsole mapConsole, RLConsole statConsole, RLConsole inventoryConsole )
@@ -163,28 +169,6 @@ namespace RogueSharpRLNetSamples
          _player.Draw( mapConsole );
          _player.DrawStats( statConsole );
          _player.DrawInventory( inventoryConsole );
-      }
-
-      public Monster MonsterAt( int x, int y )
-      {
-         return _monsters.SingleOrDefault( m => m.X == x && m.Y == y );
-      }
-
-      private void SetIsWalkable( int x, int y, bool isWalkable )
-      {
-         Cell cell = GetCell( x, y );
-         SetCellProperties( cell.X, cell.Y, cell.IsTransparent, isWalkable, cell.IsExplored );
-      }
-
-      private void OpenDoor( Actor actor, int x, int y )
-      {
-         Door door = GetDoor( x, y );
-         if ( door != null && !door.IsOpen )
-         {
-            door.IsOpen = true;
-            SetCellProperties( x, y, true, true, true );
-            Game.Messages.Add( string.Format( "{0} opened a door", actor.Name ) );
-         }
       }
 
       private void SetConsoleSymbolForCell( RLConsole console, Cell cell )

@@ -90,11 +90,23 @@ namespace RogueSharpRLNetSamples.Services
             Path path = pathFinder.ShortestPath( _dungeonMap.GetCell( monster.X, monster.Y ), _dungeonMap.GetCell( player.X, player.Y ) );
             try
             {
-               _dungeonMap.MoveMonster( monster, path.StepForward() );
+               MoveMonster( monster, path.StepForward() );
             }
             catch ( NoMoreStepsException )
             {
                Game.Messages.Add( string.Format( "{0} waits for a turn", monster.Name ) );
+            }
+         }
+      }
+
+      public void MoveMonster( Monster monster, Cell cell )
+      {
+         if ( !_dungeonMap.SetActorPosition( monster, cell.X, cell.Y ) )
+         {
+            Player player = _dungeonMap.GetPlayer();
+            if ( player.X == cell.X && player.Y == cell.Y )
+            {
+               Attack( monster, player );
             }
          }
       }
