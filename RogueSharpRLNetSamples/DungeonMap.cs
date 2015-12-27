@@ -59,54 +59,6 @@ namespace RogueSharpRLNetSamples
          _goldPiles.Add( new Gold( x, y, amount ) );
       }
 
-      public void MovePlayer( Direction direction )
-      {
-         int x;
-         int y;
-
-         switch ( direction )
-         {
-            case Direction.Up:
-            {
-               x = _player.X;
-               y = _player.Y - 1;
-               break;
-            }
-            case Direction.Down:
-            {
-               x = _player.X;
-               y = _player.Y + 1;
-               break;
-            }
-            case Direction.Left:
-            {
-               x = _player.X - 1;
-               y = _player.Y;
-               break;
-            }
-            case Direction.Right:
-            {
-               x = _player.X + 1;
-               y = _player.Y;
-               break;
-            }
-            default:
-            {
-               return;
-            }
-         }
-
-         if ( !SetActorPosition( _player, x, y ) )
-         {
-            Monster monster = MonsterAt( x, y );
-
-            if ( monster != null )
-            {
-               Game.CommandService.Attack( _player, monster );
-            }
-         }
-      }
-
       public bool SetActorPosition( Actor actor, int x, int y )
       {
          if ( GetCell( x, y ).IsWalkable )
@@ -213,7 +165,7 @@ namespace RogueSharpRLNetSamples
          _player.DrawInventory( inventoryConsole );
       }
 
-      private Monster MonsterAt( int x, int y )
+      public Monster MonsterAt( int x, int y )
       {
          return _monsters.SingleOrDefault( m => m.X == x && m.Y == y );
       }

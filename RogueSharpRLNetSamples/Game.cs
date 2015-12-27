@@ -61,19 +61,19 @@ namespace RogueSharpRLNetSamples
                _renderRequired = true;
                if ( keyPress.Key == RLKey.Up )
                {
-                  _map.MovePlayer( Direction.Up );
+                  CommandService.MovePlayer( Direction.Up );
                }
                else if ( keyPress.Key == RLKey.Down )
                {
-                  _map.MovePlayer( Direction.Down );
+                  CommandService.MovePlayer( Direction.Down );
                }
                else if ( keyPress.Key == RLKey.Left )
                {
-                  _map.MovePlayer( Direction.Left );
+                  CommandService.MovePlayer( Direction.Left );
                }
                else if ( keyPress.Key == RLKey.Right )
                {
-                  _map.MovePlayer( Direction.Right );
+                  CommandService.MovePlayer( Direction.Right );
                }
                else if ( keyPress.Key == RLKey.Escape )
                {

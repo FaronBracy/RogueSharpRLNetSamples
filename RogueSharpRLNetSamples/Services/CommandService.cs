@@ -13,6 +13,55 @@ namespace RogueSharpRLNetSamples.Services
          _dungeonMap = dungeonMap;
       }
 
+      public void MovePlayer( Direction direction )
+      {
+         Player player = _dungeonMap.GetPlayer();
+         int x;
+         int y;
+
+         switch ( direction )
+         {
+            case Direction.Up:
+            {
+               x = player.X;
+               y = player.Y - 1;
+               break;
+            }
+            case Direction.Down:
+            {
+               x = player.X;
+               y = player.Y + 1;
+               break;
+            }
+            case Direction.Left:
+            {
+               x = player.X - 1;
+               y = player.Y;
+               break;
+            }
+            case Direction.Right:
+            {
+               x = player.X + 1;
+               y = player.Y;
+               break;
+            }
+            default:
+            {
+               return;
+            }
+         }
+
+         if ( !_dungeonMap.SetActorPosition( player, x, y ) )
+         {
+            Monster monster = _dungeonMap.MonsterAt( x, y );
+
+            if ( monster != null )
+            {
+               Attack( player, monster );
+            }
+         }
+      }
+
       public void ActivateMonsters()
       {
          IScheduleable scheduleable = Game.ScheduleService.Get();
