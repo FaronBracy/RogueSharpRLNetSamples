@@ -1,15 +1,53 @@
 ﻿using System.Text;
+using RogueSharp;
 using RogueSharp.DiceNotation;
 
 namespace RogueSharpRLNetSamples.Services
 {
    public class CommandService
    {
-      private DungeonMap _dungeonMap;
+      private readonly DungeonMap _dungeonMap;
 
       public CommandService( DungeonMap dungeonMap )
       {
          _dungeonMap = dungeonMap;
+      }
+
+      public void ActivateMonsters()
+      {
+         IScheduleable scheduleable = Game.ScheduleService.Get();
+         if ( scheduleable is Player )
+         {
+            Game.IsPlayerTurn = true;
+            Game.ScheduleService.Add( _dungeonMap.Player );
+         }
+         else
+         {
+            Monster monster = scheduleable as Monster;
+            PerformAction( monster );
+            Game.ScheduleService.Add( monster );
+            ActivateMonsters();
+         }
+      }
+
+      private void PerformAction( Monster monster )
+      {
+         Player player = _dungeonMap.Player;
+         FieldOfView monsterFov = new FieldOfView( _dungeonMap );
+         monsterFov.ComputeFov( monster.X, monster.Y, monster.Awareness, true );
+         if ( monsterFov.IsInFov( player.X, player.Y ) )
+         {
+            PathFinder pathFinder = new PathFinder( _dungeonMap );
+            Path path = pathFinder.ShortestPath( _dungeonMap.GetCell( monster.X, monster.Y ), _dungeonMap.GetCell( player.X, player.Y ) );
+            try
+            {
+               _dungeonMap.MoveMonster( monster, path.StepForward() );
+            }
+            catch ( NoMoreStepsException )
+            {
+               Game.Messages.Add( string.Format( "{0} waits for a turn", monster.Name ) );
+            }
+         }
       }
 
       public void Attack( Actor attacker, Actor defender )

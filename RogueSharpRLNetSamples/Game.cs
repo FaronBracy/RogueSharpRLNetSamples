@@ -28,6 +28,7 @@ namespace RogueSharpRLNetSamples
       public static bool IsPlayerTurn = false;
       public static Messages Messages;
       public static CommandService CommandService;
+      public static ScheduleService ScheduleService;
 
       public static void Main()
       {
@@ -89,12 +90,12 @@ namespace RogueSharpRLNetSamples
                   }
                }
                IsPlayerTurn = false;
-               _map.ActivateMonsters();
+               CommandService.ActivateMonsters();
             }
          }
          else
          {
-            _map.ActivateMonsters();
+            CommandService.ActivateMonsters();
          }
       }
 
