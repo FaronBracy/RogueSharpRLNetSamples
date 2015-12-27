@@ -4,6 +4,7 @@ using System.Linq;
 using RogueSharp;
 using RogueSharp.DiceNotation;
 using RogueSharp.Random;
+using RogueSharpRLNetSamples.Actors;
 
 namespace RogueSharpRLNetSamples.Services
 {

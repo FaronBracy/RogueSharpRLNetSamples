@@ -2,6 +2,7 @@
 using System.Linq;
 using RLNET;
 using RogueSharp;
+using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Services;
 
 namespace RogueSharpRLNetSamples

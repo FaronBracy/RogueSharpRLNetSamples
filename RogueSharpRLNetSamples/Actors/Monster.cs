@@ -2,7 +2,7 @@
 using RLNET;
 using RogueSharp;
 
-namespace RogueSharpRLNetSamples
+namespace RogueSharpRLNetSamples.Actors
 {
    public class Monster : Actor
    {

@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actor.cs" />
+    <Compile Include="Actors\Actor.cs" />
     <Compile Include="Equipment\BodyEquipment.cs" />
     <Compile Include="Colors.cs" />
     <Compile Include="Equipment\Equipment.cs" />
@@ -70,9 +70,9 @@
     <Compile Include="Game.cs" />
     <Compile Include="Gold.cs" />
     <Compile Include="Messages.cs" />
-    <Compile Include="Monster.cs" />
+    <Compile Include="Actors\Monster.cs" />
     <Compile Include="Services\ActorCreationService.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Actors\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ScheduleService.cs" />
     <Compile Include="Stairs.cs" />

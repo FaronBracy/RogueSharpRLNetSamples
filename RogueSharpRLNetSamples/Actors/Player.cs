@@ -1,6 +1,6 @@
 using RLNET;
 
-namespace RogueSharpRLNetSamples
+namespace RogueSharpRLNetSamples.Actors
 {
    public class Player : Actor
    {

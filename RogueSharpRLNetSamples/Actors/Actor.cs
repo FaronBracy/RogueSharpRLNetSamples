@@ -2,7 +2,7 @@
 using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
 
-namespace RogueSharpRLNetSamples
+namespace RogueSharpRLNetSamples.Actors
 {
    public class Actor : IHasStats, IDrawable, IScheduleable
    {
