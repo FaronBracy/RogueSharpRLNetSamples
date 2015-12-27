@@ -96,17 +96,7 @@ namespace RogueSharpRLNetSamples
             }
          }
 
-         if ( GetCell( x, y ).IsWalkable )
-         {
-            PickUpGold( x, y );
-            SetIsWalkable( _player.X, _player.Y, true );
-            _player.X = x;
-            _player.Y = y;
-            SetIsWalkable( _player.X, _player.Y, false );
-            OpenDoor( x, y );
-            UpdatePlayerFieldOfView();
-         }
-         else
+         if ( !SetActorPosition( _player, x, y ) )
          {
             Monster monster = MonsterAt( x, y );
 
@@ -117,18 +107,37 @@ namespace RogueSharpRLNetSamples
          }
       }
 
+      public bool SetActorPosition( Actor actor, int x, int y )
+      {
+         if ( GetCell( x, y ).IsWalkable )
+         {
+            PickUpGold( actor, x, y );
+            SetIsWalkable( actor.X, actor.Y, true );
+            actor.X = x;
+            actor.Y = y;
+            SetIsWalkable( actor.X, actor.Y, false );
+            OpenDoor( actor, x, y );
+            if ( actor is Player )
+            {
+               UpdatePlayerFieldOfView();
+            }
+            return true;
+         }
+         return false;
+      }
+
       public bool CanMoveDownToNextLevel()
       {
          return StairsDown.X == _player.X && StairsDown.Y == _player.Y;
       }
 
-      private void PickUpGold( int x, int y )
+      private void PickUpGold( Actor actor, int x, int y )
       {
          List<Gold> goldAtLocation = _goldPiles.Where( g => g.X == x && g.Y == y ).ToList();
          foreach ( Gold gold in goldAtLocation )
          {
-            _player.Gold += gold.Amount;
-            Game.Messages.Add( string.Format( "{0} picked up {1} gold", _player.Name, gold.Amount ) );
+            actor.Gold += gold.Amount;
+            Game.Messages.Add( string.Format( "{0} picked up {1} gold", actor.Name, gold.Amount ) );
             _goldPiles.Remove( gold );
          }
       }
@@ -215,14 +224,14 @@ namespace RogueSharpRLNetSamples
          SetCellProperties( cell.X, cell.Y, cell.IsTransparent, isWalkable, cell.IsExplored );
       }
 
-      private void OpenDoor( int x, int y )
+      private void OpenDoor( Actor actor, int x, int y )
       {
          Door door = GetDoor( x, y );
          if ( door != null && !door.IsOpen )
          {
             door.IsOpen = true;
             SetCellProperties( x, y, true, true, true );
-            Game.Messages.Add( string.Format( "{0} opened a door", _player.Name ) );
+            Game.Messages.Add( string.Format( "{0} opened a door", actor.Name ) );
          }
       }
 
