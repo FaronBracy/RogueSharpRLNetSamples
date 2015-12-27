@@ -1,4 +1,5 @@
 ﻿using RLNET;
+using RogueSharpRLNetSamples.Equipment;
 
 namespace RogueSharpRLNetSamples
 {
@@ -187,51 +188,5 @@ namespace RogueSharpRLNetSamples
       {
          return Speed;
       } }
-   }
-
-   public class Equipment : IHasStats
-   {
-      public int Attack { get; set; }
-      public int AttackChance { get; set; }
-      public int Awareness { get; set; }
-      public int Defense { get; set; }
-      public int DefenseChance { get; set; }
-      public int Gold { get; set; }
-      public int Health { get; set; }
-      public int MaxHealth { get; set; }
-      public string Name { get; set; }
-      public int Speed { get; set; }
-   }
-
-   public class HeadEquipment : Equipment
-   {
-      public static HeadEquipment None()
-      {
-         return new HeadEquipment { Name = "None"};
-      }
-   }
-
-   public class BodyEquipment : Equipment
-   {
-      public static BodyEquipment None()
-      {
-         return new BodyEquipment { Name = "None" };
-      }
-   }
-
-   public class HandEquipment : Equipment
-   {
-      public static HandEquipment None()
-      {
-         return new HandEquipment { Name = "None" };
-      }
-   }
-
-   public class FeetEquipment : Equipment
-   {
-      public static FeetEquipment None()
-      {
-         return new FeetEquipment { Name = "None" };
-      }
    }
 }

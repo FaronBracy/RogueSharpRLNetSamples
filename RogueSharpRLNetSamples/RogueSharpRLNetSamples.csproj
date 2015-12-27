@@ -53,7 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
+    <Compile Include="Equipment\BodyEquipment.cs" />
     <Compile Include="Colors.cs" />
+    <Compile Include="Equipment\Equipment.cs" />
+    <Compile Include="Equipment\FeetEquipment.cs" />
+    <Compile Include="Equipment\HandEquipment.cs" />
+    <Compile Include="Equipment\HeadEquipment.cs" />
     <Compile Include="Services\CommandService.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
