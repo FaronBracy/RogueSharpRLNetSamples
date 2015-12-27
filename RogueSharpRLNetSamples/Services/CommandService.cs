@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using RogueSharp;
 using RogueSharp.DiceNotation;
+using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Services
 {

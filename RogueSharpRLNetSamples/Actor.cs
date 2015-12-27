@@ -1,35 +1,9 @@
 ﻿using RLNET;
 using RogueSharpRLNetSamples.Equipment;
+using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples
 {
-   public interface IHasStats
-   {
-      int Attack { get; set; }
-      int AttackChance { get; set; }
-      int Awareness { get; set; }
-      int Defense { get; set; }
-      int DefenseChance { get; set; }
-      int Gold { get; set; }
-      int Health { get; set; }
-      int MaxHealth { get; set; }
-      string Name { get; set; }
-      int Speed { get; set; }
-   }
-
-   public interface IDrawable
-   {
-      RLColor Color { get; set; }
-      char Symbol { get; set; }
-      int X { get; set; }
-      int Y { get; set; }
-   }
-
-   public interface IScheduleable
-   {
-      int Time { get; }
-   }
-
    public class Actor : IHasStats, IDrawable, IScheduleable
    {
       public Actor()

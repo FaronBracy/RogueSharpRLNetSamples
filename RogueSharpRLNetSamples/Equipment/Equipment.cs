@@ -1,3 +1,5 @@
+using RogueSharpRLNetSamples.Interfaces;
+
 namespace RogueSharpRLNetSamples.Equipment
 {
    public class Equipment : IHasStats

@@ -1,4 +1,5 @@
 ﻿using RLNET;
+using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples
 {
