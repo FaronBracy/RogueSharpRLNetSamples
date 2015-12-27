@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using RogueSharp;
 using RogueSharp.DiceNotation;
-using RogueSharp.MapCreation;
 using RogueSharp.Random;
 
 namespace RogueSharpRLNetSamples.Services
 {
-   public class MapCreationService : IMapCreationStrategy<DungeonMap>
+   public class MapCreationService
    {
       private readonly IRandom _random;
       private readonly int _width;
@@ -19,9 +18,7 @@ namespace RogueSharpRLNetSamples.Services
       private readonly int _level;
       private readonly DungeonMap _map;
 
-      private Player _player;
-
-      public MapCreationService( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int level, IRandom random, Player player = null )
+      public MapCreationService( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int level, IRandom random )
       {
          _width = width;
          _height = height;
@@ -31,7 +28,6 @@ namespace RogueSharpRLNetSamples.Services
          _level = level;
          _random = random;
          _map = new DungeonMap();
-         _player = player;
       }
 
       public DungeonMap CreateMap()
@@ -55,7 +51,7 @@ namespace RogueSharpRLNetSamples.Services
 
          foreach ( Rectangle room in _map.Rooms )
          {
-            MakeRoom( room );
+            CreateMap( room );
          }
 
          for ( int r = 0; r < _map.Rooms.Count; r++ )
@@ -72,57 +68,41 @@ namespace RogueSharpRLNetSamples.Services
 
             if ( _random.Next( 0, 2 ) == 0 )
             {
-               MakeHorizontalTunnel( previousRoomCenterX, currentRoomCenterX, previousRoomCenterY );
-               MakeVerticalTunnel( previousRoomCenterY, currentRoomCenterY, currentRoomCenterX );
+               CreateHorizontalTunnel( previousRoomCenterX, currentRoomCenterX, previousRoomCenterY );
+               CreateVerticalTunnel( previousRoomCenterY, currentRoomCenterY, currentRoomCenterX );
             }
             else
             {
-               MakeVerticalTunnel( previousRoomCenterY, currentRoomCenterY, previousRoomCenterX );
-               MakeHorizontalTunnel( previousRoomCenterX, currentRoomCenterX, currentRoomCenterY );
+               CreateVerticalTunnel( previousRoomCenterY, currentRoomCenterY, previousRoomCenterX );
+               CreateHorizontalTunnel( previousRoomCenterX, currentRoomCenterX, currentRoomCenterY );
             }
          }
 
          foreach ( Rectangle room in _map.Rooms )
          {
-            MakeDoors( room );
+            CreateDoors( room );
          }
 
-         MakeStairs();
+         CreateStairs();
 
-         MakeMonsters();
+         PlaceMonsters();
 
-         MakePlayer();
+         PlacePlayer();
 
          return _map;
       }
 
-      private void MakePlayer()
+      private void PlacePlayer()
       {
-         if ( _player == null )
-         {
-            _player = new Player {
-               Attack = 4,
-               AttackChance = 60,
-               Awareness = 15,
-               Color = Colors.Player,
-               Defense = 4,
-               DefenseChance = 50,
-               Gold = 0,
-               Health = 100,
-               MaxHealth = 100,
-               Name = "Rogue",
-               Speed = 10,
-               Symbol = '@'
-            };
-         }
+         Player player = ActorCreationService.CreatePlayer();
 
-         _player.X = _map.Rooms[0].Center.X;
-         _player.Y = _map.Rooms[0].Center.Y;
+         player.X = _map.Rooms[0].Center.X;
+         player.Y = _map.Rooms[0].Center.Y;
 
-         _map.AddPlayer( _player );
+         _map.AddPlayer( player );
       }
 
-      private void MakeRoom( Rectangle room )
+      private void CreateMap( Rectangle room )
       {
          for ( int x = room.Left + 1; x < room.Right; x++ )
          {
@@ -133,7 +113,7 @@ namespace RogueSharpRLNetSamples.Services
          }
       }
 
-      private void MakeHorizontalTunnel( int xStart, int xEnd, int yPosition )
+      private void CreateHorizontalTunnel( int xStart, int xEnd, int yPosition )
       {
          for ( int x = Math.Min( xStart, xEnd ); x <= Math.Max( xStart, xEnd ); x++ )
          {
@@ -141,7 +121,7 @@ namespace RogueSharpRLNetSamples.Services
          }
       }
 
-      private void MakeVerticalTunnel( int yStart, int yEnd, int xPosition )
+      private void CreateVerticalTunnel( int yStart, int yEnd, int xPosition )
       {
          for ( int y = Math.Min( yStart, yEnd ); y <= Math.Max( yStart, yEnd ); y++ )
          {
@@ -149,7 +129,7 @@ namespace RogueSharpRLNetSamples.Services
          }
       }
 
-      private void MakeDoors( Rectangle room )
+      private void CreateDoors( Rectangle room )
       {
          int xMin = room.Left;
          int xMax = room.Right;
@@ -207,7 +187,7 @@ namespace RogueSharpRLNetSamples.Services
          return false;
       }
 
-      private void MakeStairs()
+      private void CreateStairs()
       {
          _map.StairsUp = new Stairs {
             X = _map.Rooms.First().Center.X + 1,
@@ -221,7 +201,7 @@ namespace RogueSharpRLNetSamples.Services
          };
       }
 
-      private void MakeMonsters()
+      private void PlaceMonsters()
       {
          // Place encounters that are well thought out in rooms
 
@@ -240,7 +220,7 @@ namespace RogueSharpRLNetSamples.Services
                      Point randomRoomLocation = GetRandomLocationInRoom( room );
                      if ( randomRoomLocation != null )
                      {
-                        _map.AddMonster( ActorCreationService.MakeMonster( _level, GetRandomLocationInRoom( room ) ) );
+                        _map.AddMonster( ActorCreationService.CreateMonster( _level, GetRandomLocationInRoom( room ) ) );
                      }
                   }
                }

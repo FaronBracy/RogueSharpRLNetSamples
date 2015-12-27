@@ -17,12 +17,16 @@ namespace RogueSharpRLNetSamples
       private static readonly int _statHeight = 70;
       private static readonly int _inventoryWidth = 80;
       private static readonly int _inventoryHeight = 11;
+
       private static RLRootConsole _rootConsole;
       private static RLConsole _mapConsole;
       private static RLConsole _messageConsole;
       private static RLConsole _statConsole;
       private static RLConsole _inventoryConsole;
+
+      private static int _mapLevel = 1;
       private static DungeonMap _map;
+
       private static bool _renderRequired = true;
 
       public static bool IsPlayerTurn = false;
@@ -33,9 +37,9 @@ namespace RogueSharpRLNetSamples
       public static void Main()
       {
          string fontFileName = "terminal8x8.png";
-         string consoleTitle = "RougeSharp RLNet Tutorial";
+         string consoleTitle = "RougeSharp RLNet Tutorial - Level 1";
          int seed = (int) DateTime.UtcNow.Ticks;
-         MapCreationService mapCreationService = new MapCreationService( _mapWidth, _mapHeight, 20, 13, 7, 1, new DotNetRandom( seed ) );
+         MapCreationService mapCreationService = new MapCreationService( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel, new DotNetRandom( seed ) );
          _map = mapCreationService.CreateMap();
          Messages = new Messages();
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
@@ -83,10 +87,11 @@ namespace RogueSharpRLNetSamples
                {
                   if ( _map.CanMoveDownToNextLevel() )
                   {
-                     MapCreationService mapCreationService = new MapCreationService( _mapWidth, _mapHeight, 20, 13, 7, 1, new DotNetRandom(), _map.GetPlayer() );
+                     MapCreationService mapCreationService = new MapCreationService( _mapWidth, _mapHeight, 20, 13, 7, ++_mapLevel, new DotNetRandom() );
                      _map = mapCreationService.CreateMap();
                      Messages = new Messages();
                      CommandService = new CommandService( _map );
+                     _rootConsole.Title = string.Format( "RougeSharp RLNet Tutorial - Level {0}", _mapLevel );
                   }
                }
                IsPlayerTurn = false;

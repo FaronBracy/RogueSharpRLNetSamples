@@ -5,20 +5,22 @@ namespace RogueSharpRLNetSamples.Services
 {
    public static class ActorCreationService
    {
-      public static Monster MakeMonster( int level, Point location )
+      private static Player _player = null;
+
+      public static Monster CreateMonster( int level, Point location )
       {
          if ( level == 1 )
          {
             if ( Dice.Roll( "1D100" ) > 75 )
             {
-               return MakeOrc( location );
+               return CreateOrc( location );
             }
          }
 
-         return MakeGoblin( location );
+         return CreateGoblin( location );
       }
 
-      private static Monster MakeGoblin( Point location )
+      private static Monster CreateGoblin( Point location )
       {
          int health = Dice.Roll( "1D5" );
          return new Monster {
@@ -39,7 +41,7 @@ namespace RogueSharpRLNetSamples.Services
          };
       }
 
-      private static Monster MakeOrc( Point location )
+      private static Monster CreateOrc( Point location )
       {
          int health = Dice.Roll( "2D5" );
          return new Monster {
@@ -58,6 +60,29 @@ namespace RogueSharpRLNetSamples.Services
             X = location.X,
             Y = location.Y
          };
+      }
+
+      public static Player CreatePlayer()
+      {
+         if ( _player == null )
+         {
+            _player = new Player {
+               Attack = 4,
+               AttackChance = 60,
+               Awareness = 15,
+               Color = Colors.Player,
+               Defense = 4,
+               DefenseChance = 50,
+               Gold = 0,
+               Health = 100,
+               MaxHealth = 100,
+               Name = "Rogue",
+               Speed = 10,
+               Symbol = '@'
+            };
+         }
+
+         return _player;
       }
    }
 }
