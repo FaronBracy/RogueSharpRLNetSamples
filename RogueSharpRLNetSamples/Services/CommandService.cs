@@ -19,7 +19,7 @@ namespace RogueSharpRLNetSamples.Services
          if ( scheduleable is Player )
          {
             Game.IsPlayerTurn = true;
-            Game.ScheduleService.Add( _dungeonMap.Player );
+            Game.ScheduleService.Add( _dungeonMap.GetPlayer() );
          }
          else
          {
@@ -32,7 +32,7 @@ namespace RogueSharpRLNetSamples.Services
 
       private void PerformAction( Monster monster )
       {
-         Player player = _dungeonMap.Player;
+         Player player = _dungeonMap.GetPlayer();
          FieldOfView monsterFov = new FieldOfView( _dungeonMap );
          monsterFov.ComputeFov( monster.X, monster.Y, monster.Awareness, true );
          if ( monsterFov.IsInFov( player.X, player.Y ) )

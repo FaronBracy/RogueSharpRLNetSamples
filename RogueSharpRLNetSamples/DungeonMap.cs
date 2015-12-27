@@ -10,8 +10,8 @@ namespace RogueSharpRLNetSamples
    {
       private readonly List<Monster> _monsters;
       private readonly List<Gold> _goldPiles;
+      private Player _player;
 
-      public Player Player;
       public List<Rectangle> Rooms;
       public List<Door> Doors;
       public Stairs StairsUp;
@@ -43,15 +43,15 @@ namespace RogueSharpRLNetSamples
 
       public void AddPlayer( Player player )
       {
-         Player = player;
-         SetIsWalkable( Player.X, Player.Y, false );
+         _player = player;
+         SetIsWalkable( _player.X, _player.Y, false );
          UpdatePlayerFieldOfView();
          Game.ScheduleService.Add( player );
       }
 
       public Player GetPlayer()
       {
-         return Player;
+         return _player;
       }
 
       public void AddGold( int x, int y, int amount )
@@ -68,26 +68,26 @@ namespace RogueSharpRLNetSamples
          {
             case Direction.Up:
             {
-               x = Player.X;
-               y = Player.Y - 1;
+               x = _player.X;
+               y = _player.Y - 1;
                break;
             }
             case Direction.Down:
             {
-               x = Player.X;
-               y = Player.Y + 1;
+               x = _player.X;
+               y = _player.Y + 1;
                break;
             }
             case Direction.Left:
             {
-               x = Player.X - 1;
-               y = Player.Y;
+               x = _player.X - 1;
+               y = _player.Y;
                break;
             }
             case Direction.Right:
             {
-               x = Player.X + 1;
-               y = Player.Y;
+               x = _player.X + 1;
+               y = _player.Y;
                break;
             }
             default:
@@ -99,10 +99,10 @@ namespace RogueSharpRLNetSamples
          if ( GetCell( x, y ).IsWalkable )
          {
             PickUpGold( x, y );
-            SetIsWalkable( Player.X, Player.Y, true );
-            Player.X = x;
-            Player.Y = y;
-            SetIsWalkable( Player.X, Player.Y, false );
+            SetIsWalkable( _player.X, _player.Y, true );
+            _player.X = x;
+            _player.Y = y;
+            SetIsWalkable( _player.X, _player.Y, false );
             OpenDoor( x, y );
             UpdatePlayerFieldOfView();
          }
@@ -112,14 +112,14 @@ namespace RogueSharpRLNetSamples
 
             if ( monster != null )
             {
-               Game.CommandService.Attack( Player, monster );
+               Game.CommandService.Attack( _player, monster );
             }
          }
       }
 
       public bool CanMoveDownToNextLevel()
       {
-         return StairsDown.X == Player.X && StairsDown.Y == Player.Y;
+         return StairsDown.X == _player.X && StairsDown.Y == _player.Y;
       }
 
       private void PickUpGold( int x, int y )
@@ -127,8 +127,8 @@ namespace RogueSharpRLNetSamples
          List<Gold> goldAtLocation = _goldPiles.Where( g => g.X == x && g.Y == y ).ToList();
          foreach ( Gold gold in goldAtLocation )
          {
-            Player.Gold += gold.Amount;
-            Game.Messages.Add( string.Format( "{0} picked up {1} gold", Player.Name, gold.Amount ) );
+            _player.Gold += gold.Amount;
+            Game.Messages.Add( string.Format( "{0} picked up {1} gold", _player.Name, gold.Amount ) );
             _goldPiles.Remove( gold );
          }
       }
@@ -143,15 +143,15 @@ namespace RogueSharpRLNetSamples
             monster.Y = realCell.Y;
             SetIsWalkable( monster.X, monster.Y, false );
          }
-         else if ( realCell.X == Player.X && realCell.Y == Player.Y )
+         else if ( realCell.X == _player.X && realCell.Y == _player.Y )
          {
-            Game.CommandService.Attack( monster, Player );
+            Game.CommandService.Attack( monster, _player );
          }
       }
 
       public void UpdatePlayerFieldOfView()
       {
-         ComputeFov( Player.X, Player.Y, Player.Awareness, true );
+         ComputeFov( _player.X, _player.Y, _player.Awareness, true );
          foreach ( Cell cell in GetAllCells() )
          {
             if ( IsInFov( cell.X, cell.Y ) )
@@ -199,9 +199,9 @@ namespace RogueSharpRLNetSamples
             }
          }
 
-         Player.Draw( mapConsole );
-         Player.DrawStats( statConsole );
-         Player.DrawInventory( inventoryConsole );
+         _player.Draw( mapConsole );
+         _player.DrawStats( statConsole );
+         _player.DrawInventory( inventoryConsole );
       }
 
       private Monster MonsterAt( int x, int y )
@@ -222,7 +222,7 @@ namespace RogueSharpRLNetSamples
          {
             door.IsOpen = true;
             SetCellProperties( x, y, true, true, true );
-            Game.Messages.Add( string.Format( "{0} opened a door", Player.Name ) );
+            Game.Messages.Add( string.Format( "{0} opened a door", _player.Name ) );
          }
       }
 
