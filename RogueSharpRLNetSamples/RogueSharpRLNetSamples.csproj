@@ -53,12 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors\Actor.cs" />
-    <Compile Include="Equipment\BodyEquipment.cs" />
+    <Compile Include="Inventory\BodyEquipment.cs" />
     <Compile Include="Colors.cs" />
-    <Compile Include="Equipment\Equipment.cs" />
-    <Compile Include="Equipment\FeetEquipment.cs" />
-    <Compile Include="Equipment\HandEquipment.cs" />
-    <Compile Include="Equipment\HeadEquipment.cs" />
+    <Compile Include="Inventory\Equipment.cs" />
+    <Compile Include="Inventory\FeetEquipment.cs" />
+    <Compile Include="Inventory\HandEquipment.cs" />
+    <Compile Include="Inventory\HeadEquipment.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Interfaces\IHasStats.cs" />
     <Compile Include="Interfaces\IScheduleable.cs" />
@@ -66,9 +66,10 @@
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="DungeonMap.cs" />
+    <Compile Include="Services\EquipmentCreationService.cs" />
     <Compile Include="Services\MapCreationService.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Gold.cs" />
+    <Compile Include="Treasure.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Actors\Monster.cs" />
     <Compile Include="Services\ActorCreationService.cs" />

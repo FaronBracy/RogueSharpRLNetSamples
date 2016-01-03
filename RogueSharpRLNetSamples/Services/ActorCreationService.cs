@@ -68,12 +68,12 @@ namespace RogueSharpRLNetSamples.Services
          if ( _player == null )
          {
             _player = new Player {
-               Attack = 4,
-               AttackChance = 60,
+               Attack = 2,
+               AttackChance = 50,
                Awareness = 15,
                Color = Colors.Player,
-               Defense = 4,
-               DefenseChance = 50,
+               Defense = 2,
+               DefenseChance = 40,
                Gold = 0,
                Health = 100,
                MaxHealth = 100,

@@ -5,6 +5,7 @@ using RogueSharp;
 using RogueSharp.DiceNotation;
 using RogueSharp.Random;
 using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Inventory;
 
 namespace RogueSharpRLNetSamples.Services
 {
@@ -88,20 +89,13 @@ namespace RogueSharpRLNetSamples.Services
 
          PlaceMonsters();
 
+         PlaceEquipment();
+
          PlacePlayer();
 
          return _map;
       }
 
-      private void PlacePlayer()
-      {
-         Player player = ActorCreationService.CreatePlayer();
-
-         player.X = _map.Rooms[0].Center.X;
-         player.Y = _map.Rooms[0].Center.Y;
-
-         _map.AddPlayer( player );
-      }
 
       private void CreateMap( Rectangle room )
       {
@@ -227,6 +221,36 @@ namespace RogueSharpRLNetSamples.Services
                }
             }
          }
+      }
+
+      private void PlaceEquipment()
+      {
+         foreach ( var room in _map.Rooms )
+         {
+            if ( Dice.Roll( "1D10" ) < 3 )
+            {
+               if ( DoesRoomHaveWalkableSpace( room ) )
+               {
+                  Point randomRoomLocation = GetRandomLocationInRoom( room );
+                  if ( randomRoomLocation != null )
+                  {
+                     Equipment equipment = EquipmentCreationService.CreateEquipment( _level );
+                     Point location = GetRandomLocationInRoom( room );
+                     _map.AddEquipment( location.X, location.Y, equipment );
+                  }
+               }
+            }
+         }
+      }
+
+      private void PlacePlayer()
+      {
+         Player player = ActorCreationService.CreatePlayer();
+
+         player.X = _map.Rooms[0].Center.X;
+         player.Y = _map.Rooms[0].Center.Y;
+
+         _map.AddPlayer( player );
       }
 
       private Point GetRandomLocationInRoom( Rectangle room )

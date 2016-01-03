@@ -3,6 +3,7 @@ using System.Linq;
 using RLNET;
 using RogueSharp;
 using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Inventory;
 using RogueSharpRLNetSamples.Services;
 
 namespace RogueSharpRLNetSamples
@@ -10,7 +11,7 @@ namespace RogueSharpRLNetSamples
    public class DungeonMap : Map
    {
       private readonly List<Monster> _monsters;
-      private readonly List<Gold> _goldPiles;
+      private readonly List<Treasure> _treasurePiles;
       private Player _player;
 
       public List<Rectangle> Rooms;
@@ -21,7 +22,7 @@ namespace RogueSharpRLNetSamples
       public DungeonMap()
       {
          _monsters = new List<Monster>();
-         _goldPiles = new List<Gold>();
+         _treasurePiles = new List<Treasure>();
          Game.ScheduleService = new ScheduleService();
 
          Rooms = new List<Rectangle>();
@@ -45,6 +46,13 @@ namespace RogueSharpRLNetSamples
       public Monster MonsterAt( int x, int y )
       {
          return _monsters.SingleOrDefault( m => m.X == x && m.Y == y );
+      }
+
+      public void AddEquipment( int x, int y, Equipment equipment )
+      {
+         Treasure treasure = new Treasure( x, y, 0, equipment );
+         treasure.Symbol = ( '!' );
+         _treasurePiles.Add( treasure );
       }
 
       public void AddPlayer( Player player )
@@ -76,7 +84,7 @@ namespace RogueSharpRLNetSamples
       {
          if ( GetCell( x, y ).IsWalkable )
          {
-            PickUpGold( actor, x, y );
+            PickUpTreasure( actor, x, y );
             SetIsWalkable( actor.X, actor.Y, true );
             actor.X = x;
             actor.Y = y;
@@ -109,17 +117,39 @@ namespace RogueSharpRLNetSamples
 
       public void AddGold( int x, int y, int amount )
       {
-         _goldPiles.Add( new Gold( x, y, amount ) );
+         _treasurePiles.Add( new Treasure( x, y, amount, null ) );
       }
 
-      private void PickUpGold( Actor actor, int x, int y )
+      private void PickUpTreasure( Actor actor, int x, int y )
       {
-         List<Gold> goldAtLocation = _goldPiles.Where( g => g.X == x && g.Y == y ).ToList();
-         foreach ( Gold gold in goldAtLocation )
+         List<Treasure> treasureAtLocation = _treasurePiles.Where( g => g.X == x && g.Y == y ).ToList();
+         foreach ( Treasure treasure in treasureAtLocation )
          {
-            actor.Gold += gold.Amount;
-            Game.Messages.Add( string.Format( "{0} picked up {1} gold", actor.Name, gold.Amount ) );
-            _goldPiles.Remove( gold );
+            actor.Gold += treasure.Gold;
+            Game.Messages.Add( string.Format( "{0} picked up {1} gold", actor.Name, treasure.Gold ) );
+
+            if ( treasure.Equipment is HeadEquipment )
+            {
+               actor.Head = treasure.Equipment as HeadEquipment;
+               Game.Messages.Add( string.Format( "{0} picked up a {1} helmet", actor.Name, treasure.Equipment.Name ) );
+            }
+            else if ( treasure.Equipment is BodyEquipment )
+            {
+               actor.Body = treasure.Equipment as BodyEquipment;
+               Game.Messages.Add( string.Format( "{0} picked up {1} body armor", actor.Name, treasure.Equipment.Name ) );
+            }
+            else if( treasure.Equipment is HandEquipment )
+            {
+               actor.Hand = treasure.Equipment as HandEquipment;
+               Game.Messages.Add( string.Format( "{0} picked up a {1}", actor.Name, treasure.Equipment.Name ) );
+            }
+            else if( treasure.Equipment is FeetEquipment )
+            {
+               actor.Feet = treasure.Equipment as FeetEquipment;
+               Game.Messages.Add( string.Format( "{0} picked up {1} boots", actor.Name, treasure.Equipment.Name ) );
+            }
+
+            _treasurePiles.Remove( treasure );
          }
       }
 
@@ -150,9 +180,9 @@ namespace RogueSharpRLNetSamples
          StairsUp.Draw( mapConsole, this );
          StairsDown.Draw( mapConsole, this );
 
-         foreach ( Gold gold in _goldPiles )
+         foreach ( Treasure gold in _treasurePiles )
          {
-            gold.Draw( mapConsole );
+            gold.Draw( mapConsole, this );
          }
 
          statConsole.Clear();

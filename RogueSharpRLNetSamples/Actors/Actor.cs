@@ -1,6 +1,6 @@
 ﻿using RLNET;
-using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
+using RogueSharpRLNetSamples.Inventory;
 
 namespace RogueSharpRLNetSamples.Actors
 {

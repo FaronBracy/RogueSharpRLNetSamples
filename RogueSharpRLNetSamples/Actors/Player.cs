@@ -16,10 +16,10 @@ namespace RogueSharpRLNetSamples.Actors
       public void DrawInventory( RLConsole inventoryConsole )
       {
          inventoryConsole.Print( 1, 1, "Equipment", RLColor.White );
-         inventoryConsole.Print( 1, 3, "Head: Plate", RLColor.LightGray );
-         inventoryConsole.Print( 1, 5, "Body: Chain", RLColor.LightGray );
-         inventoryConsole.Print( 1, 7, "Hand: None", RLColor.LightGray );
-         inventoryConsole.Print( 1, 9, "Feet: Leather", RLColor.LightGray );
+         inventoryConsole.Print( 1, 3, string.Format( "Head: {0}", Head.Name ), RLColor.LightGray );
+         inventoryConsole.Print( 1, 5, string.Format( "Body: {0}", Body.Name ), RLColor.LightGray );
+         inventoryConsole.Print( 1, 7, string.Format( "Hand: {0}", Hand.Name ), RLColor.LightGray );
+         inventoryConsole.Print( 1, 9, string.Format( "Feet: {0}", Feet.Name ), RLColor.LightGray );
 
          inventoryConsole.Print( 28, 1, "Abilities", RLColor.White );
          inventoryConsole.Print( 28, 3, "Q - Charge", RLColor.LightGray );
