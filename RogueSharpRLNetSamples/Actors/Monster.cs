@@ -1,6 +1,7 @@
 ﻿using System;
 using RLNET;
 using RogueSharp;
+using RogueSharpRLNetSamples.Services;
 
 namespace RogueSharpRLNetSamples.Actors
 {
@@ -31,6 +32,27 @@ namespace RogueSharpRLNetSamples.Actors
          else
          {
             mapConsole.Set( X, Y, Colors.Floor, Colors.FloorBackground, '.' );
+         }
+      }
+
+      public virtual void PerformAction( CommandService commandService )
+      {
+         DungeonMap dungeonMap = commandService.DungeonMap;
+         Player player = dungeonMap.GetPlayer();
+         FieldOfView monsterFov = new FieldOfView( dungeonMap );
+         monsterFov.ComputeFov( X, Y, Awareness, true );
+         if ( monsterFov.IsInFov( player.X, player.Y ) )
+         {
+            PathFinder pathFinder = new PathFinder( dungeonMap );
+            Path path = pathFinder.ShortestPath( dungeonMap.GetCell( X, Y ), dungeonMap.GetCell( player.X, player.Y ) );
+            try
+            {
+               commandService.MoveMonster( this, path.StepForward() );
+            }
+            catch ( NoMoreStepsException )
+            {
+               Game.Messages.Add( string.Format( "{0} waits for a turn", Name ) );
+            }
          }
       }
    }

@@ -17,6 +17,7 @@ namespace RogueSharpRLNetSamples
       public static RLColor WallBackgroundFov = Swatch.SecondaryDarker;
       public static RLColor WallFov = Swatch.SecondaryLighter;
       public static RLColor GoblinColor = RLColor.Green;
+      public static RLColor KoboldColor = new RLColor( 255, 165, 0 );
       public static RLColor Player = RLColor.White;
    }
 

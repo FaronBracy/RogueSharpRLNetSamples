@@ -9,16 +9,20 @@ namespace RogueSharpRLNetSamples.Services
 {
    public class CommandService
    {
-      private readonly DungeonMap _dungeonMap;
+      public DungeonMap DungeonMap
+      {
+         get;
+         private set;
+      }
 
       public CommandService( DungeonMap dungeonMap )
       {
-         _dungeonMap = dungeonMap;
+         DungeonMap = dungeonMap;
       }
 
       public void MovePlayer( Direction direction )
       {
-         Player player = _dungeonMap.GetPlayer();
+         Player player = DungeonMap.GetPlayer();
          int x;
          int y;
 
@@ -54,9 +58,9 @@ namespace RogueSharpRLNetSamples.Services
             }
          }
 
-         if ( !_dungeonMap.SetActorPosition( player, x, y ) )
+         if ( !DungeonMap.SetActorPosition( player, x, y ) )
          {
-            Monster monster = _dungeonMap.MonsterAt( x, y );
+            Monster monster = DungeonMap.MonsterAt( x, y );
 
             if ( monster != null )
             {
@@ -71,42 +75,27 @@ namespace RogueSharpRLNetSamples.Services
          if ( scheduleable is Player )
          {
             Game.IsPlayerTurn = true;
-            Game.ScheduleService.Add( _dungeonMap.GetPlayer() );
+            Game.ScheduleService.Add( DungeonMap.GetPlayer() );
          }
          else
          {
             Monster monster = scheduleable as Monster;
-            PerformAction( monster );
-            Game.ScheduleService.Add( monster );
-            ActivateMonsters();
-         }
-      }
 
-      private void PerformAction( Monster monster )
-      {
-         Player player = _dungeonMap.GetPlayer();
-         FieldOfView monsterFov = new FieldOfView( _dungeonMap );
-         monsterFov.ComputeFov( monster.X, monster.Y, monster.Awareness, true );
-         if ( monsterFov.IsInFov( player.X, player.Y ) )
-         {
-            PathFinder pathFinder = new PathFinder( _dungeonMap );
-            Path path = pathFinder.ShortestPath( _dungeonMap.GetCell( monster.X, monster.Y ), _dungeonMap.GetCell( player.X, player.Y ) );
-            try
+            if ( monster != null )
             {
-               MoveMonster( monster, path.StepForward() );
+               monster.PerformAction( this );
+               Game.ScheduleService.Add( monster );
             }
-            catch ( NoMoreStepsException )
-            {
-               Game.Messages.Add( string.Format( "{0} waits for a turn", monster.Name ) );
-            }
+
+            ActivateMonsters();
          }
       }
 
       public void MoveMonster( Monster monster, Cell cell )
       {
-         if ( !_dungeonMap.SetActorPosition( monster, cell.X, cell.Y ) )
+         if ( !DungeonMap.SetActorPosition( monster, cell.X, cell.Y ) )
          {
-            Player player = _dungeonMap.GetPlayer();
+            Player player = DungeonMap.GetPlayer();
             if ( player.X == cell.X && player.Y == cell.Y )
             {
                Attack( monster, player );
@@ -182,22 +171,22 @@ namespace RogueSharpRLNetSamples.Services
                {
                   if ( defender.Head != null && defender.Head != HeadEquipment.None() )
                   {
-                     _dungeonMap.AddEquipment( defender.X, defender.Y, defender.Head );
+                     DungeonMap.AddEquipment( defender.X, defender.Y, defender.Head );
                   }
                   if ( defender.Body != null && defender.Body != BodyEquipment.None() )
                   {
-                     _dungeonMap.AddEquipment( defender.X, defender.Y, defender.Body );
+                     DungeonMap.AddEquipment( defender.X, defender.Y, defender.Body );
                   }
                   if ( defender.Hand != null && defender.Hand != HandEquipment.None() )
                   {
-                     _dungeonMap.AddEquipment( defender.X, defender.Y, defender.Hand );
+                     DungeonMap.AddEquipment( defender.X, defender.Y, defender.Hand );
                   }
                   if ( defender.Feet != null && defender.Feet != FeetEquipment.None() )
                   {
-                     _dungeonMap.AddEquipment( defender.X, defender.Y, defender.Feet );
+                     DungeonMap.AddEquipment( defender.X, defender.Y, defender.Feet );
                   }
-                  _dungeonMap.AddGold( defender.X, defender.Y, defender.Gold );
-                  _dungeonMap.RemoveMonster( (Monster) defender );
+                  DungeonMap.AddGold( defender.X, defender.Y, defender.Gold );
+                  DungeonMap.RemoveMonster( (Monster) defender );
 
                   Game.Messages.Add( string.Format( "  {0} died and dropped {1} gold", defender.Name, defender.Gold ) );
                }

@@ -185,9 +185,9 @@ namespace RogueSharpRLNetSamples
          StairsUp.Draw( mapConsole, this );
          StairsDown.Draw( mapConsole, this );
 
-         foreach ( Treasure gold in _treasurePiles )
+         foreach ( Treasure treasure in _treasurePiles )
          {
-            gold.Draw( mapConsole, this );
+            treasure.Draw( mapConsole, this );
          }
 
          statConsole.Clear();

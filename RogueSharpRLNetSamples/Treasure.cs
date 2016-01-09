@@ -27,13 +27,18 @@ namespace RogueSharpRLNetSamples
 
       public void Draw( RLConsole mapConsole, IMap map )
       {
+         if ( !map.IsExplored( X, Y ) )
+         {
+            return;
+         }
+
          if ( map.IsInFov( X, Y ) )
          {
             mapConsole.Set( X, Y, Color, null, Symbol );
          }
          else
          {
-            mapConsole.Set( X, Y, Colors.Floor, Colors.FloorBackground, '.' );
+            mapConsole.Set( X, Y, RLColor.Blend( Color, RLColor.Gray, 0.5f ), Colors.FloorBackground, Symbol );
          }
       }
    }
