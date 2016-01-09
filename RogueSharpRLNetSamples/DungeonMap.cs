@@ -117,7 +117,10 @@ namespace RogueSharpRLNetSamples
 
       public void AddGold( int x, int y, int amount )
       {
-         _treasurePiles.Add( new Treasure( x, y, amount, null ) );
+         if ( amount > 0 )
+         {
+            _treasurePiles.Add( new Treasure( x, y, amount, null ) );
+         }
       }
 
       private void PickUpTreasure( Actor actor, int x, int y )
@@ -125,9 +128,11 @@ namespace RogueSharpRLNetSamples
          List<Treasure> treasureAtLocation = _treasurePiles.Where( g => g.X == x && g.Y == y ).ToList();
          foreach ( Treasure treasure in treasureAtLocation )
          {
-            actor.Gold += treasure.Gold;
-            Game.Messages.Add( string.Format( "{0} picked up {1} gold", actor.Name, treasure.Gold ) );
-
+            if ( treasure.Gold > 0 )
+            {
+               actor.Gold += treasure.Gold;
+               Game.Messages.Add( string.Format( "{0} picked up {1} gold", actor.Name, treasure.Gold ) );
+            }
             if ( treasure.Equipment is HeadEquipment )
             {
                actor.Head = treasure.Equipment as HeadEquipment;

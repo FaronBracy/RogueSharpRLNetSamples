@@ -3,6 +3,7 @@ using RogueSharp;
 using RogueSharp.DiceNotation;
 using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Interfaces;
+using RogueSharpRLNetSamples.Inventory;
 
 namespace RogueSharpRLNetSamples.Services
 {
@@ -179,6 +180,22 @@ namespace RogueSharpRLNetSamples.Services
                }
                else if ( defender is Monster )
                {
+                  if ( defender.Head != null && defender.Head != HeadEquipment.None() )
+                  {
+                     _dungeonMap.AddEquipment( defender.X, defender.Y, defender.Head );
+                  }
+                  if ( defender.Body != null && defender.Body != BodyEquipment.None() )
+                  {
+                     _dungeonMap.AddEquipment( defender.X, defender.Y, defender.Body );
+                  }
+                  if ( defender.Hand != null && defender.Hand != HandEquipment.None() )
+                  {
+                     _dungeonMap.AddEquipment( defender.X, defender.Y, defender.Hand );
+                  }
+                  if ( defender.Feet != null && defender.Feet != FeetEquipment.None() )
+                  {
+                     _dungeonMap.AddEquipment( defender.X, defender.Y, defender.Feet );
+                  }
                   _dungeonMap.AddGold( defender.X, defender.Y, defender.Gold );
                   _dungeonMap.RemoveMonster( (Monster) defender );
 

@@ -109,6 +109,9 @@ namespace RogueSharpRLNetSamples
          if ( _renderRequired )
          {
             _mapConsole.Clear();
+            _messageConsole.Clear();
+            _statConsole.Clear();
+            _inventoryConsole.Clear();
             _map.Draw( _mapConsole, _statConsole, _inventoryConsole );
             Messages.Draw( _messageConsole );
             RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, _inventoryHeight );
