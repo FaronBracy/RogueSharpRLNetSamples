@@ -5,10 +5,10 @@ namespace RogueSharpRLNetSamples.Actors
 {
    public class Kobold : Monster
    {
-      public static Monster Create( int level, Point location )
+      public static Kobold Create( int level, Point location )
       {
          int health = Dice.Roll( "2D5" );
-         return new Monster {
+         return new Kobold {
             Attack = Dice.Roll( "1D3" ) + level / 3,
             AttackChance = Dice.Roll( "25D3" ),
             Awareness = 10,

@@ -1,6 +1,7 @@
 ﻿using System;
 using RLNET;
 using RogueSharp;
+using RogueSharpRLNetSamples.Behavior;
 using RogueSharpRLNetSamples.Services;
 
 namespace RogueSharpRLNetSamples.Actors
@@ -27,7 +28,7 @@ namespace RogueSharpRLNetSamples.Actors
 
          if ( map.IsInFov( X, Y ) )
          {
-            mapConsole.Set( X, Y, Color, null, Symbol );
+            mapConsole.Set( X, Y, Color, Colors.FloorBackgroundFov, Symbol );
          }
          else
          {
@@ -37,23 +38,8 @@ namespace RogueSharpRLNetSamples.Actors
 
       public virtual void PerformAction( CommandService commandService )
       {
-         DungeonMap dungeonMap = commandService.DungeonMap;
-         Player player = dungeonMap.GetPlayer();
-         FieldOfView monsterFov = new FieldOfView( dungeonMap );
-         monsterFov.ComputeFov( X, Y, Awareness, true );
-         if ( monsterFov.IsInFov( player.X, player.Y ) )
-         {
-            PathFinder pathFinder = new PathFinder( dungeonMap );
-            Path path = pathFinder.ShortestPath( dungeonMap.GetCell( X, Y ), dungeonMap.GetCell( player.X, player.Y ) );
-            try
-            {
-               commandService.MoveMonster( this, path.StepForward() );
-            }
-            catch ( NoMoreStepsException )
-            {
-               Game.Messages.Add( string.Format( "{0} waits for a turn", Name ) );
-            }
-         }
+         var behavior = new StandardMoveAndAttack();
+         behavior.Act( this, commandService );
       }
    }
 }

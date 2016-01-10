@@ -55,6 +55,9 @@
     <Compile Include="Actors\Actor.cs" />
     <Compile Include="Actors\Goblin.cs" />
     <Compile Include="Actors\Kobold.cs" />
+    <Compile Include="Behavior\RunAway.cs" />
+    <Compile Include="Behavior\StandardMoveAndAttack.cs" />
+    <Compile Include="Interfaces\IBehavior.cs" />
     <Compile Include="Inventory\BodyEquipment.cs" />
     <Compile Include="Colors.cs" />
     <Compile Include="Inventory\Equipment.cs" />

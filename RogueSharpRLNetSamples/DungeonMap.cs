@@ -48,6 +48,15 @@ namespace RogueSharpRLNetSamples
          return _monsters.SingleOrDefault( m => m.X == x && m.Y == y );
       }
 
+      public IEnumerable<Point> GetMonsterLocations()
+      {
+         return _monsters.Select( m => new Point
+         {
+            X = m.X,
+            Y = m.Y
+         } );
+      } 
+
       public void AddEquipment( int x, int y, Equipment equipment )
       {
          Treasure treasure = new Treasure( x, y, 0, equipment );
