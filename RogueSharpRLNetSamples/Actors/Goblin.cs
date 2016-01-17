@@ -7,6 +7,8 @@ namespace RogueSharpRLNetSamples.Actors
 {
    public class Goblin : Monster
    {
+      private int? _turnsSpentRunning = null;
+
       public static Goblin Create( int level, Point location )
       {
          int health = Dice.Roll( "1D5" );
@@ -30,11 +32,25 @@ namespace RogueSharpRLNetSamples.Actors
 
       public override void PerformAction( CommandService commandService )
       {
+         var fullyHealBehavior = new FullyHeal();
          var standardBehavior = new StandardMoveAndAttack();
          var runAwayBehavior = new RunAway();
-         if ( Health < MaxHealth )
+         if ( _turnsSpentRunning.HasValue && _turnsSpentRunning.Value > 15 )
+         {
+            fullyHealBehavior.Act( this, commandService );
+            _turnsSpentRunning = null;
+         }
+         else if ( Health < MaxHealth )
          {
             runAwayBehavior.Act( this, commandService );
+            if ( _turnsSpentRunning.HasValue )
+            {
+               _turnsSpentRunning += 1;
+            }
+            else
+            {
+               _turnsSpentRunning = 1;
+            }
          }
          else
          {

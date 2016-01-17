@@ -50,12 +50,11 @@ namespace RogueSharpRLNetSamples
 
       public IEnumerable<Point> GetMonsterLocations()
       {
-         return _monsters.Select( m => new Point
-         {
+         return _monsters.Select( m => new Point {
             X = m.X,
             Y = m.Y
          } );
-      } 
+      }
 
       public void AddEquipment( int x, int y, Equipment equipment )
       {
@@ -119,7 +118,9 @@ namespace RogueSharpRLNetSamples
          if ( door != null && !door.IsOpen )
          {
             door.IsOpen = true;
-            SetCellProperties( x, y, true, true, true );
+            var cell = GetCell( x, y );
+            SetCellProperties( x, y, true, true, cell.IsExplored );
+
             Game.Messages.Add( string.Format( "{0} opened a door", actor.Name ) );
          }
       }
@@ -152,12 +153,12 @@ namespace RogueSharpRLNetSamples
                actor.Body = treasure.Equipment as BodyEquipment;
                Game.Messages.Add( string.Format( "{0} picked up {1} body armor", actor.Name, treasure.Equipment.Name ) );
             }
-            else if( treasure.Equipment is HandEquipment )
+            else if ( treasure.Equipment is HandEquipment )
             {
                actor.Hand = treasure.Equipment as HandEquipment;
                Game.Messages.Add( string.Format( "{0} picked up a {1}", actor.Name, treasure.Equipment.Name ) );
             }
-            else if( treasure.Equipment is FeetEquipment )
+            else if ( treasure.Equipment is FeetEquipment )
             {
                actor.Feet = treasure.Equipment as FeetEquipment;
                Game.Messages.Add( string.Format( "{0} picked up {1} boots", actor.Name, treasure.Equipment.Name ) );
@@ -171,7 +172,7 @@ namespace RogueSharpRLNetSamples
       {
          return StairsDown.X == _player.X && StairsDown.Y == _player.Y;
       }
-      
+
       public void SetIsWalkable( int x, int y, bool isWalkable )
       {
          Cell cell = GetCell( x, y );
