@@ -57,6 +57,7 @@
     <Compile Include="Actors\Kobold.cs" />
     <Compile Include="Behavior\FullyHeal.cs" />
     <Compile Include="Behavior\RunAway.cs" />
+    <Compile Include="Behavior\ShoutForHelp.cs" />
     <Compile Include="Behavior\StandardMoveAndAttack.cs" />
     <Compile Include="Interfaces\IBehavior.cs" />
     <Compile Include="Inventory\BodyEquipment.cs" />

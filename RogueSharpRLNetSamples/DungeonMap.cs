@@ -45,6 +45,7 @@ namespace RogueSharpRLNetSamples
 
       public Monster MonsterAt( int x, int y )
       {
+         // TODO: Sometimes this throws an exception because 2 monsters occupy the same space. Not sure how this happens
          return _monsters.SingleOrDefault( m => m.X == x && m.Y == y );
       }
 

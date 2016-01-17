@@ -8,6 +8,7 @@ namespace RogueSharpRLNetSamples.Actors
    public class Goblin : Monster
    {
       private int? _turnsSpentRunning = null;
+      private bool _shoutedForHelp = false;
 
       public static Goblin Create( int level, Point location )
       {
@@ -35,6 +36,8 @@ namespace RogueSharpRLNetSamples.Actors
          var fullyHealBehavior = new FullyHeal();
          var standardBehavior = new StandardMoveAndAttack();
          var runAwayBehavior = new RunAway();
+         var shoutForHelpBehavior = new ShoutForHelp();
+
          if ( _turnsSpentRunning.HasValue && _turnsSpentRunning.Value > 15 )
          {
             fullyHealBehavior.Act( this, commandService );
@@ -50,6 +53,11 @@ namespace RogueSharpRLNetSamples.Actors
             else
             {
                _turnsSpentRunning = 1;
+            }
+
+            if ( !_shoutedForHelp )
+            {
+               _shoutedForHelp = shoutForHelpBehavior.Act( this, commandService );
             }
          }
          else
