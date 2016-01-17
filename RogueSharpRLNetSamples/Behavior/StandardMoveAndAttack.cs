@@ -11,8 +11,15 @@ namespace RogueSharpRLNetSamples.Behavior
          DungeonMap dungeonMap = commandService.DungeonMap;
          Player player = dungeonMap.GetPlayer();
          FieldOfView monsterFov = new FieldOfView( dungeonMap );
-         monsterFov.ComputeFov( monster.X, monster.Y, monster.Awareness, true );
-         if ( monsterFov.IsInFov( player.X, player.Y ) )
+         if ( !monster.IsAlerted )
+         {
+            monsterFov.ComputeFov( monster.X, monster.Y, monster.Awareness, true );
+            if ( monsterFov.IsInFov( player.X, player.Y ) )
+            {
+               monster.IsAlerted = true;
+            }
+         }
+         if ( monster.IsAlerted )
          {
             PathFinder pathFinder = new PathFinder( dungeonMap );
             Path path = pathFinder.ShortestPath( dungeonMap.GetCell( monster.X, monster.Y ), dungeonMap.GetCell( player.X, player.Y ) );
