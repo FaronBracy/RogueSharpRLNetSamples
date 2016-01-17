@@ -34,7 +34,6 @@ namespace RogueSharpRLNetSamples.Actors
       public override void PerformAction( CommandService commandService )
       {
          var fullyHealBehavior = new FullyHeal();
-         var standardBehavior = new StandardMoveAndAttack();
          var runAwayBehavior = new RunAway();
          var shoutForHelpBehavior = new ShoutForHelp();
 
@@ -62,7 +61,7 @@ namespace RogueSharpRLNetSamples.Actors
          }
          else
          {
-            standardBehavior.Act( this, commandService );
+            base.PerformAction( commandService );
          }
       }
    }

@@ -38,6 +38,24 @@ namespace RogueSharpRLNetSamples.Actors
          }
       }
 
+      public static Monster Clone( Monster anotherMonster )
+      {
+         return new Ooze {
+            Attack = anotherMonster.Attack,
+            AttackChance = anotherMonster.AttackChance,
+            Awareness = anotherMonster.Awareness,
+            Color = anotherMonster.Color,
+            Defense = anotherMonster.Defense,
+            DefenseChance = anotherMonster.DefenseChance,
+            Gold = anotherMonster.Gold,
+            Health = anotherMonster.Health,
+            MaxHealth = anotherMonster.MaxHealth,
+            Name = anotherMonster.Name,
+            Speed = anotherMonster.Speed,
+            Symbol = anotherMonster.Symbol
+         };
+      }
+
       public virtual void PerformAction( CommandService commandService )
       {
          var behavior = new StandardMoveAndAttack();

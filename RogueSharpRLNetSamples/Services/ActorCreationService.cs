@@ -10,14 +10,16 @@ namespace RogueSharpRLNetSamples.Services
 
       public static Monster CreateMonster( int level, Point location )
       {
-         if ( level == 1 )
-         {
-            if ( Dice.Roll( "1D100" ) > 75 )
-            {
-               return Kobold.Create( level, location );
-            }
-         }
+         int result = Dice.Roll( "1D100" );
 
+         if ( result < 25 )
+         {
+            return Kobold.Create( level, location );
+         }
+         if ( result < 50 )
+         {
+            return Ooze.Create( level, location );
+         }
          return Goblin.Create( level, location );
       }
 
