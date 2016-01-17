@@ -172,7 +172,7 @@ namespace RogueSharpRLNetSamples
          return StairsDown.X == _player.X && StairsDown.Y == _player.Y;
       }
       
-      private void SetIsWalkable( int x, int y, bool isWalkable )
+      public void SetIsWalkable( int x, int y, bool isWalkable )
       {
          Cell cell = GetCell( x, y );
          SetCellProperties( cell.X, cell.Y, cell.IsTransparent, isWalkable, cell.IsExplored );

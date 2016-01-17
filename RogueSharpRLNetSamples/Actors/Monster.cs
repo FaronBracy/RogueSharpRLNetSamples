@@ -8,6 +8,8 @@ namespace RogueSharpRLNetSamples.Actors
 {
    public class Monster : Actor
    {
+      public bool IsAlerted { get; set; }
+
       public void DrawStats( RLConsole statConsole, int position )
       {
          int yPosition = 13 + ( position * 2 );
