@@ -1,6 +1,7 @@
 ﻿using System;
 using RLNET;
 using RogueSharp.Random;
+using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Services;
 
 namespace RogueSharpRLNetSamples
@@ -29,7 +30,6 @@ namespace RogueSharpRLNetSamples
 
       private static bool _renderRequired = true;
 
-      public static bool IsPlayerTurn = false;
       public static Messages Messages;
       public static CommandService CommandService;
       public static ScheduleService ScheduleService;
@@ -48,8 +48,11 @@ namespace RogueSharpRLNetSamples
          _statConsole = new RLConsole( _statWidth, _statHeight );
          _inventoryConsole = new RLConsole( _inventoryWidth, _inventoryHeight );
          Messages.Add( "The rogue arrives on level 1" );
-         Messages.Add( string.Format( "Level created with seed '{0}'", seed ) );
+         Messages.Add( $"Level created with seed '{seed}'" );
          CommandService = new CommandService( _map );
+
+         _map.GetPlayer().QAbility = new Whirlwind( CommandService );
+
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;
          _rootConsole.Run();
@@ -57,27 +60,28 @@ namespace RogueSharpRLNetSamples
 
       private static void OnRootConsoleUpdate( object sender, UpdateEventArgs e )
       {
-         if ( IsPlayerTurn )
+         if ( CommandService.IsPlayerTurn )
          {
+            bool didPlayerAct = false;
             RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
             if ( keyPress != null )
             {
                _renderRequired = true;
                if ( keyPress.Key == RLKey.Up )
                {
-                  CommandService.MovePlayer( Direction.Up );
+                  didPlayerAct = CommandService.MovePlayer( Direction.Up );
                }
                else if ( keyPress.Key == RLKey.Down )
                {
-                  CommandService.MovePlayer( Direction.Down );
+                  didPlayerAct = CommandService.MovePlayer( Direction.Down );
                }
                else if ( keyPress.Key == RLKey.Left )
                {
-                  CommandService.MovePlayer( Direction.Left );
+                  didPlayerAct = CommandService.MovePlayer( Direction.Left );
                }
                else if ( keyPress.Key == RLKey.Right )
                {
-                  CommandService.MovePlayer( Direction.Right );
+                  didPlayerAct = CommandService.MovePlayer( Direction.Right );
                }
                else if ( keyPress.Key == RLKey.Escape )
                {
@@ -91,11 +95,19 @@ namespace RogueSharpRLNetSamples
                      _map = mapCreationService.CreateMap();
                      Messages = new Messages();
                      CommandService = new CommandService( _map );
-                     _rootConsole.Title = string.Format( "RougeSharp RLNet Tutorial - Level {0}", _mapLevel );
+                     _rootConsole.Title = $"RougeSharp RLNet Tutorial - Level {_mapLevel}";
+                     didPlayerAct = true;
                   }
                }
-               IsPlayerTurn = false;
-               CommandService.ActivateMonsters();
+               else
+               {
+                  didPlayerAct = CommandService.HandleKey( keyPress.Key );
+               }
+
+               if ( didPlayerAct )
+               {
+                  CommandService.EndPlayerTurn();
+               }
             }
          }
          else

@@ -22,30 +22,29 @@ namespace RogueSharpRLNetSamples.Behavior
          }
 
          Cell cell = FindClosestUnoccupiedCell( commandService.DungeonMap, monster.X, monster.Y );
+         
+         if ( cell == null )
          {
-            if ( cell == null )
-            {
-               // No empty cells so bail out
-               return false;
-            }
+            // No empty cells so bail out
+            return false;
+         }
 
-            // Make a new ooze with half the health of the old one
-            Ooze newOoze = Monster.Clone( monster ) as Ooze;
-            if ( newOoze != null )
-            {
-               newOoze.TurnsAlerted = 1;
-               newOoze.X = cell.X;
-               newOoze.Y = cell.Y;
-               newOoze.MaxHealth = halfHealth;
-               newOoze.Health = halfHealth;
-               commandService.DungeonMap.AddMonster( newOoze );
-               Game.Messages.Add( string.Format( "{0} splits itself in two", monster.Name ) );
-            }
-            else
-            {
-               // Not an ooze so bail out
-               return false;
-            }
+         // Make a new ooze with half the health of the old one
+         Ooze newOoze = Monster.Clone( monster ) as Ooze;
+         if ( newOoze != null )
+         {
+            newOoze.TurnsAlerted = 1;
+            newOoze.X = cell.X;
+            newOoze.Y = cell.Y;
+            newOoze.MaxHealth = halfHealth;
+            newOoze.Health = halfHealth;
+            commandService.DungeonMap.AddMonster( newOoze );
+            Game.Messages.Add( string.Format( "{0} splits itself in two", monster.Name ) );
+         }
+         else
+         {
+            // Not an ooze so bail out
+            return false;
          }
 
          // Halve the original ooze's health too

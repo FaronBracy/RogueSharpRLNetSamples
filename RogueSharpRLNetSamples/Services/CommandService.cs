@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using RLNET;
 using RogueSharp;
 using RogueSharp.DiceNotation;
 using RogueSharpRLNetSamples.Actors;
@@ -9,10 +10,11 @@ namespace RogueSharpRLNetSamples.Services
 {
    public class CommandService
    {
+      public bool IsPlayerTurn { get; set; }
+
       public DungeonMap DungeonMap
       {
          get;
-         private set;
       }
 
       public CommandService( DungeonMap dungeonMap )
@@ -20,7 +22,7 @@ namespace RogueSharpRLNetSamples.Services
          DungeonMap = dungeonMap;
       }
 
-      public void MovePlayer( Direction direction )
+      public bool MovePlayer( Direction direction )
       {
          Player player = DungeonMap.GetPlayer();
          int x;
@@ -54,19 +56,24 @@ namespace RogueSharpRLNetSamples.Services
             }
             default:
             {
-               return;
+               return false;
             }
          }
 
-         if ( !DungeonMap.SetActorPosition( player, x, y ) )
+         if ( DungeonMap.SetActorPosition( player, x, y ) )
          {
-            Monster monster = DungeonMap.MonsterAt( x, y );
-
-            if ( monster != null )
-            {
-               Attack( player, monster );
-            }
+            return true;
          }
+
+         Monster monster = DungeonMap.MonsterAt( x, y );
+
+         if ( monster != null )
+         {
+            Attack( player, monster );
+            return true;
+         }
+
+         return false;
       }
 
       public void ActivateMonsters()
@@ -74,7 +81,7 @@ namespace RogueSharpRLNetSamples.Services
          IScheduleable scheduleable = Game.ScheduleService.Get();
          if ( scheduleable is Player )
          {
-            Game.IsPlayerTurn = true;
+            IsPlayerTurn = true;
             Game.ScheduleService.Add( DungeonMap.GetPlayer() );
          }
          else
@@ -159,13 +166,13 @@ namespace RogueSharpRLNetSamples.Services
          {
             defender.Health = defender.Health - damage;
 
-            Game.Messages.Add( string.Format( "  {0} was hit for {1} damage", defender.Name, damage ) );
+            Game.Messages.Add( $"  {defender.Name} was hit for {damage} damage" );
 
             if ( defender.Health <= 0 )
             {
                if ( defender is Player )
                {
-                  Game.Messages.Add( string.Format( "  {0} was killed, GAME OVER MAN!", defender.Name ) );
+                  Game.Messages.Add( $"  {defender.Name} was killed, GAME OVER MAN!" );
                }
                else if ( defender is Monster )
                {
@@ -188,14 +195,43 @@ namespace RogueSharpRLNetSamples.Services
                   DungeonMap.AddGold( defender.X, defender.Y, defender.Gold );
                   DungeonMap.RemoveMonster( (Monster) defender );
 
-                  Game.Messages.Add( string.Format( "  {0} died and dropped {1} gold", defender.Name, defender.Gold ) );
+                  Game.Messages.Add( $"  {defender.Name} died and dropped {defender.Gold} gold" );
                }
             }
          }
          else
          {
-            Game.Messages.Add( string.Format( "  {0} blocked all damage", defender.Name, damage ) );
+            Game.Messages.Add( $"  {defender.Name} blocked all damage" );
          }
+      }
+
+      public bool HandleKey( RLKey key )
+      {
+         Player player = DungeonMap.GetPlayer();
+
+         if ( key == RLKey.Q )
+         {
+            return player.QAbility.Perform();
+         }
+         if ( key == RLKey.W )
+         {
+            return player.WAbility.Perform();
+         }
+         if ( key == RLKey.E )
+         {
+            return player.EAbility.Perform();
+         }
+         if ( key == RLKey.R )
+         {
+            return player.RAbility.Perform();
+         }
+         return false;
+      }
+
+      public void EndPlayerTurn()
+      {
+         IsPlayerTurn = false;
+         DungeonMap.GetPlayer().Tick();
       }
    }
 }

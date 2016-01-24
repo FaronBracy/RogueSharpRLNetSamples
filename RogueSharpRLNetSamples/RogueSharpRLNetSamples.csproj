@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abilities\DoNothing.cs" />
+    <Compile Include="Abilities\Whirlwind.cs" />
     <Compile Include="Actors\Actor.cs" />
     <Compile Include="Actors\Ooze.cs" />
     <Compile Include="Actors\Goblin.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="Behavior\RunAway.cs" />
     <Compile Include="Behavior\ShoutForHelp.cs" />
     <Compile Include="Behavior\StandardMoveAndAttack.cs" />
+    <Compile Include="Interfaces\IAbility.cs" />
     <Compile Include="Interfaces\IBehavior.cs" />
     <Compile Include="Inventory\BodyEquipment.cs" />
     <Compile Include="Colors.cs" />
