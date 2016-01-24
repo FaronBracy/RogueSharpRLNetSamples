@@ -52,6 +52,7 @@ namespace RogueSharpRLNetSamples
          CommandService = new CommandService( _map );
 
          _map.GetPlayer().QAbility = new Whirlwind( CommandService );
+         _map.GetPlayer().WAbility = new Heal( CommandService, 10 );  
 
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;

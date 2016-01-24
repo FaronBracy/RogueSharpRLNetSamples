@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using RogueSharp;
 using RogueSharpRLNetSamples.Actors;
-using RogueSharpRLNetSamples.Interfaces;
 using RogueSharpRLNetSamples.Services;
 
 namespace RogueSharpRLNetSamples.Abilities
 {
-   public class Whirlwind : IAbility
+   public class Whirlwind : Ability
    {
-      public string Name { get; }
-
-      public int TurnsToRefresh { get; }
-
-      public int TurnsUntilRefreshed { get; private set; }
-
       private readonly CommandService _commandService;
 
       public Whirlwind( CommandService commandService )
@@ -25,13 +17,8 @@ namespace RogueSharpRLNetSamples.Abilities
          _commandService = commandService;
       }
 
-      public bool Perform()
+      protected override bool PerformAbility()
       {
-         if ( TurnsUntilRefreshed > 0 )
-         {
-            return false;
-         }
-
          DungeonMap map = _commandService.DungeonMap;
 
          Player player = map.GetPlayer();
@@ -59,17 +46,7 @@ namespace RogueSharpRLNetSamples.Abilities
             }
          }
 
-         TurnsUntilRefreshed = TurnsToRefresh;
-
          return true;
-      }
-
-      public void Tick()
-      {
-         if ( TurnsUntilRefreshed > 0 )
-         {
-            TurnsUntilRefreshed--;
-         }
       }
    }
 }

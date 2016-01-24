@@ -2,14 +2,8 @@
 
 namespace RogueSharpRLNetSamples.Abilities
 {
-   public class DoNothing : IAbility
+   public class DoNothing : Ability
    {
-      public string Name { get; }
-
-      public int TurnsToRefresh { get; }
-
-      public int TurnsUntilRefreshed { get; }
-
       public DoNothing()
       {
          Name = "None";
@@ -17,14 +11,10 @@ namespace RogueSharpRLNetSamples.Abilities
          TurnsUntilRefreshed = 0;
       }
 
-      public bool Perform()
+      protected override bool PerformAbility()
       {
-         Game.Messages.Add( "No ability in that slot" );  
+         Game.Messages.Add( "No ability in that slot" );
          return false;
-      }
-
-      public void Tick()
-      {
       }
    }
 }
