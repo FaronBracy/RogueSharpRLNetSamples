@@ -10,7 +10,7 @@ namespace RogueSharpRLNetSamples.Actors
       private int? _turnsSpentRunning = null;
       private bool _shoutedForHelp = false;
 
-      public static Goblin Create( int level, Point location )
+      public static Goblin Create( int level )
       {
          int health = Dice.Roll( "1D5" );
          return new Goblin {
@@ -25,9 +25,7 @@ namespace RogueSharpRLNetSamples.Actors
             MaxHealth = health,
             Name = "Goblin",
             Speed = 12,
-            Symbol = 'g',
-            X = location.X,
-            Y = location.Y
+            Symbol = 'g'
          };
       }
 

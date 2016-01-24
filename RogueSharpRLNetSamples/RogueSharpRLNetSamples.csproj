@@ -77,6 +77,7 @@
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Interfaces\IHasStats.cs" />
     <Compile Include="Interfaces\IScheduleable.cs" />
+    <Compile Include="Pool.cs" />
     <Compile Include="Services\CommandService.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />

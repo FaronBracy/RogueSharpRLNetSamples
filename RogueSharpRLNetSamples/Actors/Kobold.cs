@@ -5,7 +5,7 @@ namespace RogueSharpRLNetSamples.Actors
 {
    public class Kobold : Monster
    {
-      public static Kobold Create( int level, Point location )
+      public static Kobold Create( int level )
       {
          int health = Dice.Roll( "2D5" );
          return new Kobold {
@@ -20,9 +20,7 @@ namespace RogueSharpRLNetSamples.Actors
             MaxHealth = health,
             Name = "Kobold",
             Speed = 14,
-            Symbol = 'k',
-            X = location.X,
-            Y = location.Y
+            Symbol = 'k'
          };
       }
    }

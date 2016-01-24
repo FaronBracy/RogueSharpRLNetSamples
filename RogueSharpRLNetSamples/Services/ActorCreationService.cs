@@ -1,5 +1,4 @@
 using RogueSharp;
-using RogueSharp.DiceNotation;
 using RogueSharpRLNetSamples.Actors;
 
 namespace RogueSharpRLNetSamples.Services
@@ -10,17 +9,16 @@ namespace RogueSharpRLNetSamples.Services
 
       public static Monster CreateMonster( int level, Point location )
       {
-         int result = Dice.Roll( "1D100" );
+         Pool<Monster> monsterPool = new Pool<Monster>();
+         monsterPool.Add( Kobold.Create( level ), 25 );
+         monsterPool.Add( Ooze.Create( level ), 25 );
+         monsterPool.Add( Goblin.Create( level ), 50 );
 
-         if ( result < 25 )
-         {
-            return Kobold.Create( level, location );
-         }
-         if ( result < 50 )
-         {
-            return Ooze.Create( level, location );
-         }
-         return Goblin.Create( level, location );
+         Monster monster = monsterPool.Get();
+         monster.X = location.X;
+         monster.Y = location.Y;
+
+         return monster;
       }
 
 

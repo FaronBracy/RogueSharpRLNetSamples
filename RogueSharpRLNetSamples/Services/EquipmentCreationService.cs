@@ -1,82 +1,47 @@
-﻿using RogueSharp.DiceNotation;
-using RogueSharpRLNetSamples.Inventory;
+﻿using RogueSharpRLNetSamples.Inventory;
 
 namespace RogueSharpRLNetSamples.Services
 {
-   public static class EquipmentCreationService
+   public class EquipmentCreationService
    {
-      public static Equipment CreateEquipment( int level )
+      private readonly Pool<Equipment> _equipmentPool;
+
+      public EquipmentCreationService( int level )
       {
-         int result = Dice.Roll( "1D100" );
+         _equipmentPool = new Pool<Equipment>();
+
          if ( level <= 3 )
          {
-            if ( result > 80 )
-            {
-               return BodyEquipment.Leather();
-            }
-            if ( result > 60 )
-            {
-               return HeadEquipment.Leather();
-            }
-            if ( result > 40 )
-            {
-               return FeetEquipment.Leather();
-            }
-            if ( result > 15 )
-            {
-               return HandEquipment.Dagger();
-            }
-            if ( result > 10 )
-            {
-               return HandEquipment.Sword();
-            }
-            if ( result > 5 )
-            {
-               return HeadEquipment.Chain();
-            }
-            return BodyEquipment.Chain();
+            _equipmentPool.Add( BodyEquipment.Leather(), 20 );
+            _equipmentPool.Add( HeadEquipment.Leather(), 20 );
+            _equipmentPool.Add( FeetEquipment.Leather(), 20 );
+            _equipmentPool.Add( HandEquipment.Dagger(), 25 );
+            _equipmentPool.Add( HandEquipment.Sword(), 5 );
+            _equipmentPool.Add( HeadEquipment.Chain(), 5 );
+            _equipmentPool.Add( BodyEquipment.Chain(), 5 );
          }
-         if ( level <= 6 )
+         else if ( level <= 6 )
          {
-            if ( result > 80 )
-            {
-               return BodyEquipment.Chain();
-            }
-            if ( result > 60 )
-            {
-               return HeadEquipment.Chain();
-            }
-            if ( result > 40 )
-            {
-               return FeetEquipment.Chain();
-            }
-            if ( result > 15 )
-            {
-               return HandEquipment.Sword();
-            }
-            if ( result > 10 )
-            {
-               return HandEquipment.Axe();
-            }
-            if ( result > 5 )
-            {
-               return HeadEquipment.Plate();
-            }
-            return BodyEquipment.Plate();
+            _equipmentPool.Add( BodyEquipment.Chain(), 20 );
+            _equipmentPool.Add( HeadEquipment.Chain(), 20 );
+            _equipmentPool.Add( FeetEquipment.Chain(), 20 );
+            _equipmentPool.Add( HandEquipment.Sword(), 15 );
+            _equipmentPool.Add( HandEquipment.Axe(), 15 );
+            _equipmentPool.Add( HeadEquipment.Plate(), 5 );
+            _equipmentPool.Add( BodyEquipment.Plate(), 5 );
          }
-         if ( result > 75 )
+         else
          {
-            return BodyEquipment.Plate();
+            _equipmentPool.Add( BodyEquipment.Plate(), 25 );
+            _equipmentPool.Add( HeadEquipment.Plate(), 25 );
+            _equipmentPool.Add( FeetEquipment.Plate(), 25 );
+            _equipmentPool.Add( HandEquipment.TwoHandedSword(), 25 );
          }
-         if ( result > 50 )
-         {
-            return HeadEquipment.Plate();
-         }
-         if ( result > 25 )
-         {
-            return FeetEquipment.Plate();
-         }
-         return HandEquipment.TwoHandedSword();
+      }
+
+      public Equipment CreateEquipment()
+      {
+         return _equipmentPool.Get();
       }
    }
 }

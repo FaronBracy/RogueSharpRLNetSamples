@@ -19,6 +19,7 @@ namespace RogueSharpRLNetSamples.Services
       private readonly int _roomMinSize;
       private readonly int _level;
       private readonly DungeonMap _map;
+      private readonly EquipmentCreationService _equipmentCreationService;
 
       public MapCreationService( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int level, IRandom random )
       {
@@ -30,6 +31,7 @@ namespace RogueSharpRLNetSamples.Services
          _level = level;
          _random = random;
          _map = new DungeonMap();
+         _equipmentCreationService = new EquipmentCreationService( level );
       }
 
       public DungeonMap CreateMap()
@@ -234,7 +236,7 @@ namespace RogueSharpRLNetSamples.Services
                   Point randomRoomLocation = GetRandomLocationInRoom( room );
                   if ( randomRoomLocation != null )
                   {
-                     Equipment equipment = EquipmentCreationService.CreateEquipment( _level );
+                     Equipment equipment = _equipmentCreationService.CreateEquipment();
                      Point location = GetRandomLocationInRoom( room );
                      _map.AddEquipment( location.X, location.Y, equipment );
                   }

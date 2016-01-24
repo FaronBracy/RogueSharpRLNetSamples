@@ -7,7 +7,7 @@ namespace RogueSharpRLNetSamples.Actors
 {
    public class Ooze : Monster
    {
-      public static Ooze Create( int level, Point location )
+      public static Ooze Create( int level )
       {
          int health = Dice.Roll( "4D5" );
          return new Ooze {
@@ -22,9 +22,7 @@ namespace RogueSharpRLNetSamples.Actors
             MaxHealth = health,
             Name = "Ooze",
             Speed = 14,
-            Symbol = 'o',
-            X = location.X,
-            Y = location.Y
+            Symbol = 'o'
          };
       }
 
