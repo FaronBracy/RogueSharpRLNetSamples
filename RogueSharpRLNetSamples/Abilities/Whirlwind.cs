@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using RogueSharp;
 using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Interfaces;
 using RogueSharpRLNetSamples.Services;
@@ -14,7 +16,7 @@ namespace RogueSharpRLNetSamples.Abilities
       public int TurnsUntilRefreshed { get; private set; }
 
       private readonly CommandService _commandService;
-      
+
       public Whirlwind( CommandService commandService )
       {
          Name = "Whirlwind";
@@ -29,8 +31,33 @@ namespace RogueSharpRLNetSamples.Abilities
          {
             return false;
          }
-         Player player = _commandService.DungeonMap.GetPlayer();
+
+         DungeonMap map = _commandService.DungeonMap;
+
+         Player player = map.GetPlayer();
          Game.Messages.Add( $"{player.Name} performs a whirlwind attack against all adjacent enemies" );
+
+         List<Point> monsterLocations = new List<Point>();
+
+         foreach ( Cell cell in map.GetCellsInArea( player.X, player.Y, 1 ) )
+         {
+            foreach ( Point monsterLocation in map.GetMonsterLocations() )
+            {
+               if ( cell.X == monsterLocation.X && cell.Y == monsterLocation.Y )
+               {
+                  monsterLocations.Add( monsterLocation );
+               }
+            }
+         }
+
+         foreach ( Point monsterLocation in monsterLocations )
+         {
+            Monster monster = map.MonsterAt( monsterLocation.X, monsterLocation.Y );
+            if ( monster != null )
+            {
+               _commandService.Attack( player, monster );
+            }
+         }
 
          TurnsUntilRefreshed = TurnsToRefresh;
 

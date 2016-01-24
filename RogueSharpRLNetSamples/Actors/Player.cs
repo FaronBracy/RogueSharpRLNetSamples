@@ -80,13 +80,13 @@ namespace RogueSharpRLNetSamples.Actors
          RLColor highlightTextColor = RLColor.LightGray;
          if ( !( ability is DoNothing ) )
          {
-            if ( ability.TurnsUntilRefreshed == 0 && !( ability is DoNothing ) )
+            if ( ability.TurnsUntilRefreshed == 0 )
             {
                highlightTextColor = Swatch.PrimaryLightest;
             }
             else
             {
-               highlightTextColor = Swatch.SecondaryLightest;
+               highlightTextColor = new RLColor( 255, 151, 148 );
             }
          }
 
@@ -99,7 +99,7 @@ namespace RogueSharpRLNetSamples.Actors
          {
             int width = Convert.ToInt32( ( (double) ability.TurnsUntilRefreshed / (double) ability.TurnsToRefresh ) * 16.0 );
             int remainingWidth = 20 - width;
-            inventoryConsole.SetBackColor( xHighlightPosition, yPosition, width, 1, Swatch.SecondaryDarkest );
+            inventoryConsole.SetBackColor( xHighlightPosition, yPosition, width, 1, Swatch.AlternateDarkest );
             inventoryConsole.SetBackColor( xHighlightPosition + width, yPosition, remainingWidth, 1, RLColor.Black );
          }
       }
