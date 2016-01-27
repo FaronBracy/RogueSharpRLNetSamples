@@ -2,6 +2,7 @@
 using System.Linq;
 using RLNET;
 using RogueSharp;
+using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Inventory;
 using RogueSharpRLNetSamples.Services;
@@ -66,7 +67,12 @@ namespace RogueSharpRLNetSamples
       public void AddEquipment( int x, int y, Equipment equipment )
       {
          Treasure treasure = new Treasure( x, y, 0, equipment );
-         treasure.Symbol = ( '!' );
+         _treasurePiles.Add( treasure );
+      }
+
+      public void AddAbility( int x, int y, Ability ability )
+      {
+         Treasure treasure = new Treasure( x, y, 0, null, ability );
          _treasurePiles.Add( treasure );
       }
 
@@ -136,7 +142,7 @@ namespace RogueSharpRLNetSamples
       {
          if ( amount > 0 )
          {
-            _treasurePiles.Add( new Treasure( x, y, amount, null ) );
+            _treasurePiles.Add( new Treasure( x, y, amount ) );
          }
       }
 
@@ -150,25 +156,34 @@ namespace RogueSharpRLNetSamples
                actor.Gold += treasure.Gold;
                Game.Messages.Add( string.Format( "{0} picked up {1} gold", actor.Name, treasure.Gold ) );
             }
-            if ( treasure.Equipment is HeadEquipment )
+
+            if ( treasure.Equipment != null )
             {
-               actor.Head = treasure.Equipment as HeadEquipment;
-               Game.Messages.Add( string.Format( "{0} picked up a {1} helmet", actor.Name, treasure.Equipment.Name ) );
+               if ( treasure.Equipment is HeadEquipment )
+               {
+                  actor.Head = treasure.Equipment as HeadEquipment;
+                  Game.Messages.Add( string.Format( "{0} picked up a {1} helmet", actor.Name, treasure.Equipment.Name ) );
+               }
+               else if ( treasure.Equipment is BodyEquipment )
+               {
+                  actor.Body = treasure.Equipment as BodyEquipment;
+                  Game.Messages.Add( string.Format( "{0} picked up {1} body armor", actor.Name, treasure.Equipment.Name ) );
+               }
+               else if ( treasure.Equipment is HandEquipment )
+               {
+                  actor.Hand = treasure.Equipment as HandEquipment;
+                  Game.Messages.Add( string.Format( "{0} picked up a {1}", actor.Name, treasure.Equipment.Name ) );
+               }
+               else if ( treasure.Equipment is FeetEquipment )
+               {
+                  actor.Feet = treasure.Equipment as FeetEquipment;
+                  Game.Messages.Add( string.Format( "{0} picked up {1} boots", actor.Name, treasure.Equipment.Name ) );
+               }
             }
-            else if ( treasure.Equipment is BodyEquipment )
+
+            if ( treasure.Ability != null && actor is Player )
             {
-               actor.Body = treasure.Equipment as BodyEquipment;
-               Game.Messages.Add( string.Format( "{0} picked up {1} body armor", actor.Name, treasure.Equipment.Name ) );
-            }
-            else if ( treasure.Equipment is HandEquipment )
-            {
-               actor.Hand = treasure.Equipment as HandEquipment;
-               Game.Messages.Add( string.Format( "{0} picked up a {1}", actor.Name, treasure.Equipment.Name ) );
-            }
-            else if ( treasure.Equipment is FeetEquipment )
-            {
-               actor.Feet = treasure.Equipment as FeetEquipment;
-               Game.Messages.Add( string.Format( "{0} picked up {1} boots", actor.Name, treasure.Equipment.Name ) );
+               _player.AddAbility( treasure.Ability );
             }
 
             _treasurePiles.Remove( treasure );

@@ -1,5 +1,6 @@
 ﻿using RLNET;
 using RogueSharp;
+using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Interfaces;
 using RogueSharpRLNetSamples.Inventory;
 
@@ -9,18 +10,30 @@ namespace RogueSharpRLNetSamples
    {
       public int Gold { get; set; }
       public Equipment Equipment { get; set; } 
+      public Ability Ability { get; set; }
 
       public RLColor Color { get; set; }
       public char Symbol { get; set; }
       public int X { get; set; }
       public int Y { get; set; }
 
-      public Treasure( int x, int y, int gold, Equipment equipment )
+      public Treasure( int x, int y, int gold, Equipment equipment = null, Ability ability = null )
       {
+         char symbol = '$';
+         if ( equipment != null )
+         {
+            symbol = '!';
+         }
+         if ( ability != null )
+         {
+            symbol = '*';
+         }
+
          Gold = gold;
          Equipment = equipment;
+         Ability = ability;
          Color = RLColor.Yellow;
-         Symbol = '$';
+         Symbol = symbol;
          X = x;
          Y = y;
       }

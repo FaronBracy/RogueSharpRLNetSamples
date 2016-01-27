@@ -52,12 +52,6 @@ namespace RogueSharpRLNetSamples
          Messages.Add( $"Level created with seed '{seed}'" );
          CommandService = new CommandService( _map );
          TargetingService = new TargetingService();
-
-         _map.GetPlayer().QAbility = new Whirlwind();
-         _map.GetPlayer().WAbility = new Heal( 10 );
-         _map.GetPlayer().EAbility = new RevealMap( 15 );
-         _map.GetPlayer().RAbility = new MagicMissile();
-
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;
          _rootConsole.Run();

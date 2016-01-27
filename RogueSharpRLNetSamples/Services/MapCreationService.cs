@@ -95,6 +95,8 @@ namespace RogueSharpRLNetSamples.Services
 
          PlaceEquipment();
 
+         PlaceAbility();
+
          return _map;
       }
 
@@ -231,7 +233,16 @@ namespace RogueSharpRLNetSamples.Services
                   Point randomRoomLocation = GetRandomLocationInRoom( room );
                   if ( randomRoomLocation != null )
                   {
-                     Equipment equipment = _equipmentCreationService.CreateEquipment();
+                     Equipment equipment;
+                     try
+                     {
+                        equipment = _equipmentCreationService.CreateEquipment();
+                     }
+                     catch ( InvalidOperationException )
+                     {
+                        // no more equipment to generate so just quit adding to this level
+                        return;
+                     }
                      Point location = GetRandomLocationInRoom( room );
                      _map.AddEquipment( location.X, location.Y, equipment );
                   }
@@ -248,6 +259,23 @@ namespace RogueSharpRLNetSamples.Services
          player.Y = _map.Rooms[0].Center.Y;
 
          _map.AddPlayer( player );
+      }
+
+      private void PlaceAbility()
+      {
+         if ( _level == 1 || _level % 3 == 0 )
+         {
+            try
+            {
+               var ability = AbilityCreationService.CreateAbility();
+               int roomIndex = _random.Next( 0, _map.Rooms.Count - 1 );
+               Point location = GetRandomLocationInRoom( _map.Rooms[roomIndex] );
+               _map.AddAbility( location.X, location.Y, ability );
+            }
+            catch ( InvalidOperationException )
+            {
+            }
+         }
       }
 
       private Point GetRandomLocationInRoom( Rectangle room )

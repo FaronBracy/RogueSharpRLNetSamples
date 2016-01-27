@@ -20,6 +20,26 @@ namespace RogueSharpRLNetSamples.Actors
          RAbility = new DoNothing();
       }
 
+      public void AddAbility( IAbility ability )
+      {
+         if ( QAbility is DoNothing )
+         {
+            QAbility = ability;
+         }
+         else if ( WAbility is DoNothing )
+         {
+            WAbility = ability;
+         }
+         else if ( EAbility is DoNothing )
+         {
+            EAbility = ability;
+         }
+         else if ( RAbility is DoNothing )
+         {
+            RAbility = ability;
+         }
+      }
+
       public void DrawStats( RLConsole statConsole )
       {
          statConsole.Print( 1, 1, $"Name:    {Name}", RLColor.White );
