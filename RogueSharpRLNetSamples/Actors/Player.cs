@@ -40,21 +40,16 @@ namespace RogueSharpRLNetSamples.Actors
          inventoryConsole.Print( 1, 9, $"Feet: {Feet.Name}", RLColor.LightGray );
 
          inventoryConsole.Print( 28, 1, "Abilities", RLColor.White );
-         inventoryConsole.Print( 28, 3, $"Q - {QAbility.Name}", RLColor.LightGray );
-         inventoryConsole.Print( 28, 5, $"W - {WAbility.Name}", RLColor.LightGray );
-         inventoryConsole.Print( 28, 7, $"E - {EAbility.Name}", RLColor.LightGray );
-         inventoryConsole.Print( 28, 9, $"R - {RAbility.Name}", RLColor.LightGray );
+         DrawAbility( QAbility, inventoryConsole, 0 );
+         DrawAbility( WAbility, inventoryConsole, 1 );
+         DrawAbility( EAbility, inventoryConsole, 2 );
+         DrawAbility( RAbility, inventoryConsole, 3 );
 
          inventoryConsole.Print( 55, 1, "Items", RLColor.White );
          inventoryConsole.Print( 55, 3, "1 - Health Potion", RLColor.LightGray );
          inventoryConsole.Print( 55, 5, "2 - Mana Potion", RLColor.LightGray );
          inventoryConsole.Print( 55, 7, "3 - Scroll", RLColor.LightGray );
          inventoryConsole.Print( 55, 9, "4 - Wand", RLColor.LightGray );
-
-         DrawAbility( QAbility, inventoryConsole, 0 );
-         DrawAbility( WAbility, inventoryConsole, 1 );
-         DrawAbility( EAbility, inventoryConsole, 2 );
-         DrawAbility( RAbility, inventoryConsole, 3 );
       }
 
       private void DrawAbility( IAbility ability, RLConsole inventoryConsole, int position )
@@ -77,16 +72,16 @@ namespace RogueSharpRLNetSamples.Actors
             letter = 'R';
          }
 
-         RLColor highlightTextColor = RLColor.LightGray;
+         RLColor highlightTextColor = Swatch.DbOldStone;
          if ( !( ability is DoNothing ) )
          {
             if ( ability.TurnsUntilRefreshed == 0 )
             {
-               highlightTextColor = Swatch.PrimaryLightest;
+               highlightTextColor = Swatch.DbLight;
             }
             else
             {
-               highlightTextColor = new RLColor( 255, 151, 148 );
+               highlightTextColor = Swatch.DbSkin;
             }
          }
 
@@ -99,7 +94,7 @@ namespace RogueSharpRLNetSamples.Actors
          {
             int width = Convert.ToInt32( ( (double) ability.TurnsUntilRefreshed / (double) ability.TurnsToRefresh ) * 16.0 );
             int remainingWidth = 20 - width;
-            inventoryConsole.SetBackColor( xHighlightPosition, yPosition, width, 1, Swatch.AlternateDarkest );
+            inventoryConsole.SetBackColor( xHighlightPosition, yPosition, width, 1, Swatch.DbOldBlood );
             inventoryConsole.SetBackColor( xHighlightPosition + width, yPosition, remainingWidth, 1, RLColor.Black );
          }
       }

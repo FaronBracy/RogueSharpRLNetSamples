@@ -41,7 +41,7 @@ namespace RogueSharpRLNetSamples.Services
 
       public Equipment CreateEquipment()
       {
-         return _equipmentPool.Get();
+         return _equipmentPool.GetUnique();
       }
    }
 }
