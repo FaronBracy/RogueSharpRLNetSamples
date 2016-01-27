@@ -55,6 +55,7 @@
     <Compile Include="Abilities\Ability.cs" />
     <Compile Include="Abilities\Heal.cs" />
     <Compile Include="Abilities\DoNothing.cs" />
+    <Compile Include="Abilities\MagicMissile.cs" />
     <Compile Include="Abilities\RevealMap.cs" />
     <Compile Include="Abilities\Whirlwind.cs" />
     <Compile Include="Actors\Actor.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Behavior\StandardMoveAndAttack.cs" />
     <Compile Include="Interfaces\IAbility.cs" />
     <Compile Include="Interfaces\IBehavior.cs" />
+    <Compile Include="Interfaces\ITargetable.cs" />
     <Compile Include="Inventory\BodyEquipment.cs" />
     <Compile Include="Colors.cs" />
     <Compile Include="Inventory\Equipment.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="Services\EquipmentCreationService.cs" />
     <Compile Include="Services\MapCreationService.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Services\TargetingService.cs" />
     <Compile Include="Treasure.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Actors\Monster.cs" />

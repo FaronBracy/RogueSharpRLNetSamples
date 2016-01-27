@@ -43,7 +43,7 @@ namespace RogueSharpRLNetSamples
          Game.ScheduleService.Remove( monster );
       }
 
-      public Monster MonsterAt( int x, int y )
+      public Monster GetMonsterAt( int x, int y )
       {
          // TODO: Sometimes this throws an exception because 2 monsters occupy the same space. Not sure how this happens
          return _monsters.SingleOrDefault( m => m.X == x && m.Y == y );
@@ -55,6 +55,12 @@ namespace RogueSharpRLNetSamples
             X = m.X,
             Y = m.Y
          } );
+      }
+
+      public IEnumerable<Point> GetMonsterLocationsInFieldOfView()
+      {
+         return _monsters.Where( monster => IsInFov( monster.X, monster.Y ) )
+            .Select( m => new Point { X = m.X, Y = m.Y } );
       }
 
       public void AddEquipment( int x, int y, Equipment equipment )

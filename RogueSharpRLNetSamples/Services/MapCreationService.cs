@@ -89,11 +89,11 @@ namespace RogueSharpRLNetSamples.Services
 
          CreateStairs();
 
+         PlacePlayer();
+
          PlaceMonsters();
 
          PlaceEquipment();
-
-         PlacePlayer();
 
          return _map;
       }

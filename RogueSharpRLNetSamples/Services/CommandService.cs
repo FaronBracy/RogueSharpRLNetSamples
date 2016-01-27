@@ -65,7 +65,7 @@ namespace RogueSharpRLNetSamples.Services
             return true;
          }
 
-         Monster monster = DungeonMap.MonsterAt( x, y );
+         Monster monster = DungeonMap.GetMonsterAt( x, y );
 
          if ( monster != null )
          {

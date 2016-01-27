@@ -17,7 +17,7 @@ namespace RogueSharpRLNetSamples.Behavior
          {
             if ( monsterFov.IsInFov( monsterLocation.X, monsterLocation.Y ) )
             {
-               Monster alertedMonster = dungeonMap.MonsterAt( monsterLocation.X, monsterLocation.Y );
+               Monster alertedMonster = dungeonMap.GetMonsterAt( monsterLocation.X, monsterLocation.Y );
                if ( !alertedMonster.TurnsAlerted.HasValue )
                {
                   alertedMonster.TurnsAlerted = 1;

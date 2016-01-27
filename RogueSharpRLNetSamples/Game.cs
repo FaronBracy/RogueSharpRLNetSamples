@@ -33,6 +33,7 @@ namespace RogueSharpRLNetSamples
       public static Messages Messages;
       public static CommandService CommandService;
       public static ScheduleService ScheduleService;
+      public static TargetingService TargetingService;
 
       public static void Main()
       {
@@ -50,10 +51,12 @@ namespace RogueSharpRLNetSamples
          Messages.Add( "The rogue arrives on level 1" );
          Messages.Add( $"Level created with seed '{seed}'" );
          CommandService = new CommandService( _map );
+         TargetingService = new TargetingService();
 
          _map.GetPlayer().QAbility = new Whirlwind();
          _map.GetPlayer().WAbility = new Heal( 10 );
-         _map.GetPlayer().EAbility = new RevealMap( 15 ); 
+         _map.GetPlayer().EAbility = new RevealMap( 15 );
+         _map.GetPlayer().RAbility = new MagicMissile();
 
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;
@@ -62,13 +65,21 @@ namespace RogueSharpRLNetSamples
 
       private static void OnRootConsoleUpdate( object sender, UpdateEventArgs e )
       {
-         if ( CommandService.IsPlayerTurn )
+         bool didPlayerAct = false;
+         RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
+
+         if ( TargetingService.IsPlayerTargeting )
          {
-            bool didPlayerAct = false;
-            RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
             if ( keyPress != null )
             {
                _renderRequired = true;
+               TargetingService.HandleKey( keyPress.Key );
+            }
+         }
+         else if ( CommandService.IsPlayerTurn )
+         {
+            if ( keyPress != null )
+            {
                if ( keyPress.Key == RLKey.Up )
                {
                   didPlayerAct = CommandService.MovePlayer( Direction.Up );
@@ -108,6 +119,7 @@ namespace RogueSharpRLNetSamples
 
                if ( didPlayerAct )
                {
+                  _renderRequired = true;
                   CommandService.EndPlayerTurn();
                }
             }
@@ -128,6 +140,7 @@ namespace RogueSharpRLNetSamples
             _inventoryConsole.Clear();
             _map.Draw( _mapConsole, _statConsole, _inventoryConsole );
             Messages.Draw( _messageConsole );
+            TargetingService.Draw( _mapConsole );
             RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, _inventoryHeight );
             RLConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _rootConsole, _mapWidth, 0 );
             RLConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight, _rootConsole, 0, _screenHeight - _messageHeight );

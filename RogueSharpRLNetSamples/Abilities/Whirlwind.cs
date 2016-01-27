@@ -35,7 +35,7 @@ namespace RogueSharpRLNetSamples.Abilities
 
          foreach ( Point monsterLocation in monsterLocations )
          {
-            Monster monster = map.MonsterAt( monsterLocation.X, monsterLocation.Y );
+            Monster monster = map.GetMonsterAt( monsterLocation.X, monsterLocation.Y );
             if ( monster != null )
             {
                Game.CommandService.Attack( player, monster );
