@@ -100,7 +100,6 @@ namespace RogueSharpRLNetSamples.Services
          return _map;
       }
 
-
       private void CreateMap( Rectangle room )
       {
          for ( int x = room.Left + 1; x < room.Right; x++ )

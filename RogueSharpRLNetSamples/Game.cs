@@ -40,18 +40,23 @@ namespace RogueSharpRLNetSamples
          string fontFileName = "terminal8x8.png";
          string consoleTitle = "RougeSharp RLNet Tutorial - Level 1";
          int seed = (int) DateTime.UtcNow.Ticks;
+
+         Messages = new Messages();
+         Messages.Add( "The rogue arrives on level 1" );
+         Messages.Add( $"Level created with seed '{seed}'" );
+
          MapCreationService mapCreationService = new MapCreationService( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel, new DotNetRandom( seed ) );
          _map = mapCreationService.CreateMap();
-         Messages = new Messages();
+
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
          _mapConsole = new RLConsole( _mapWidth, _mapHeight );
          _messageConsole = new RLConsole( _messageWidth, _messageHeight );
          _statConsole = new RLConsole( _statWidth, _statHeight );
          _inventoryConsole = new RLConsole( _inventoryWidth, _inventoryHeight );
-         Messages.Add( "The rogue arrives on level 1" );
-         Messages.Add( $"Level created with seed '{seed}'" );
+
          CommandService = new CommandService( _map );
          TargetingService = new TargetingService();
+
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;
          _rootConsole.Run();

@@ -184,9 +184,12 @@ namespace RogueSharpRLNetSamples
             if ( treasure.Ability != null && actor is Player )
             {
                _player.AddAbility( treasure.Ability );
+               _treasurePiles.Remove( treasure );
             }
-
-            _treasurePiles.Remove( treasure );
+            else if ( treasure.Ability == null )
+            {
+               _treasurePiles.Remove( treasure );
+            }
          }
       }
 

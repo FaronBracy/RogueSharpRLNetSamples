@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abilities\Ability.cs" />
+    <Compile Include="Abilities\Fireball.cs" />
     <Compile Include="Abilities\Heal.cs" />
     <Compile Include="Abilities\DoNothing.cs" />
     <Compile Include="Abilities\MagicMissile.cs" />

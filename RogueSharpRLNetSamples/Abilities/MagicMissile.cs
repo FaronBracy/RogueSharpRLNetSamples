@@ -6,11 +6,16 @@ namespace RogueSharpRLNetSamples.Abilities
 {
    public class MagicMissile : Ability, ITargetable
    {
-      public MagicMissile()
+      private readonly int _attack;
+      private readonly int _attackChance;
+
+      public MagicMissile( int attack, int attackChance)
       {
          Name = "Magic Missile";
          TurnsToRefresh = 10;
          TurnsUntilRefreshed = 0;
+         _attack = attack;
+         _attackChance = attackChance;
       }
 
       protected override bool PerformAbility()
@@ -25,10 +30,10 @@ namespace RogueSharpRLNetSamples.Abilities
          Monster monster = map.GetMonsterAt( target.X, target.Y );
          if ( monster != null )
          {
-            Game.Messages.Add( $"{player.Name} casts a Magic Missle at {monster.Name}" );
+            Game.Messages.Add( $"{player.Name} casts a {Name} at {monster.Name}" );
             Actor magicMissleActor = new Actor
             {
-               Attack = 3, AttackChance = 80, Name = "Magic Missle"
+               Attack = _attack, AttackChance = _attackChance, Name = Name
             };
             Game.CommandService.Attack( magicMissleActor, monster );
          }

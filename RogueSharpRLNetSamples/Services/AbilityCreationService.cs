@@ -1,5 +1,4 @@
 ﻿using RogueSharpRLNetSamples.Abilities;
-using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Services
 {
@@ -13,9 +12,10 @@ namespace RogueSharpRLNetSamples.Services
          {
             _abilityPool = new Pool<Ability>();
             _abilityPool.Add( new Heal( 10 ), 1 );
-            _abilityPool.Add( new MagicMissile(), 1 );
+            _abilityPool.Add( new MagicMissile( 2, 80 ), 1 );
             _abilityPool.Add( new RevealMap( 15 ), 1 );
             _abilityPool.Add( new Whirlwind(), 1 );
+            _abilityPool.Add( new Fireball( 6, 40, 2 ), 1 );
          }
 
          return _abilityPool.Get();
