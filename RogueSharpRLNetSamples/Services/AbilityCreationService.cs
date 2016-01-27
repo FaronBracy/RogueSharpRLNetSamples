@@ -15,7 +15,8 @@ namespace RogueSharpRLNetSamples.Services
             _abilityPool.Add( new MagicMissile( 2, 80 ), 1 );
             _abilityPool.Add( new RevealMap( 15 ), 1 );
             _abilityPool.Add( new Whirlwind(), 1 );
-            _abilityPool.Add( new Fireball( 6, 40, 2 ), 1 );
+            _abilityPool.Add( new Fireball( 4, 60, 2 ), 1 );
+            _abilityPool.Add( new LightningBolt( 6, 40 ), 1 );
          }
 
          return _abilityPool.Get();

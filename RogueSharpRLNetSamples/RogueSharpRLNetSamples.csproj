@@ -56,6 +56,7 @@
     <Compile Include="Abilities\Fireball.cs" />
     <Compile Include="Abilities\Heal.cs" />
     <Compile Include="Abilities\DoNothing.cs" />
+    <Compile Include="Abilities\LightningBolt.cs" />
     <Compile Include="Abilities\MagicMissile.cs" />
     <Compile Include="Abilities\RevealMap.cs" />
     <Compile Include="Abilities\Whirlwind.cs" />

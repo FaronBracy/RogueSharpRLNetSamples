@@ -9,6 +9,14 @@ namespace RogueSharpRLNetSamples.Services
 {
    public class TargetingService
    {
+      private enum SelectionType
+      {
+         None = 0,
+         Target = 1,
+         Area = 2,
+         Line = 3
+      }
+
       public bool IsPlayerTargeting { get; private set; }
 
       private Point _cursorPosition;
@@ -16,10 +24,12 @@ namespace RogueSharpRLNetSamples.Services
       private int _currentTargetIndex;
       private ITargetable _targetable;
       private int _area;
+      private SelectionType _selectionType;
 
       public bool SelectMonster( ITargetable targetable )
       {
          Initialize();
+         _selectionType = SelectionType.Target;
          DungeonMap map = Game.CommandService.DungeonMap;
          _selectableTargets = map.GetMonsterLocationsInFieldOfView().ToList();
          _targetable = targetable;
@@ -34,13 +44,26 @@ namespace RogueSharpRLNetSamples.Services
          return true;
       }
 
-      public bool SelectLocation( ITargetable targetable, int area = 0 )
+      public bool SelectArea( ITargetable targetable, int area = 0 )
       {
          Initialize();
+         _selectionType = SelectionType.Area;
          Player player = Game.CommandService.DungeonMap.GetPlayer();
          _cursorPosition = new Point { X = player.X, Y = player.Y };
          _targetable = targetable;
          _area = area;
+
+         IsPlayerTargeting = true;
+         return true;
+      }
+
+      public bool SelectLine( ITargetable targetable )
+      {
+         Initialize();
+         _selectionType = SelectionType.Line;
+         Player player = Game.CommandService.DungeonMap.GetPlayer();
+         _cursorPosition = new Point { X = player.X, Y = player.Y };
+         _targetable = targetable;
 
          IsPlayerTargeting = true;
          return true;
@@ -59,15 +82,20 @@ namespace RogueSharpRLNetSamples.Services
          _currentTargetIndex = 0;
          _area = 0;
          _targetable = null;
+         _selectionType = SelectionType.None;
       }
 
       public bool HandleKey( RLKey key )
       {
-         if ( _selectableTargets.Any() )
+         if ( _selectionType == SelectionType.Target )
          {
             HandleSelectableTargeting( key );
          }
-         else
+         else if ( _selectionType == SelectionType.Area )
+         {
+            HandleLocationTargeting( key );
+         }
+         else if ( _selectionType == SelectionType.Line )
          {
             HandleLocationTargeting( key );
          }
@@ -138,10 +166,23 @@ namespace RogueSharpRLNetSamples.Services
       {
          if ( IsPlayerTargeting )
          {
-            foreach ( Cell cell in Game.CommandService.DungeonMap.GetCellsInArea( _cursorPosition.X, _cursorPosition.Y, _area ) )
+            DungeonMap map = Game.CommandService.DungeonMap;
+            Player player = map.GetPlayer();
+            if ( _selectionType == SelectionType.Area )
             {
-               mapConsole.SetBackColor( cell.X, cell.Y, Swatch.DbSun );
+               foreach ( Cell cell in map.GetCellsInArea( _cursorPosition.X, _cursorPosition.Y, _area ) )
+               {
+                  mapConsole.SetBackColor( cell.X, cell.Y, Swatch.DbSun );
+               }
             }
+            else if ( _selectionType == SelectionType.Line )
+            {
+               foreach ( Cell cell in map.GetCellsAlongLine( player.X, player.Y, _cursorPosition.X, _cursorPosition.Y ) )
+               {
+                  mapConsole.SetBackColor( cell.X, cell.Y, Swatch.DbSun );
+               }
+            }
+
             mapConsole.SetBackColor( _cursorPosition.X, _cursorPosition.Y, Swatch.DbLight );
          }
       }
