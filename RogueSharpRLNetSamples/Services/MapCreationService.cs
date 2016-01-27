@@ -200,11 +200,6 @@ namespace RogueSharpRLNetSamples.Services
 
       private void PlaceMonsters()
       {
-         // Place encounters that are well thought out in rooms
-
-         // Place random monsters anywhere on floor tiles
-
-         // Add a few more monsters to rooms
          foreach ( var room in _map.Rooms )
          {
             if ( Dice.Roll( "1D10" ) < 7 )
