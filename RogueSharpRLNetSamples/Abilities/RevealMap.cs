@@ -1,26 +1,23 @@
 ﻿using RogueSharp;
 using RogueSharpRLNetSamples.Actors;
-using RogueSharpRLNetSamples.Services;
 
 namespace RogueSharpRLNetSamples.Abilities
 {
    public class RevealMap : Ability
    {
-      private readonly CommandService _commandService;
       private readonly int _revealDistance;
 
-      public RevealMap( CommandService commandService, int revealDistance )
+      public RevealMap( int revealDistance )
       {
          Name = "Reveal Map";
          TurnsToRefresh = 100;
          TurnsUntilRefreshed = 0;
-         _commandService = commandService;
          _revealDistance = revealDistance;
       }
 
       protected override bool PerformAbility()
       {
-         DungeonMap map = _commandService.DungeonMap;
+         DungeonMap map = Game.CommandService.DungeonMap;
          Player player = map.GetPlayer();
 
          foreach ( Cell cell in map.GetCellsInArea( player.X, player.Y, _revealDistance ) )

@@ -1,7 +1,5 @@
 using System;
-using System.Data.Odbc;
 using RLNET;
-using RogueSharp;
 using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Interfaces;
 
