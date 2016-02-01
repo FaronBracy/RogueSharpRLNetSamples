@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace RogueSharpRLNetSamples.Interfaces
+﻿namespace RogueSharpRLNetSamples.Interfaces
 {
    public interface IAbility
    {

@@ -2,6 +2,7 @@ using System;
 using RLNET;
 using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Interfaces;
+using RogueSharpRLNetSamples.Items;
 
 namespace RogueSharpRLNetSamples.Actors
 {
@@ -12,12 +13,21 @@ namespace RogueSharpRLNetSamples.Actors
       public IAbility EAbility { get; set; }
       public IAbility RAbility { get; set; }
 
+      public IItem Item1 { get; set; }
+      public IItem Item2 { get; set; }
+      public IItem Item3 { get; set; }
+      public IItem Item4 { get; set; }
+
       public Player()
       {
          QAbility = new DoNothing();
          WAbility = new DoNothing();
          EAbility = new DoNothing();
          RAbility = new DoNothing();
+         Item1 = new NoItem();
+         Item2 = new NoItem();
+         Item3 = new NoItem();
+         Item4 = new NoItem();
       }
 
       public void AddAbility( IAbility ability )
@@ -64,10 +74,10 @@ namespace RogueSharpRLNetSamples.Actors
          DrawAbility( RAbility, inventoryConsole, 3 );
 
          inventoryConsole.Print( 55, 1, "Items", RLColor.White );
-         inventoryConsole.Print( 55, 3, "1 - Health Potion", RLColor.LightGray );
-         inventoryConsole.Print( 55, 5, "2 - Mana Potion", RLColor.LightGray );
-         inventoryConsole.Print( 55, 7, "3 - Scroll", RLColor.LightGray );
-         inventoryConsole.Print( 55, 9, "4 - Wand", RLColor.LightGray );
+         DrawItem( Item1, inventoryConsole, 0 );
+         DrawItem( Item2, inventoryConsole, 1 );
+         DrawItem( Item3, inventoryConsole, 2 );
+         DrawItem( Item4, inventoryConsole, 3 );
       }
 
       private void DrawAbility( IAbility ability, RLConsole inventoryConsole, int position )
@@ -115,6 +125,14 @@ namespace RogueSharpRLNetSamples.Actors
             inventoryConsole.SetBackColor( xHighlightPosition, yPosition, width, 1, Swatch.DbOldBlood );
             inventoryConsole.SetBackColor( xHighlightPosition + width, yPosition, remainingWidth, 1, RLColor.Black );
          }
+      }
+
+      private void DrawItem( IItem item, RLConsole inventoryConsole, int position )
+      {
+         int xPosition = 55;
+         int yPosition = 3 + ( position * 2 );
+         string place = ( position + 1 ).ToString();
+         inventoryConsole.Print( xPosition, yPosition, $"{place} - {item.Name}", item is NoItem ? Swatch.DbOldStone : Swatch.DbLight );
       }
 
       public void Tick()

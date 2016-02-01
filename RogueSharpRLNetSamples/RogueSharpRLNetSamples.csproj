@@ -72,6 +72,7 @@
     <Compile Include="Interfaces\IAbility.cs" />
     <Compile Include="Interfaces\IBehavior.cs" />
     <Compile Include="Interfaces\ITargetable.cs" />
+    <Compile Include="Interfaces\IItem.cs" />
     <Compile Include="Inventory\BodyEquipment.cs" />
     <Compile Include="Colors.cs" />
     <Compile Include="Inventory\Equipment.cs" />
@@ -81,6 +82,8 @@
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Interfaces\IHasStats.cs" />
     <Compile Include="Interfaces\IScheduleable.cs" />
+    <Compile Include="Items\HealingPotion.cs" />
+    <Compile Include="Items\NoItem.cs" />
     <Compile Include="Pool.cs" />
     <Compile Include="Services\AbilityCreationService.cs" />
     <Compile Include="Services\CommandService.cs" />

@@ -11,12 +11,12 @@ namespace RogueSharpRLNetSamples.Services
          if ( _abilityPool == null )
          {
             _abilityPool = new Pool<Ability>();
-            _abilityPool.Add( new Heal( 10 ), 1 );
-            _abilityPool.Add( new MagicMissile( 2, 80 ), 1 );
-            _abilityPool.Add( new RevealMap( 15 ), 1 );
-            _abilityPool.Add( new Whirlwind(), 1 );
-            _abilityPool.Add( new Fireball( 4, 60, 2 ), 1 );
-            _abilityPool.Add( new LightningBolt( 6, 40 ), 1 );
+            _abilityPool.Add( new Heal( 10 ), 10 );
+            _abilityPool.Add( new MagicMissile( 2, 80 ), 10 );
+            _abilityPool.Add( new RevealMap( 15 ), 10 );
+            _abilityPool.Add( new Whirlwind(), 10 );
+            _abilityPool.Add( new Fireball( 4, 60, 2 ), 10 );
+            _abilityPool.Add( new LightningBolt( 6, 40 ), 10 );
          }
 
          return _abilityPool.Get();
