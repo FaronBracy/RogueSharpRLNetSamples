@@ -1,6 +1,7 @@
 ﻿using System;
 using RLNET;
 using RogueSharp.Random;
+using RogueSharpRLNetSamples.Items;
 using RogueSharpRLNetSamples.Services;
 
 namespace RogueSharpRLNetSamples
@@ -55,6 +56,9 @@ namespace RogueSharpRLNetSamples
 
          CommandService = new CommandService( _map );
          TargetingService = new TargetingService();
+
+         _map.GetPlayer().Item1 = new HealingPotion();
+         _map.GetPlayer().Item3 = new HealingPotion();
 
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;

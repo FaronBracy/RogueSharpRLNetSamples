@@ -1,4 +1,5 @@
 ﻿using RogueSharpRLNetSamples.Abilities;
+using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Items
@@ -16,7 +17,11 @@ namespace RogueSharpRLNetSamples.Items
 
       public bool Use()
       {
-         Heal heal = new Heal( 15 );
+         int healAmount = 15;
+         Player player = Game.CommandService.DungeonMap.GetPlayer();
+         Game.Messages.Add( $"{player.Name} consumes a {Name} and recovers {healAmount} health" );  
+
+         Heal heal = new Heal( healAmount );
 
          RemainingUses--;
 

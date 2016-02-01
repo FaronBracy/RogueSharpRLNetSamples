@@ -5,6 +5,7 @@ using RogueSharp.DiceNotation;
 using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Interfaces;
 using RogueSharpRLNetSamples.Inventory;
+using RogueSharpRLNetSamples.Items;
 
 namespace RogueSharpRLNetSamples.Services
 {
@@ -225,7 +226,47 @@ namespace RogueSharpRLNetSamples.Services
          {
             return player.RAbility.Perform();
          }
-         return false;
+
+
+         bool didUseItem = false;
+         if ( key == RLKey.Number1 )
+         {
+            didUseItem = player.Item1.Use();
+         }
+         else if ( key == RLKey.Number2 )
+         {
+            didUseItem = player.Item2.Use();
+         }
+         else if ( key == RLKey.Number3 )
+         {
+            didUseItem = player.Item3.Use();
+         }
+         else if ( key == RLKey.Number4 )
+         {
+            didUseItem = player.Item4.Use();
+         }
+
+         if ( didUseItem )
+         {
+            if ( player.Item1.RemainingUses <= 0 )
+            {
+               player.Item1 = new NoItem();
+            }
+            if ( player.Item2.RemainingUses <= 0 )
+            {
+               player.Item2 = new NoItem();
+            }
+            if ( player.Item3.RemainingUses <= 0 )
+            {
+               player.Item3 = new NoItem();
+            }
+            if ( player.Item4.RemainingUses <= 0 )
+            {
+               player.Item4 = new NoItem();
+            }
+         }
+
+         return didUseItem;
       }
 
       public void EndPlayerTurn()
