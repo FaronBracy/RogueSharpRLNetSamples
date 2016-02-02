@@ -82,6 +82,7 @@
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Interfaces\IHasStats.cs" />
     <Compile Include="Interfaces\IScheduleable.cs" />
+    <Compile Include="Items\RevealMapScroll.cs" />
     <Compile Include="Items\HealingPotion.cs" />
     <Compile Include="Items\NoItem.cs" />
     <Compile Include="Pool.cs" />

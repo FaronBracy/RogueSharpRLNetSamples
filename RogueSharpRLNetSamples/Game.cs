@@ -58,6 +58,7 @@ namespace RogueSharpRLNetSamples
          TargetingService = new TargetingService();
 
          _map.GetPlayer().Item1 = new HealingPotion();
+         _map.GetPlayer().Item2 = new RevealMapScroll();
          _map.GetPlayer().Item3 = new HealingPotion();
 
          _rootConsole.Update += OnRootConsoleUpdate;
