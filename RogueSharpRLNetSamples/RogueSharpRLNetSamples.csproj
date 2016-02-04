@@ -85,6 +85,7 @@
     <Compile Include="Items\RevealMapScroll.cs" />
     <Compile Include="Items\HealingPotion.cs" />
     <Compile Include="Items\NoItem.cs" />
+    <Compile Include="Items\DestructionWand.cs" />
     <Compile Include="Pool.cs" />
     <Compile Include="Services\AbilityCreationService.cs" />
     <Compile Include="Services\CommandService.cs" />
