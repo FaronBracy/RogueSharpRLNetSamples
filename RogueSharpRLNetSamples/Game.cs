@@ -130,6 +130,7 @@ namespace RogueSharpRLNetSamples
          else
          {
             CommandService.ActivateMonsters();
+            _renderRequired = true;
          }
       }
 
