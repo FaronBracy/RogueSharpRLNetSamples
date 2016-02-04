@@ -2,6 +2,7 @@ using System;
 using RLNET;
 using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Interfaces;
+using RogueSharpRLNetSamples.Inventory;
 using RogueSharpRLNetSamples.Items;
 
 namespace RogueSharpRLNetSamples.Actors
@@ -62,10 +63,10 @@ namespace RogueSharpRLNetSamples.Actors
       public void DrawInventory( RLConsole inventoryConsole )
       {
          inventoryConsole.Print( 1, 1, "Equipment", RLColor.White );
-         inventoryConsole.Print( 1, 3, $"Head: {Head.Name}", Head.Name == "None" ? Swatch.DbOldStone : Swatch.DbLight );
-         inventoryConsole.Print( 1, 5, $"Body: {Body.Name}", Body.Name == "None" ? Swatch.DbOldStone : Swatch.DbLight );
-         inventoryConsole.Print( 1, 7, $"Hand: {Hand.Name}", Hand.Name == "None" ? Swatch.DbOldStone : Swatch.DbLight );
-         inventoryConsole.Print( 1, 9, $"Feet: {Feet.Name}", Feet.Name == "None" ? Swatch.DbOldStone : Swatch.DbLight );
+         inventoryConsole.Print( 1, 3, $"Head: {Head.Name}", Head == HeadEquipment.None() ? Swatch.DbOldStone : Swatch.DbLight );
+         inventoryConsole.Print( 1, 5, $"Body: {Body.Name}", Body == BodyEquipment.None() ? Swatch.DbOldStone : Swatch.DbLight );
+         inventoryConsole.Print( 1, 7, $"Hand: {Hand.Name}", Hand == HandEquipment.None() ? Swatch.DbOldStone : Swatch.DbLight );
+         inventoryConsole.Print( 1, 9, $"Feet: {Feet.Name}", Feet == FeetEquipment.None() ? Swatch.DbOldStone : Swatch.DbLight );
 
          inventoryConsole.Print( 28, 1, "Abilities", RLColor.White );
          DrawAbility( QAbility, inventoryConsole, 0 );
