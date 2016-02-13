@@ -87,6 +87,7 @@
     <Compile Include="Items\HealingPotion.cs" />
     <Compile Include="Items\NoItem.cs" />
     <Compile Include="Items\DestructionWand.cs" />
+    <Compile Include="Items\ArmorScroll.cs" />
     <Compile Include="Items\Whetstone.cs" />
     <Compile Include="Pool.cs" />
     <Compile Include="Services\AbilityCreationService.cs" />
