@@ -64,11 +64,11 @@
     <Compile Include="Actors\Ooze.cs" />
     <Compile Include="Actors\Goblin.cs" />
     <Compile Include="Actors\Kobold.cs" />
-    <Compile Include="Behavior\FullyHeal.cs" />
-    <Compile Include="Behavior\SplitOoze.cs" />
-    <Compile Include="Behavior\RunAway.cs" />
-    <Compile Include="Behavior\ShoutForHelp.cs" />
-    <Compile Include="Behavior\StandardMoveAndAttack.cs" />
+    <Compile Include="Behaviors\FullyHeal.cs" />
+    <Compile Include="Behaviors\SplitOoze.cs" />
+    <Compile Include="Behaviors\RunAway.cs" />
+    <Compile Include="Behaviors\ShoutForHelp.cs" />
+    <Compile Include="Behaviors\StandardMoveAndAttack.cs" />
     <Compile Include="Interfaces\IAbility.cs" />
     <Compile Include="Interfaces\IBehavior.cs" />
     <Compile Include="Interfaces\ITargetable.cs" />
