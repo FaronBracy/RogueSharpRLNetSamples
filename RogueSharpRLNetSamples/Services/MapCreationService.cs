@@ -208,12 +208,12 @@ namespace RogueSharpRLNetSamples.Services
                var numberOfMonsters = Dice.Roll( "1D4" );
                for ( int i = 0; i < numberOfMonsters; i++ )
                {
-                  if ( DoesRoomHaveWalkableSpace( room ) )
+                  if ( _map.DoesRoomHaveWalkableSpace( room ) )
                   {
-                     Point randomRoomLocation = GetRandomLocationInRoom( room );
+                     Point randomRoomLocation = _map.GetRandomLocationInRoom( room, _random );
                      if ( randomRoomLocation != null )
                      {
-                        _map.AddMonster( ActorCreationService.CreateMonster( _level, GetRandomLocationInRoom( room ) ) );
+                        _map.AddMonster( ActorCreationService.CreateMonster( _level, _map.GetRandomLocationInRoom( room, _random ) ) );
                      }
                   }
                }
@@ -227,9 +227,9 @@ namespace RogueSharpRLNetSamples.Services
          {
             if ( Dice.Roll( "1D10" ) < 3 )
             {
-               if ( DoesRoomHaveWalkableSpace( room ) )
+               if ( _map.DoesRoomHaveWalkableSpace( room ) )
                {
-                  Point randomRoomLocation = GetRandomLocationInRoom( room );
+                  Point randomRoomLocation = _map.GetRandomLocationInRoom( room, _random );
                   if ( randomRoomLocation != null )
                   {
                      Equipment equipment;
@@ -242,7 +242,7 @@ namespace RogueSharpRLNetSamples.Services
                         // no more equipment to generate so just quit adding to this level
                         return;
                      }
-                     Point location = GetRandomLocationInRoom( room );
+                     Point location = _map.GetRandomLocationInRoom( room, _random );
                      _map.AddEquipment( location.X, location.Y, equipment );
                   }
                }
@@ -268,39 +268,13 @@ namespace RogueSharpRLNetSamples.Services
             {
                var ability = AbilityCreationService.CreateAbility();
                int roomIndex = _random.Next( 0, _map.Rooms.Count - 1 );
-               Point location = GetRandomLocationInRoom( _map.Rooms[roomIndex] );
+               Point location = _map.GetRandomLocationInRoom( _map.Rooms[roomIndex], _random );
                _map.AddAbility( location.X, location.Y, ability );
             }
             catch ( InvalidOperationException )
             {
             }
          }
-      }
-
-      private Point GetRandomLocationInRoom( Rectangle room )
-      {
-         int x = _random.Next( 1, room.Width - 2 ) + room.X;
-         int y = _random.Next( 1, room.Height - 2 ) + room.Y;
-         if ( !_map.IsWalkable( x, y ) )
-         {
-            GetRandomLocationInRoom( room );
-         }
-         return new Point( x, y );
-      }
-
-      private bool DoesRoomHaveWalkableSpace( Rectangle room )
-      {
-         for ( int x = 1; x <= room.Width - 2; x++ )
-         {
-            for ( int y = 1; y <= room.Height - 2; y++ )
-            {
-               if ( _map.IsWalkable( x + room.X, y + room.Y ) )
-               {
-                  return true;
-               }
-            }
-         }
-         return false;
       }
    }
 }

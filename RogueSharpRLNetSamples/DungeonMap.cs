@@ -2,6 +2,7 @@
 using System.Linq;
 using RLNET;
 using RogueSharp;
+using RogueSharp.Random;
 using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Inventory;
@@ -202,6 +203,45 @@ namespace RogueSharpRLNetSamples
       {
          Cell cell = GetCell( x, y );
          SetCellProperties( cell.X, cell.Y, cell.IsTransparent, isWalkable, cell.IsExplored );
+      }
+
+      public Point GetRandomLocation( IRandom random )
+      {
+         int roomNumber = random.Next( 0, Rooms.Count - 1 );
+         Rectangle randomRoom = Rooms[roomNumber];
+
+         if ( !DoesRoomHaveWalkableSpace( randomRoom ) )
+         {
+            GetRandomLocation( random );
+         }
+
+         return GetRandomLocationInRoom( randomRoom, random );
+      }
+
+      public Point GetRandomLocationInRoom( Rectangle room, IRandom random )
+      {
+         int x = random.Next( 1, room.Width - 2 ) + room.X;
+         int y = random.Next( 1, room.Height - 2 ) + room.Y;
+         if ( !IsWalkable( x, y ) )
+         {
+            GetRandomLocationInRoom( room, random );
+         }
+         return new Point( x, y );
+      }
+
+      public bool DoesRoomHaveWalkableSpace( Rectangle room )
+      {
+         for ( int x = 1; x <= room.Width - 2; x++ )
+         {
+            for ( int y = 1; y <= room.Height - 2; y++ )
+            {
+               if ( IsWalkable( x + room.X, y + room.Y ) )
+               {
+                  return true;
+               }
+            }
+         }
+         return false;
       }
 
       public void Draw( RLConsole mapConsole, RLConsole statConsole, RLConsole inventoryConsole )
