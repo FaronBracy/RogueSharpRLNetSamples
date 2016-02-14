@@ -9,20 +9,40 @@ namespace RogueSharpRLNetSamples
    public class Treasure : IDrawable
    {
       public int Gold { get; set; }
-      public Equipment Equipment { get; set; } 
+      public Equipment Equipment { get; set; }
       public Ability Ability { get; set; }
+      public IItem Item { get; set; }
 
       public RLColor Color { get; set; }
       public char Symbol { get; set; }
       public int X { get; set; }
       public int Y { get; set; }
 
-      public Treasure( int x, int y, int gold, Equipment equipment = null, Ability ability = null )
+      public Treasure( int x, int y, Equipment equipment ) 
+         : this( x, y, 0, equipment )
+      {
+      }
+
+      public Treasure( int x, int y, Ability ability ) 
+         : this( x, y, 0, null, ability )
+      {
+      }
+
+      public Treasure( int x, int y, IItem item ) 
+         : this( x, y, 0, null, null, item )
+      {
+      }
+
+      public Treasure( int x, int y, int gold, Equipment equipment = null, Ability ability = null, IItem item = null )
       {
          char symbol = '$';
-         if ( equipment != null )
+         if ( item != null )
          {
             symbol = '!';
+         }
+         if ( equipment != null )
+         {
+            symbol = ']';
          }
          if ( ability != null )
          {
@@ -30,6 +50,7 @@ namespace RogueSharpRLNetSamples
          }
 
          Gold = gold;
+         Item = item;
          Equipment = equipment;
          Ability = ability;
          Color = RLColor.Yellow;

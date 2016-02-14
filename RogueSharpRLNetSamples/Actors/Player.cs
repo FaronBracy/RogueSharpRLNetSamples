@@ -51,6 +51,26 @@ namespace RogueSharpRLNetSamples.Actors
          }
       }
 
+      public void AddItem( IItem item )
+      {
+         if ( Item1 is NoItem )
+         {
+            Item1 = item;
+         }
+         else if ( Item2 is NoItem )
+         {
+            Item2 = item;
+         }
+         else if( Item3 is NoItem )
+         {
+            Item3 = item;
+         }
+         else if( Item4 is NoItem )
+         {
+            Item4 = item;
+         }
+      }
+
       public void DrawStats( RLConsole statConsole )
       {
          statConsole.Print( 1, 1, $"Name:    {Name}", RLColor.White );

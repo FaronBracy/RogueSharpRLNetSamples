@@ -95,6 +95,7 @@
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="DungeonMap.cs" />
+    <Compile Include="Services\ItemCreationService.cs" />
     <Compile Include="Services\EquipmentCreationService.cs" />
     <Compile Include="Services\MapCreationService.cs" />
     <Compile Include="Game.cs" />

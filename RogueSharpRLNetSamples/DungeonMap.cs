@@ -5,6 +5,7 @@ using RogueSharp;
 using RogueSharp.Random;
 using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Interfaces;
 using RogueSharpRLNetSamples.Inventory;
 using RogueSharpRLNetSamples.Services;
 
@@ -67,13 +68,19 @@ namespace RogueSharpRLNetSamples
 
       public void AddEquipment( int x, int y, Equipment equipment )
       {
-         Treasure treasure = new Treasure( x, y, 0, equipment );
+         Treasure treasure = new Treasure( x, y, equipment );
          _treasurePiles.Add( treasure );
       }
 
       public void AddAbility( int x, int y, Ability ability )
       {
-         Treasure treasure = new Treasure( x, y, 0, null, ability );
+         Treasure treasure = new Treasure( x, y, ability );
+         _treasurePiles.Add( treasure );
+      }
+
+      public void AddItem( int x, int y, IItem item )
+      {
+         Treasure treasure = new Treasure( x, y, item );
          _treasurePiles.Add( treasure );
       }
 
@@ -180,6 +187,13 @@ namespace RogueSharpRLNetSamples
                   actor.Feet = treasure.Equipment as FeetEquipment;
                   Game.Messages.Add( string.Format( "{0} picked up {1} boots", actor.Name, treasure.Equipment.Name ) );
                }
+            }
+
+            if ( treasure.Item != null && actor is Player )
+            {
+               _player.AddItem( treasure.Item );
+               Game.Messages.Add( string.Format( "{0} picked up {1}", actor.Name, treasure.Item.Name ) );
+               _treasurePiles.Remove( treasure );
             }
 
             if ( treasure.Ability != null && actor is Player )
