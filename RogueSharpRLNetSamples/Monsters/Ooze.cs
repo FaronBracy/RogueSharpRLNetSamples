@@ -1,9 +1,9 @@
-﻿using RogueSharp;
-using RogueSharp.DiceNotation;
+﻿using RogueSharp.DiceNotation;
 using RogueSharpRLNetSamples.Behaviors;
+using RogueSharpRLNetSamples.Core;
 using RogueSharpRLNetSamples.Systems;
 
-namespace RogueSharpRLNetSamples.Actors
+namespace RogueSharpRLNetSamples.Monsters
 {
    public class Ooze : Monster
    {

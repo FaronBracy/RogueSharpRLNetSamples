@@ -1,4 +1,5 @@
-﻿using RogueSharpRLNetSamples.Interfaces;
+﻿using RogueSharpRLNetSamples.Core;
+using RogueSharpRLNetSamples.Interfaces;
 using RogueSharpRLNetSamples.Items;
 
 namespace RogueSharpRLNetSamples.Systems

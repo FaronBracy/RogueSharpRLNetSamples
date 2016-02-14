@@ -1,5 +1,6 @@
 using RogueSharp;
-using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Core;
+using RogueSharpRLNetSamples.Monsters;
 
 namespace RogueSharpRLNetSamples.Systems
 {

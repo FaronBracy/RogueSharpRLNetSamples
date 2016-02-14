@@ -1,6 +1,6 @@
 ﻿using RogueSharpRLNetSamples.Interfaces;
 
-namespace RogueSharpRLNetSamples
+namespace RogueSharpRLNetSamples.Core
 {
    public class TreasurePile
    {

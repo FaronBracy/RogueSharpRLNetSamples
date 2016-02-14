@@ -1,7 +1,7 @@
 ﻿using RLNET;
 using RogueSharp;
 
-namespace RogueSharpRLNetSamples
+namespace RogueSharpRLNetSamples.Core
 {
    public class Stairs
    {

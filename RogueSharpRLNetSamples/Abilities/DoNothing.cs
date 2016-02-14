@@ -1,4 +1,6 @@
-﻿namespace RogueSharpRLNetSamples.Abilities
+﻿using RogueSharpRLNetSamples.Core;
+
+namespace RogueSharpRLNetSamples.Abilities
 {
    public class DoNothing : Ability
    {

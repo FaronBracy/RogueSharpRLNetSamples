@@ -1,7 +1,7 @@
-﻿using RogueSharp;
-using RogueSharp.DiceNotation;
+﻿using RogueSharp.DiceNotation;
+using RogueSharpRLNetSamples.Core;
 
-namespace RogueSharpRLNetSamples.Actors
+namespace RogueSharpRLNetSamples.Monsters
 {
    public class Kobold : Monster
    {

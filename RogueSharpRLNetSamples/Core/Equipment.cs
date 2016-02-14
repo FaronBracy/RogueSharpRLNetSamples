@@ -1,8 +1,9 @@
 using RLNET;
 using RogueSharp;
+using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
 
-namespace RogueSharpRLNetSamples.Equipment
+namespace RogueSharpRLNetSamples.Core
 {
    public class Equipment : IEquipment, ITreasure, IDrawable
    {

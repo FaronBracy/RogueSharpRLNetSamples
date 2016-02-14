@@ -2,7 +2,7 @@
 using System.Linq;
 using RLNET;
 
-namespace RogueSharpRLNetSamples
+namespace RogueSharpRLNetSamples.Systems
 {
    public class Messages
    {

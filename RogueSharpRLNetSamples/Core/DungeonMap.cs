@@ -3,12 +3,10 @@ using System.Linq;
 using RLNET;
 using RogueSharp;
 using RogueSharp.Random;
-using RogueSharpRLNetSamples.Actors;
-using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
 using RogueSharpRLNetSamples.Systems;
 
-namespace RogueSharpRLNetSamples
+namespace RogueSharpRLNetSamples.Core
 {
    public class DungeonMap : Map
    {

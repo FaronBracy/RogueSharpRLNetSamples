@@ -2,7 +2,7 @@
 using System.Linq;
 using RLNET;
 using RogueSharp;
-using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Core;
 using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Systems

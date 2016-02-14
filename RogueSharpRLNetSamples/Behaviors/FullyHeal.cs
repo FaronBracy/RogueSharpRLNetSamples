@@ -1,4 +1,4 @@
-﻿using RogueSharpRLNetSamples.Actors;
+﻿using RogueSharpRLNetSamples.Core;
 using RogueSharpRLNetSamples.Interfaces;
 using RogueSharpRLNetSamples.Systems;
 

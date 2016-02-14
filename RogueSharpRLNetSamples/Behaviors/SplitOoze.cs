@@ -1,6 +1,7 @@
 ﻿using RogueSharp;
-using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Core;
 using RogueSharpRLNetSamples.Interfaces;
+using RogueSharpRLNetSamples.Monsters;
 using RogueSharpRLNetSamples.Systems;
 
 namespace RogueSharpRLNetSamples.Behaviors

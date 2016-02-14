@@ -1,4 +1,5 @@
 ﻿using RogueSharpRLNetSamples.Abilities;
+using RogueSharpRLNetSamples.Core;
 
 namespace RogueSharpRLNetSamples.Systems
 {

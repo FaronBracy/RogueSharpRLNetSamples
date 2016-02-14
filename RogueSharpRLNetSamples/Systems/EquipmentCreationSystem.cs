@@ -4,11 +4,11 @@ namespace RogueSharpRLNetSamples.Systems
 {
    public class EquipmentCreationSystem
    {
-      private readonly Pool<Equipment.Equipment> _equipmentPool;
+      private readonly Pool<Core.Equipment> _equipmentPool;
 
       public EquipmentCreationSystem( int level )
       {
-         _equipmentPool = new Pool<Equipment.Equipment>();
+         _equipmentPool = new Pool<Core.Equipment>();
 
          if ( level <= 3 )
          {
@@ -39,7 +39,7 @@ namespace RogueSharpRLNetSamples.Systems
          }
       }
 
-      public Equipment.Equipment CreateEquipment()
+      public Core.Equipment CreateEquipment()
       { 
          return _equipmentPool.Get();
       }

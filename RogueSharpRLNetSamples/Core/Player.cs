@@ -5,7 +5,7 @@ using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
 using RogueSharpRLNetSamples.Items;
 
-namespace RogueSharpRLNetSamples.Actors
+namespace RogueSharpRLNetSamples.Core
 {
    public class Player : Actor
    {

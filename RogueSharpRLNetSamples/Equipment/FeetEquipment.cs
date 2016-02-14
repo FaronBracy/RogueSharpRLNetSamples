@@ -1,6 +1,6 @@
 ﻿namespace RogueSharpRLNetSamples.Equipment
 {
-   public class FeetEquipment : Equipment
+   public class FeetEquipment : Core.Equipment
    {
       public static FeetEquipment None()
       {

@@ -1,6 +1,6 @@
 using RLNET;
 
-namespace RogueSharpRLNetSamples
+namespace RogueSharpRLNetSamples.Core
 {
    public static class Colors
    {

@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abilities\Ability.cs" />
+    <Compile Include="Core\Ability.cs" />
     <Compile Include="Abilities\Fireball.cs" />
     <Compile Include="Abilities\Heal.cs" />
     <Compile Include="Abilities\DoNothing.cs" />
@@ -60,24 +60,24 @@
     <Compile Include="Abilities\MagicMissile.cs" />
     <Compile Include="Abilities\RevealMap.cs" />
     <Compile Include="Abilities\Whirlwind.cs" />
-    <Compile Include="Actors\Actor.cs" />
-    <Compile Include="Actors\Ooze.cs" />
-    <Compile Include="Actors\Goblin.cs" />
-    <Compile Include="Actors\Kobold.cs" />
+    <Compile Include="Core\Actor.cs" />
+    <Compile Include="Monsters\Ooze.cs" />
+    <Compile Include="Monsters\Goblin.cs" />
+    <Compile Include="Monsters\Kobold.cs" />
     <Compile Include="Behaviors\FullyHeal.cs" />
     <Compile Include="Behaviors\SplitOoze.cs" />
     <Compile Include="Behaviors\RunAway.cs" />
     <Compile Include="Behaviors\ShoutForHelp.cs" />
     <Compile Include="Behaviors\StandardMoveAndAttack.cs" />
-    <Compile Include="Gold.cs" />
+    <Compile Include="Core\Gold.cs" />
     <Compile Include="Interfaces\IAbility.cs" />
     <Compile Include="Interfaces\IActor.cs" />
     <Compile Include="Interfaces\IBehavior.cs" />
     <Compile Include="Interfaces\ITargetable.cs" />
     <Compile Include="Interfaces\IItem.cs" />
     <Compile Include="Equipment\BodyEquipment.cs" />
-    <Compile Include="Colors.cs" />
-    <Compile Include="Equipment\Equipment.cs" />
+    <Compile Include="Core\Colors.cs" />
+    <Compile Include="Core\Equipment.cs" />
     <Compile Include="Equipment\FeetEquipment.cs" />
     <Compile Include="Equipment\HandEquipment.cs" />
     <Compile Include="Equipment\HeadEquipment.cs" />
@@ -85,7 +85,7 @@
     <Compile Include="Interfaces\IEquipment.cs" />
     <Compile Include="Interfaces\IScheduleable.cs" />
     <Compile Include="Interfaces\ITreasure.cs" />
-    <Compile Include="Items\Item.cs" />
+    <Compile Include="Core\Item.cs" />
     <Compile Include="Items\TeleportScroll.cs" />
     <Compile Include="Items\RevealMapScroll.cs" />
     <Compile Include="Items\HealingPotion.cs" />
@@ -93,25 +93,25 @@
     <Compile Include="Items\DestructionWand.cs" />
     <Compile Include="Items\ArmorScroll.cs" />
     <Compile Include="Items\Whetstone.cs" />
-    <Compile Include="Pool.cs" />
+    <Compile Include="Systems\Pool.cs" />
     <Compile Include="Systems\AbilityCreationSystem.cs" />
     <Compile Include="Systems\CommandSystem.cs" />
-    <Compile Include="Direction.cs" />
-    <Compile Include="Door.cs" />
-    <Compile Include="DungeonMap.cs" />
+    <Compile Include="Core\Direction.cs" />
+    <Compile Include="Core\Door.cs" />
+    <Compile Include="Core\DungeonMap.cs" />
     <Compile Include="Systems\ItemCreationSystem.cs" />
     <Compile Include="Systems\EquipmentCreationSystem.cs" />
     <Compile Include="Systems\MapCreationSystem.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Systems\TargetingSystem.cs" />
-    <Compile Include="Treasure.cs" />
-    <Compile Include="Messages.cs" />
-    <Compile Include="Actors\Monster.cs" />
+    <Compile Include="Core\TreasurePile.cs" />
+    <Compile Include="Systems\Messages.cs" />
+    <Compile Include="Core\Monster.cs" />
     <Compile Include="Systems\ActorCreationSystem.cs" />
-    <Compile Include="Actors\Player.cs" />
+    <Compile Include="Core\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Systems\SchedulingSystem.cs" />
-    <Compile Include="Stairs.cs" />
+    <Compile Include="Core\Stairs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

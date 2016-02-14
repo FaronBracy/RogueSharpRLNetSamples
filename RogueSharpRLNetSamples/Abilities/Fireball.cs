@@ -1,5 +1,5 @@
 ﻿using RogueSharp;
-using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Core;
 using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Abilities

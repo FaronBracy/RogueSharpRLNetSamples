@@ -2,7 +2,7 @@
 using RogueSharp;
 using RogueSharpRLNetSamples.Interfaces;
 
-namespace RogueSharpRLNetSamples
+namespace RogueSharpRLNetSamples.Core
 {
    public class Door : IDrawable
    {

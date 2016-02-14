@@ -3,7 +3,7 @@ using RogueSharp;
 using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
 
-namespace RogueSharpRLNetSamples.Actors
+namespace RogueSharpRLNetSamples.Core
 {
    public class Actor : IActor, IDrawable, IScheduleable
    {

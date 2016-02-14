@@ -4,7 +4,7 @@ using System.Linq;
 using RogueSharp;
 using RogueSharp.DiceNotation;
 using RogueSharp.Random;
-using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Core;
 using RogueSharpRLNetSamples.Items;
 
 namespace RogueSharpRLNetSamples.Systems
@@ -234,7 +234,7 @@ namespace RogueSharpRLNetSamples.Systems
                   Point randomRoomLocation = _map.GetRandomLocationInRoom( room, _random );
                   if ( randomRoomLocation != null )
                   {
-                     Equipment.Equipment equipment;
+                     Core.Equipment equipment;
                      try
                      {
                         equipment = _equipmentCreationSystem.CreateEquipment();

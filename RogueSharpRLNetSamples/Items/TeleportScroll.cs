@@ -1,6 +1,6 @@
 ﻿using RogueSharp;
 using RogueSharp.Random;
-using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Core;
 
 namespace RogueSharpRLNetSamples.Items
 {

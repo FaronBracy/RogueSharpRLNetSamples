@@ -1,6 +1,7 @@
 ﻿using System;
 using RLNET;
 using RogueSharp.Random;
+using RogueSharpRLNetSamples.Core;
 using RogueSharpRLNetSamples.Items;
 using RogueSharpRLNetSamples.Systems;
 

@@ -1,4 +1,6 @@
-﻿namespace RogueSharpRLNetSamples.Items
+﻿using RogueSharpRLNetSamples.Core;
+
+namespace RogueSharpRLNetSamples.Items
 {
    public class NoItem : Item
    {

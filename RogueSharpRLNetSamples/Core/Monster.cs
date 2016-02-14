@@ -1,10 +1,10 @@
 ﻿using System;
 using RLNET;
-using RogueSharp;
 using RogueSharpRLNetSamples.Behaviors;
+using RogueSharpRLNetSamples.Monsters;
 using RogueSharpRLNetSamples.Systems;
 
-namespace RogueSharpRLNetSamples.Actors
+namespace RogueSharpRLNetSamples.Core
 {
    public class Monster : Actor
    {

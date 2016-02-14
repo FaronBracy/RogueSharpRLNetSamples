@@ -1,5 +1,5 @@
 ﻿using RogueSharp.DiceNotation;
-using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Core;
 using RogueSharpRLNetSamples.Equipment;
 
 namespace RogueSharpRLNetSamples.Items
