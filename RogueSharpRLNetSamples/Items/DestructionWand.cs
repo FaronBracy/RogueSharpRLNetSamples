@@ -18,7 +18,7 @@ namespace RogueSharpRLNetSamples.Items
          Player player = Game.CommandSystem.DungeonMap.GetPlayer();
          Point edgePoint = GetRandomEdgePoint( map );
 
-         Game.Messages.Add( $"{player.Name} uses a {Name} and chaotically unleashes a void beam" );
+         Game.MessageLog.Add( $"{player.Name} uses a {Name} and chaotically unleashes a void beam" );
          Actor voidAttackActor = new Actor {
             Attack = 6,
             AttackChance = 90,

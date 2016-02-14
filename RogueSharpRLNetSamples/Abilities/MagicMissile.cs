@@ -30,7 +30,7 @@ namespace RogueSharpRLNetSamples.Abilities
          Monster monster = map.GetMonsterAt( target.X, target.Y );
          if ( monster != null )
          {
-            Game.Messages.Add( $"{player.Name} casts a {Name} at {monster.Name}" );
+            Game.MessageLog.Add( $"{player.Name} casts a {Name} at {monster.Name}" );
             Actor magicMissleActor = new Actor
             {
                Attack = _attack, AttackChance = _attackChance, Name = Name

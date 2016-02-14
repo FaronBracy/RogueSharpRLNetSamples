@@ -17,7 +17,7 @@ namespace RogueSharpRLNetSamples.Items
          DungeonMap map = Game.CommandSystem.DungeonMap;
          Player player = Game.CommandSystem.DungeonMap.GetPlayer();
 
-         Game.Messages.Add( $"{player.Name} uses a {Name} and reappears in another place" );
+         Game.MessageLog.Add( $"{player.Name} uses a {Name} and reappears in another place" );
 
          Point point = map.GetRandomLocation( new DotNetRandom() );
          

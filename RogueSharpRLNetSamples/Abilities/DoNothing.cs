@@ -13,7 +13,7 @@ namespace RogueSharpRLNetSamples.Abilities
 
       protected override bool PerformAbility()
       {
-         Game.Messages.Add( "No ability in that slot" );
+         Game.MessageLog.Add( "No ability in that slot" );
          return false;
       }
    }

@@ -32,7 +32,7 @@ namespace RogueSharpRLNetSamples.Core
          if ( player != null )
          {
             player.AddItem( this );
-            Game.Messages.Add( $"{actor.Name} picked up {Name}" );
+            Game.MessageLog.Add( $"{actor.Name} picked up {Name}" );
             return true;
          }
 

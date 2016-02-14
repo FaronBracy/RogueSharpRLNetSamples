@@ -22,7 +22,7 @@ namespace RogueSharpRLNetSamples.Core
       public bool PickUp( IActor actor )
       {
          actor.Gold += Amount;
-         Game.Messages.Add( $"{actor.Name} picked up {Amount} gold" );
+         Game.MessageLog.Add( $"{actor.Name} picked up {Amount} gold" );
          return true;
       }
 

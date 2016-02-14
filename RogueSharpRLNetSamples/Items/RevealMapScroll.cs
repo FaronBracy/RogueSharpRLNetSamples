@@ -16,7 +16,7 @@ namespace RogueSharpRLNetSamples.Items
          DungeonMap map = Game.CommandSystem.DungeonMap;
          Player player = map.GetPlayer();
 
-         Game.Messages.Add( $"{player.Name} reads a {Name} and gains knowledge of the surrounding area" );
+         Game.MessageLog.Add( $"{player.Name} reads a {Name} and gains knowledge of the surrounding area" );
 
          foreach ( Cell cell in map.GetAllCells() )
          {

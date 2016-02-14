@@ -4,7 +4,7 @@ using RogueSharpRLNetSamples.Monsters;
 
 namespace RogueSharpRLNetSamples.Systems
 {
-   public static class ActorCreationSystem
+   public static class ActorGenerator
    {
       private static Player _player = null;
 

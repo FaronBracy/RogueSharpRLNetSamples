@@ -3,7 +3,7 @@ using RogueSharpRLNetSamples.Core;
 
 namespace RogueSharpRLNetSamples.Systems
 {
-   public static class AbilityCreationSystem
+   public static class AbilityGenerator
    {
       public static Pool<Ability> _abilityPool = null;
 

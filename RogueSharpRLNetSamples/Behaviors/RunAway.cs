@@ -28,7 +28,7 @@ namespace RogueSharpRLNetSamples.Behaviors
          }
          catch ( NoMoreStepsException )
          {
-            Game.Messages.Add( $"{monster.Name} cowers in fear" );
+            Game.MessageLog.Add( $"{monster.Name} cowers in fear" );
          }
          return true;
       }

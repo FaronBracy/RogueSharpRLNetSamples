@@ -18,7 +18,7 @@ namespace RogueSharpRLNetSamples.Abilities
          DungeonMap map = Game.CommandSystem.DungeonMap;
 
          Player player = map.GetPlayer();
-         Game.Messages.Add( $"{player.Name} performs a whirlwind attack against all adjacent enemies" );
+         Game.MessageLog.Add( $"{player.Name} performs a whirlwind attack against all adjacent enemies" );
 
          List<Point> monsterLocations = new List<Point>();
 

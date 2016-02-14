@@ -29,7 +29,7 @@ namespace RogueSharpRLNetSamples.Abilities
       {
          DungeonMap map = Game.CommandSystem.DungeonMap;
          Player player = map.GetPlayer();
-         Game.Messages.Add( $"{player.Name} casts a {Name}" );
+         Game.MessageLog.Add( $"{player.Name} casts a {Name}" );
          Actor fireballActor = new Actor {
             Attack = _attack,
             AttackChance = _attackChance,

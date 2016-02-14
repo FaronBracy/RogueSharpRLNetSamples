@@ -2,11 +2,11 @@
 
 namespace RogueSharpRLNetSamples.Systems
 {
-   public class EquipmentCreationSystem
+   public class EquipmentGenerator
    {
       private readonly Pool<Core.Equipment> _equipmentPool;
 
-      public EquipmentCreationSystem( int level )
+      public EquipmentGenerator( int level )
       {
          _equipmentPool = new Pool<Core.Equipment>();
 

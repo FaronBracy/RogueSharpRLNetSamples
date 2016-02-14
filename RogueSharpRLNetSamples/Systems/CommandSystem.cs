@@ -155,10 +155,10 @@ namespace RogueSharpRLNetSamples.Systems
             attackMessage.Append( "and misses completely." );
          }
 
-         Game.Messages.Add( attackMessage.ToString() );
+         Game.MessageLog.Add( attackMessage.ToString() );
          if ( !string.IsNullOrEmpty( defenseMessage.ToString() ) )
          {
-            Game.Messages.Add( defenseMessage.ToString() );
+            Game.MessageLog.Add( defenseMessage.ToString() );
          }
 
          int damage = hits - blocks;
@@ -167,13 +167,13 @@ namespace RogueSharpRLNetSamples.Systems
          {
             defender.Health = defender.Health - damage;
 
-            Game.Messages.Add( $"  {defender.Name} was hit for {damage} damage" );
+            Game.MessageLog.Add( $"  {defender.Name} was hit for {damage} damage" );
 
             if ( defender.Health <= 0 )
             {
                if ( defender is Player )
                {
-                  Game.Messages.Add( $"  {defender.Name} was killed, GAME OVER MAN!" );
+                  Game.MessageLog.Add( $"  {defender.Name} was killed, GAME OVER MAN!" );
                }
                else if ( defender is Monster )
                {
@@ -196,13 +196,13 @@ namespace RogueSharpRLNetSamples.Systems
                   DungeonMap.AddGold( defender.X, defender.Y, defender.Gold );
                   DungeonMap.RemoveMonster( (Monster) defender );
 
-                  Game.Messages.Add( $"  {defender.Name} died and dropped {defender.Gold} gold" );
+                  Game.MessageLog.Add( $"  {defender.Name} died and dropped {defender.Gold} gold" );
                }
             }
          }
          else
          {
-            Game.Messages.Add( $"  {defender.Name} blocked all damage" );
+            Game.MessageLog.Add( $"  {defender.Name} blocked all damage" );
          }
       }
 

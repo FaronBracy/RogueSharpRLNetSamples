@@ -31,7 +31,7 @@ namespace RogueSharpRLNetSamples
 
       private static bool _renderRequired = true;
 
-      public static Messages Messages;
+      public static MessageLog MessageLog;
       public static CommandSystem CommandSystem;
       public static SchedulingSystem SchedulingSystem;
       public static TargetingSystem TargetingSystem;
@@ -42,12 +42,12 @@ namespace RogueSharpRLNetSamples
          string consoleTitle = "RougeSharp RLNet Tutorial - Level 1";
          int seed = (int) DateTime.UtcNow.Ticks;
 
-         Messages = new Messages();
-         Messages.Add( "The rogue arrives on level 1" );
-         Messages.Add( $"Level created with seed '{seed}'" );
+         MessageLog = new MessageLog();
+         MessageLog.Add( "The rogue arrives on level 1" );
+         MessageLog.Add( $"Level created with seed '{seed}'" );
 
-         MapCreationSystem mapCreationSystem = new MapCreationSystem( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel, new DotNetRandom( seed ) );
-         _map = mapCreationSystem.CreateMap();
+         MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel, new DotNetRandom( seed ) );
+         _map = mapGenerator.CreateMap();
 
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
          _mapConsole = new RLConsole( _mapWidth, _mapHeight );
@@ -107,9 +107,9 @@ namespace RogueSharpRLNetSamples
                {
                   if ( _map.CanMoveDownToNextLevel() )
                   {
-                     MapCreationSystem mapCreationSystem = new MapCreationSystem( _mapWidth, _mapHeight, 20, 13, 7, ++_mapLevel, new DotNetRandom() );
-                     _map = mapCreationSystem.CreateMap();
-                     Messages = new Messages();
+                     MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 20, 13, 7, ++_mapLevel, new DotNetRandom() );
+                     _map = mapGenerator.CreateMap();
+                     MessageLog = new MessageLog();
                      CommandSystem = new CommandSystem( _map );
                      _rootConsole.Title = $"RougeSharp RLNet Tutorial - Level {_mapLevel}";
                      didPlayerAct = true;
@@ -143,7 +143,7 @@ namespace RogueSharpRLNetSamples
             _statConsole.Clear();
             _inventoryConsole.Clear();
             _map.Draw( _mapConsole, _statConsole, _inventoryConsole );
-            Messages.Draw( _messageConsole );
+            MessageLog.Draw( _messageConsole );
             TargetingSystem.Draw( _mapConsole );
             RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, _inventoryHeight );
             RLConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _rootConsole, _mapWidth, 0 );

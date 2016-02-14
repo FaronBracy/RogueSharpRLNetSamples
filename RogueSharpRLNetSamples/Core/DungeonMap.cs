@@ -126,7 +126,7 @@ namespace RogueSharpRLNetSamples.Core
             var cell = GetCell( x, y );
             SetCellProperties( x, y, true, true, cell.IsExplored );
 
-            Game.Messages.Add( $"{actor.Name} opened a door" );
+            Game.MessageLog.Add( $"{actor.Name} opened a door" );
          }
       }
 

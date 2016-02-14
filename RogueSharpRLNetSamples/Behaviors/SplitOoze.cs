@@ -41,7 +41,7 @@ namespace RogueSharpRLNetSamples.Behaviors
             newOoze.MaxHealth = halfHealth;
             newOoze.Health = halfHealth;
             commandSystem.DungeonMap.AddMonster( newOoze );
-            Game.Messages.Add( $"{monster.Name} splits itself in two" );
+            Game.MessageLog.Add( $"{monster.Name} splits itself in two" );
          }
          else
          {

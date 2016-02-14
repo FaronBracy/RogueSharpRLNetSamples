@@ -51,7 +51,7 @@ namespace RogueSharpRLNetSamples.Core
          if ( player != null )
          {
             player.AddAbility( this );
-            Game.Messages.Add( $"{actor.Name} learned the {Name} ability" );
+            Game.MessageLog.Add( $"{actor.Name} learned the {Name} ability" );
             return true;
          }
 

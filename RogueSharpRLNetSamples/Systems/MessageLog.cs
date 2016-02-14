@@ -4,11 +4,11 @@ using RLNET;
 
 namespace RogueSharpRLNetSamples.Systems
 {
-   public class Messages
+   public class MessageLog
    {
       private readonly Queue<string> _lines;
 
-      public Messages()
+      public MessageLog()
       {
          _lines = new Queue<string>();
       }

@@ -1,10 +1,9 @@
 ﻿using RogueSharpRLNetSamples.Core;
-using RogueSharpRLNetSamples.Interfaces;
 using RogueSharpRLNetSamples.Items;
 
 namespace RogueSharpRLNetSamples.Systems
 {
-   public static class ItemCreationSystem
+   public static class ItemGenerator
    {
       public static Item CreateItem()
       {
