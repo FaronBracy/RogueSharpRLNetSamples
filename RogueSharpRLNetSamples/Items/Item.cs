@@ -3,46 +3,27 @@ using RogueSharp;
 using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Interfaces;
 
-namespace RogueSharpRLNetSamples.Abilities
+namespace RogueSharpRLNetSamples.Items
 {
-   public class Ability : IAbility, ITreasure, IDrawable
+   public class Item : IItem, ITreasure, IDrawable
    {
-      public Ability()
+      public Item()
       {
-         Symbol = '*';
+         Symbol = '!';
          Color = RLColor.Yellow;
       }
 
       public string Name { get; protected set; }
+      public int RemainingUses { get; protected set; }
 
-      public int TurnsToRefresh { get; protected set; }
-
-      public int TurnsUntilRefreshed { get; protected set; }
-
-      public bool Perform()
+      public bool Use()
       {
-         if ( TurnsUntilRefreshed > 0 )
-         {
-            return false;
-         }
-
-         TurnsUntilRefreshed = TurnsToRefresh;
-
-         return PerformAbility();
+         return UseItem();
       }
 
-      protected virtual bool PerformAbility()
+      protected virtual bool UseItem()
       {
          return false;
-      }
-
-
-      public void Tick()
-      {
-         if ( TurnsUntilRefreshed > 0 )
-         {
-            TurnsUntilRefreshed--;
-         }
       }
 
       public bool PickUp( IActor actor )
@@ -51,8 +32,8 @@ namespace RogueSharpRLNetSamples.Abilities
 
          if ( player != null )
          {
-            player.AddAbility( this );
-            Game.Messages.Add( $"{actor.Name} learned the {Name} ability" );
+            player.AddItem( this );
+            Game.Messages.Add( $"{actor.Name} picked up {Name}" );
             return true;
          }
 
@@ -60,9 +41,13 @@ namespace RogueSharpRLNetSamples.Abilities
       }
 
       public RLColor Color { get; set; }
+
       public char Symbol { get; set; }
+
       public int X { get; set; }
+
       public int Y { get; set; }
+
       public void Draw( RLConsole console, IMap map )
       {
          if ( !map.IsExplored( X, Y ) )

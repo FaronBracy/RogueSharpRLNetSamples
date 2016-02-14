@@ -1,21 +1,17 @@
 ﻿using RogueSharp;
 using RogueSharpRLNetSamples.Actors;
-using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Items
 {
-   public class RevealMapScroll : IItem
+   public class RevealMapScroll : Item
    {
-      public string Name { get; }
-      public int RemainingUses { get; private set; }
-
       public RevealMapScroll()
       {
          Name = "Magic Map";
          RemainingUses = 1;
       }
 
-      public bool Use()
+      protected override bool UseItem()
       {
          DungeonMap map = Game.CommandSystem.DungeonMap;
          Player player = map.GetPlayer();

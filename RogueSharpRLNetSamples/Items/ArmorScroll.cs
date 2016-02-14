@@ -1,14 +1,10 @@
 ﻿using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Equipment;
-using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Items
 {
-   public class ArmorScroll : IItem
+   public class ArmorScroll : Item
    {
-      public string Name { get; }
-      public int RemainingUses { get; private set; }
-
       public ArmorScroll()
       {
          Name = "Armor Scroll";

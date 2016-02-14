@@ -1,4 +1,5 @@
 ﻿using RLNET;
+using RogueSharp;
 using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
 
@@ -156,6 +157,22 @@ namespace RogueSharpRLNetSamples.Actors
       public char Symbol { get; set; }
       public int X { get; set; }
       public int Y { get; set; }
+      public void Draw( RLConsole mapConsole, IMap map )
+      {
+         if ( !map.GetCell( X, Y ).IsExplored )
+         {
+            return;
+         }
+
+         if ( map.IsInFov( X, Y ) )
+         {
+            mapConsole.Set( X, Y, Color, Colors.FloorBackgroundFov, Symbol );
+         }
+         else
+         {
+            mapConsole.Set( X, Y, Colors.Floor, Colors.FloorBackground, '.' );
+         }
+      }
 
       // IScheduleable
       public  int Time { get

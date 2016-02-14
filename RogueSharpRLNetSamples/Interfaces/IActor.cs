@@ -2,7 +2,7 @@
 
 namespace RogueSharpRLNetSamples.Interfaces
 {
-   interface IActor
+   public interface IActor
    {
       HeadEquipment Head { get; set; }
       BodyEquipment Body { get; set; }

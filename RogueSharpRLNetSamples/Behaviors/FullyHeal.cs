@@ -12,7 +12,7 @@ namespace RogueSharpRLNetSamples.Behaviors
          {
             int healthToRecover = monster.MaxHealth - monster.Health;
             monster.Health = monster.MaxHealth;
-            Game.Messages.Add( string.Format( "{0} catches his breath and recovers {1} health", monster.Name, healthToRecover ) );    
+            Game.Messages.Add( $"{monster.Name} catches his breath and recovers {healthToRecover} health" );    
             return true;
          }
          return false;

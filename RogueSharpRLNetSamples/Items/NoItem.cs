@@ -1,20 +1,14 @@
-﻿using RogueSharpRLNetSamples.Interfaces;
-
-namespace RogueSharpRLNetSamples.Items
+﻿namespace RogueSharpRLNetSamples.Items
 {
-   public class NoItem : IItem
+   public class NoItem : Item
    {
-      public string Name { get; }
-
-      public int RemainingUses { get; }
-
       public NoItem()
       {
          Name = "None";
          RemainingUses = 1;
       }
 
-      public bool Use()
+      protected override bool UseItem()
       {
          return false;
       }

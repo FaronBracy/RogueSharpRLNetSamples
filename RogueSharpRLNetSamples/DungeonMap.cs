@@ -3,7 +3,6 @@ using System.Linq;
 using RLNET;
 using RogueSharp;
 using RogueSharp.Random;
-using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
@@ -14,7 +13,7 @@ namespace RogueSharpRLNetSamples
    public class DungeonMap : Map
    {
       private readonly List<Monster> _monsters;
-      private readonly List<Treasure> _treasurePiles;
+      private readonly List<TreasurePile> _treasurePiles;
       private Player _player;
 
       public List<Rectangle> Rooms;
@@ -25,7 +24,7 @@ namespace RogueSharpRLNetSamples
       public DungeonMap()
       {
          _monsters = new List<Monster>();
-         _treasurePiles = new List<Treasure>();
+         _treasurePiles = new List<TreasurePile>();
          Game.SchedulingSystem = new SchedulingSystem();
 
          Rooms = new List<Rectangle>();
@@ -66,22 +65,9 @@ namespace RogueSharpRLNetSamples
             .Select( m => new Point { X = m.X, Y = m.Y } );
       }
 
-      public void AddEquipment( int x, int y, Equipment.Equipment equipment )
+      public void AddTreasure( int x, int y, ITreasure treasure )
       {
-         Treasure treasure = new Treasure( x, y, equipment );
-         _treasurePiles.Add( treasure );
-      }
-
-      public void AddAbility( int x, int y, Ability ability )
-      {
-         Treasure treasure = new Treasure( x, y, ability );
-         _treasurePiles.Add( treasure );
-      }
-
-      public void AddItem( int x, int y, IItem item )
-      {
-         Treasure treasure = new Treasure( x, y, item );
-         _treasurePiles.Add( treasure );
+         _treasurePiles.Add( new TreasurePile( x, y, treasure ) );
       }
 
       public void AddPlayer( Player player )
@@ -142,7 +128,7 @@ namespace RogueSharpRLNetSamples
             var cell = GetCell( x, y );
             SetCellProperties( x, y, true, true, cell.IsExplored );
 
-            Game.Messages.Add( string.Format( "{0} opened a door", actor.Name ) );
+            Game.Messages.Add( $"{actor.Name} opened a door" );
          }
       }
 
@@ -150,60 +136,18 @@ namespace RogueSharpRLNetSamples
       {
          if ( amount > 0 )
          {
-            _treasurePiles.Add( new Treasure( x, y, amount ) );
+            AddTreasure( x, y, new Gold( amount ) );
          }
       }
 
       private void PickUpTreasure( Actor actor, int x, int y )
       {
-         List<Treasure> treasureAtLocation = _treasurePiles.Where( g => g.X == x && g.Y == y ).ToList();
-         foreach ( Treasure treasure in treasureAtLocation )
+         List<TreasurePile> treasureAtLocation = _treasurePiles.Where( g => g.X == x && g.Y == y ).ToList();
+         foreach ( TreasurePile treasurePile in treasureAtLocation )
          {
-            if ( treasure.Gold > 0 )
+            if ( treasurePile.Treasure.PickUp( actor ) )
             {
-               actor.Gold += treasure.Gold;
-               Game.Messages.Add( string.Format( "{0} picked up {1} gold", actor.Name, treasure.Gold ) );
-            }
-
-            if ( treasure.Equipment != null )
-            {
-               if ( treasure.Equipment is HeadEquipment )
-               {
-                  actor.Head = treasure.Equipment as HeadEquipment;
-                  Game.Messages.Add( string.Format( "{0} picked up a {1} helmet", actor.Name, treasure.Equipment.Name ) );
-               }
-               else if ( treasure.Equipment is BodyEquipment )
-               {
-                  actor.Body = treasure.Equipment as BodyEquipment;
-                  Game.Messages.Add( string.Format( "{0} picked up {1} body armor", actor.Name, treasure.Equipment.Name ) );
-               }
-               else if ( treasure.Equipment is HandEquipment )
-               {
-                  actor.Hand = treasure.Equipment as HandEquipment;
-                  Game.Messages.Add( string.Format( "{0} picked up a {1}", actor.Name, treasure.Equipment.Name ) );
-               }
-               else if ( treasure.Equipment is FeetEquipment )
-               {
-                  actor.Feet = treasure.Equipment as FeetEquipment;
-                  Game.Messages.Add( string.Format( "{0} picked up {1} boots", actor.Name, treasure.Equipment.Name ) );
-               }
-            }
-
-            if ( treasure.Item != null && actor is Player )
-            {
-               _player.AddItem( treasure.Item );
-               Game.Messages.Add( string.Format( "{0} picked up {1}", actor.Name, treasure.Item.Name ) );
-               _treasurePiles.Remove( treasure );
-            }
-
-            if ( treasure.Ability != null && actor is Player )
-            {
-               _player.AddAbility( treasure.Ability );
-               _treasurePiles.Remove( treasure );
-            }
-            else if ( treasure.Ability == null )
-            {
-               _treasurePiles.Remove( treasure );
+               _treasurePiles.Remove( treasurePile );
             }
          }
       }
@@ -274,9 +218,10 @@ namespace RogueSharpRLNetSamples
          StairsUp.Draw( mapConsole, this );
          StairsDown.Draw( mapConsole, this );
 
-         foreach ( Treasure treasure in _treasurePiles )
+         foreach ( TreasurePile treasurePile in _treasurePiles )
          {
-            treasure.Draw( mapConsole, this );
+            IDrawable drawableTreasure = treasurePile.Treasure as IDrawable;
+            drawableTreasure?.Draw( mapConsole, this );
          }
 
          statConsole.Clear();
@@ -291,7 +236,7 @@ namespace RogueSharpRLNetSamples
             }
          }
 
-         _player.Draw( mapConsole );
+         _player.Draw( mapConsole, this );
          _player.DrawStats( statConsole );
          _player.DrawInventory( inventoryConsole );
       }

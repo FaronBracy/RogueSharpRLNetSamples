@@ -69,6 +69,7 @@
     <Compile Include="Behaviors\RunAway.cs" />
     <Compile Include="Behaviors\ShoutForHelp.cs" />
     <Compile Include="Behaviors\StandardMoveAndAttack.cs" />
+    <Compile Include="Gold.cs" />
     <Compile Include="Interfaces\IAbility.cs" />
     <Compile Include="Interfaces\IActor.cs" />
     <Compile Include="Interfaces\IBehavior.cs" />
@@ -83,6 +84,8 @@
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Interfaces\IEquipment.cs" />
     <Compile Include="Interfaces\IScheduleable.cs" />
+    <Compile Include="Interfaces\ITreasure.cs" />
+    <Compile Include="Items\Item.cs" />
     <Compile Include="Items\TeleportScroll.cs" />
     <Compile Include="Items\RevealMapScroll.cs" />
     <Compile Include="Items\HealingPotion.cs" />

@@ -1,22 +1,18 @@
 ﻿using RogueSharp;
 using RogueSharp.Random;
 using RogueSharpRLNetSamples.Actors;
-using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Items
 {
-   public class TeleportScroll : IItem
+   public class TeleportScroll : Item
    {
-      public string Name { get; }
-      public int RemainingUses { get; private set; }
-
       public TeleportScroll()
       {
          Name = "Teleport Scroll";
          RemainingUses = 1;
       }
 
-      public bool Use()
+      protected override bool UseItem()
       {
          DungeonMap map = Game.CommandSystem.DungeonMap;
          Player player = Game.CommandSystem.DungeonMap.GetPlayer();

@@ -1,15 +1,11 @@
 ﻿using RogueSharp;
 using RogueSharp.Random;
 using RogueSharpRLNetSamples.Actors;
-using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Items
 {
-   public class DestructionWand : IItem
+   public class DestructionWand : Item
    {
-      public string Name { get; }
-      public int RemainingUses { get; private set; }
-
       public DestructionWand()
       {
          Name = "Wand of Destruction";

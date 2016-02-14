@@ -163,10 +163,5 @@ namespace RogueSharpRLNetSamples.Actors
          EAbility?.Tick();
          RAbility?.Tick();
       }
-
-      public void Draw( RLConsole mapConsole )
-      {
-         mapConsole.Set( X, Y, Color, null, Symbol );
-      }
    }
 }

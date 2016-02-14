@@ -1,9 +1,17 @@
+using RLNET;
+using RogueSharp;
 using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Equipment
 {
-   public class Equipment : IEquipment
+   public class Equipment : IEquipment, ITreasure, IDrawable
    {
+      public Equipment()
+      {
+         Symbol = ']';
+         Color = RLColor.Yellow;
+      }
+
       public int Attack { get; set; }
       public int AttackChance { get; set; }
       public int Awareness { get; set; }
@@ -63,6 +71,60 @@ namespace RogueSharpRLNetSamples.Equipment
       public static bool operator !=( Equipment left, Equipment right )
       {
          return !Equals( left, right );
+      }
+
+      public bool PickUp( IActor actor )
+      {
+         if ( this is HeadEquipment )
+         {
+            actor.Head = this as HeadEquipment;
+            Game.Messages.Add( $"{actor.Name} picked up a {Name} helmet" );
+            return true;
+         }
+
+         if ( this is BodyEquipment )
+         {
+            actor.Body = this as BodyEquipment;
+            Game.Messages.Add( $"{actor.Name} picked up {Name} body armor" );
+            return true;
+         }
+
+         if ( this is HandEquipment )
+         {
+            actor.Hand = this as HandEquipment;
+            Game.Messages.Add( $"{actor.Name} picked up a {Name}" );
+            return true;
+         }
+
+         if ( this is FeetEquipment )
+         {
+            actor.Feet = this as FeetEquipment;
+            Game.Messages.Add( $"{actor.Name} picked up {Name} boots" );
+            return true;
+         }
+
+         return false;
+      }
+
+      public RLColor Color { get; set; }
+      public char Symbol { get; set; }
+      public int X { get; set; }
+      public int Y { get; set; }
+      public void Draw( RLConsole console, IMap map )
+      {
+         if ( !map.IsExplored( X, Y ) )
+         {
+            return;
+         }
+
+         if ( map.IsInFov( X, Y ) )
+         {
+            console.Set( X, Y, Color, Colors.FloorBackgroundFov, Symbol );
+         }
+         else
+         {
+            console.Set( X, Y, RLColor.Blend( Color, RLColor.Gray, 0.5f ), Colors.FloorBackground, Symbol );
+         }
       }
    }
 }

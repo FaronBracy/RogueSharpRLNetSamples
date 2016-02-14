@@ -1,21 +1,17 @@
 ﻿using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Actors;
-using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Items
 {
-   public class HealingPotion : IItem
+   public class HealingPotion : Item
    {
-      public string Name { get; }
-      public int RemainingUses { get; private set; }
-
       public HealingPotion()
       {
          Name = "Healing Potion";
          RemainingUses = 1;
       }
 
-      public bool Use()
+      protected override bool UseItem()
       {
          int healAmount = 15;
          Player player = Game.CommandSystem.DungeonMap.GetPlayer();

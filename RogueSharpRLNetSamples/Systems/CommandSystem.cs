@@ -179,19 +179,19 @@ namespace RogueSharpRLNetSamples.Systems
                {
                   if ( defender.Head != null && defender.Head != HeadEquipment.None() )
                   {
-                     DungeonMap.AddEquipment( defender.X, defender.Y, defender.Head );
+                     DungeonMap.AddTreasure( defender.X, defender.Y, defender.Head );
                   }
                   if ( defender.Body != null && defender.Body != BodyEquipment.None() )
                   {
-                     DungeonMap.AddEquipment( defender.X, defender.Y, defender.Body );
+                     DungeonMap.AddTreasure( defender.X, defender.Y, defender.Body );
                   }
                   if ( defender.Hand != null && defender.Hand != HandEquipment.None() )
                   {
-                     DungeonMap.AddEquipment( defender.X, defender.Y, defender.Hand );
+                     DungeonMap.AddTreasure( defender.X, defender.Y, defender.Hand );
                   }
                   if ( defender.Feet != null && defender.Feet != FeetEquipment.None() )
                   {
-                     DungeonMap.AddEquipment( defender.X, defender.Y, defender.Feet );
+                     DungeonMap.AddTreasure( defender.X, defender.Y, defender.Feet );
                   }
                   DungeonMap.AddGold( defender.X, defender.Y, defender.Gold );
                   DungeonMap.RemoveMonster( (Monster) defender );

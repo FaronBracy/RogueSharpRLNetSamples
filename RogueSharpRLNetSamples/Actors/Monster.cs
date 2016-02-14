@@ -18,25 +18,10 @@ namespace RogueSharpRLNetSamples.Actors
          int remainingWidth = 16 - width;
          statConsole.SetBackColor( 3, yPosition, width, 1, Swatch.Primary );
          statConsole.SetBackColor( 3 + width, yPosition, remainingWidth, 1, Swatch.PrimaryDarkest );  
-         statConsole.Print( 2, yPosition, string.Format( ": {0}", Name ), RLColor.White );
+         statConsole.Print( 2, yPosition, $": {Name}", RLColor.White );
       }
 
-      public void Draw( RLConsole mapConsole, IMap map )
-      {
-         if ( !map.GetCell( X, Y ).IsExplored )
-         {
-            return;
-         }
 
-         if ( map.IsInFov( X, Y ) )
-         {
-            mapConsole.Set( X, Y, Color, Colors.FloorBackgroundFov, Symbol );
-         }
-         else
-         {
-            mapConsole.Set( X, Y, Colors.Floor, Colors.FloorBackground, '.' );
-         }
-      }
 
       public static Monster Clone( Monster anotherMonster )
       {

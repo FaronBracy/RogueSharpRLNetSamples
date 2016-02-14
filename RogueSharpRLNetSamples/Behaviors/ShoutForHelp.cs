@@ -29,7 +29,7 @@ namespace RogueSharpRLNetSamples.Behaviors
 
          if ( didShoutForHelp )
          {
-            Game.Messages.Add( string.Format( "{0} shouts for help!", monster.Name ) );
+            Game.Messages.Add( $"{monster.Name} shouts for help!" );
          }
 
          return didShoutForHelp;

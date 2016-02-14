@@ -5,9 +5,9 @@ namespace RogueSharpRLNetSamples.Systems
 {
    public static class ItemCreationSystem
    {
-      public static IItem CreateItem()
+      public static Item CreateItem()
       {
-         Pool<IItem> itemPool = new Pool<IItem>();
+         Pool<Item> itemPool = new Pool<Item>();
 
          itemPool.Add( new ArmorScroll(), 10 );
          itemPool.Add( new DestructionWand(), 5 );

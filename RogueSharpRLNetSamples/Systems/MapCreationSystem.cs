@@ -5,7 +5,7 @@ using RogueSharp;
 using RogueSharp.DiceNotation;
 using RogueSharp.Random;
 using RogueSharpRLNetSamples.Actors;
-using RogueSharpRLNetSamples.Interfaces;
+using RogueSharpRLNetSamples.Items;
 
 namespace RogueSharpRLNetSamples.Systems
 {
@@ -245,7 +245,7 @@ namespace RogueSharpRLNetSamples.Systems
                         return;
                      }
                      Point location = _map.GetRandomLocationInRoom( room, _random );
-                     _map.AddEquipment( location.X, location.Y, equipment );
+                     _map.AddTreasure( location.X, location.Y, equipment );
                   }
                }
             }
@@ -263,9 +263,9 @@ namespace RogueSharpRLNetSamples.Systems
                   Point randomRoomLocation = _map.GetRandomLocationInRoom( room, _random );
                   if ( randomRoomLocation != null )
                   {
-                     IItem item = ItemCreationSystem.CreateItem();
+                     Item item = ItemCreationSystem.CreateItem();
                      Point location = _map.GetRandomLocationInRoom( room, _random );
-                     _map.AddItem( location.X, location.Y, item );
+                     _map.AddTreasure( location.X, location.Y, item );
                   }
                }
             }
@@ -291,7 +291,7 @@ namespace RogueSharpRLNetSamples.Systems
                var ability = AbilityCreationSystem.CreateAbility();
                int roomIndex = _random.Next( 0, _map.Rooms.Count - 1 );
                Point location = _map.GetRandomLocationInRoom( _map.Rooms[roomIndex], _random );
-               _map.AddAbility( location.X, location.Y, ability );
+               _map.AddTreasure( location.X, location.Y, ability );
             }
             catch ( InvalidOperationException )
             {

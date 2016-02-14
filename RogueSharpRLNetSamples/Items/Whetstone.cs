@@ -1,22 +1,18 @@
 ﻿using RogueSharp.DiceNotation;
 using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Equipment;
-using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Items
 {
-   public class Whetstone : IItem
+   public class Whetstone : Item
    {
-      public string Name { get; }
-      public int RemainingUses { get; private set; }
-
       public Whetstone()
       {
          Name = "Whetstone";
          RemainingUses = 5;
       }
 
-      public bool Use()
+      protected override bool UseItem()
       {
          Player player = Game.CommandSystem.DungeonMap.GetPlayer();
 
