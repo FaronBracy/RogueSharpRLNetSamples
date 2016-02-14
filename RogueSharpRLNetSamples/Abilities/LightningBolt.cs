@@ -20,12 +20,12 @@ namespace RogueSharpRLNetSamples.Abilities
 
       protected override bool PerformAbility()
       {
-         return Game.TargetingService.SelectLine( this );
+         return Game.TargetingSystem.SelectLine( this );
       }
 
       public void SelectTarget( Point target )
       {
-         DungeonMap map = Game.CommandService.DungeonMap;
+         DungeonMap map = Game.CommandSystem.DungeonMap;
          Player player = map.GetPlayer();
          Game.Messages.Add( $"{player.Name} casts a {Name}" );
 
@@ -49,7 +49,7 @@ namespace RogueSharpRLNetSamples.Abilities
             Monster monster = map.GetMonsterAt( cell.X, cell.Y );
             if ( monster != null )
             {
-               Game.CommandService.Attack( lightningBoltActor, monster );
+               Game.CommandSystem.Attack( lightningBoltActor, monster );
             }
             else
             {

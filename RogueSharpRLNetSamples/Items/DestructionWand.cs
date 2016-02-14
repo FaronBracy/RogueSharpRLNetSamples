@@ -18,8 +18,8 @@ namespace RogueSharpRLNetSamples.Items
 
       public bool Use()
       {
-         DungeonMap map = Game.CommandService.DungeonMap;
-         Player player = Game.CommandService.DungeonMap.GetPlayer();
+         DungeonMap map = Game.CommandSystem.DungeonMap;
+         Player player = Game.CommandSystem.DungeonMap.GetPlayer();
          Point edgePoint = GetRandomEdgePoint( map );
 
          Game.Messages.Add( $"{player.Name} uses a {Name} and chaotically unleashes a void beam" );
@@ -39,7 +39,7 @@ namespace RogueSharpRLNetSamples.Items
             Monster monster = map.GetMonsterAt( cell.X, cell.Y );
             if ( monster != null )
             {
-               Game.CommandService.Attack( voidAttackActor, monster );
+               Game.CommandSystem.Attack( voidAttackActor, monster );
             }
             else
             {

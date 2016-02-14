@@ -1,14 +1,14 @@
-﻿using RogueSharpRLNetSamples.Inventory;
+﻿using RogueSharpRLNetSamples.Equipment;
 
-namespace RogueSharpRLNetSamples.Services
+namespace RogueSharpRLNetSamples.Systems
 {
-   public class EquipmentCreationService
+   public class EquipmentCreationSystem
    {
-      private readonly Pool<Equipment> _equipmentPool;
+      private readonly Pool<Equipment.Equipment> _equipmentPool;
 
-      public EquipmentCreationService( int level )
+      public EquipmentCreationSystem( int level )
       {
-         _equipmentPool = new Pool<Equipment>();
+         _equipmentPool = new Pool<Equipment.Equipment>();
 
          if ( level <= 3 )
          {
@@ -39,7 +39,7 @@ namespace RogueSharpRLNetSamples.Services
          }
       }
 
-      public Equipment CreateEquipment()
+      public Equipment.Equipment CreateEquipment()
       { 
          return _equipmentPool.Get();
       }

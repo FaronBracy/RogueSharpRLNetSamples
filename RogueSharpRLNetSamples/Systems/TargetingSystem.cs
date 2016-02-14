@@ -5,9 +5,9 @@ using RogueSharp;
 using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Interfaces;
 
-namespace RogueSharpRLNetSamples.Services
+namespace RogueSharpRLNetSamples.Systems
 {
-   public class TargetingService
+   public class TargetingSystem
    {
       private enum SelectionType
       {
@@ -30,7 +30,7 @@ namespace RogueSharpRLNetSamples.Services
       {
          Initialize();
          _selectionType = SelectionType.Target;
-         DungeonMap map = Game.CommandService.DungeonMap;
+         DungeonMap map = Game.CommandSystem.DungeonMap;
          _selectableTargets = map.GetMonsterLocationsInFieldOfView().ToList();
          _targetable = targetable;
          _cursorPosition = _selectableTargets.FirstOrDefault();
@@ -48,7 +48,7 @@ namespace RogueSharpRLNetSamples.Services
       {
          Initialize();
          _selectionType = SelectionType.Area;
-         Player player = Game.CommandService.DungeonMap.GetPlayer();
+         Player player = Game.CommandSystem.DungeonMap.GetPlayer();
          _cursorPosition = new Point { X = player.X, Y = player.Y };
          _targetable = targetable;
          _area = area;
@@ -61,7 +61,7 @@ namespace RogueSharpRLNetSamples.Services
       {
          Initialize();
          _selectionType = SelectionType.Line;
-         Player player = Game.CommandService.DungeonMap.GetPlayer();
+         Player player = Game.CommandSystem.DungeonMap.GetPlayer();
          _cursorPosition = new Point { X = player.X, Y = player.Y };
          _targetable = targetable;
 
@@ -136,7 +136,7 @@ namespace RogueSharpRLNetSamples.Services
       {
          int x = _cursorPosition.X;
          int y = _cursorPosition.Y;
-         DungeonMap map = Game.CommandService.DungeonMap;
+         DungeonMap map = Game.CommandSystem.DungeonMap;
 
          if ( key == RLKey.Right )
          {
@@ -166,7 +166,7 @@ namespace RogueSharpRLNetSamples.Services
       {
          if ( IsPlayerTargeting )
          {
-            DungeonMap map = Game.CommandService.DungeonMap;
+            DungeonMap map = Game.CommandSystem.DungeonMap;
             Player player = map.GetPlayer();
             if ( _selectionType == SelectionType.Area )
             {

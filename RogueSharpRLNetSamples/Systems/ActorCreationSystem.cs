@@ -1,9 +1,9 @@
 using RogueSharp;
 using RogueSharpRLNetSamples.Actors;
 
-namespace RogueSharpRLNetSamples.Services
+namespace RogueSharpRLNetSamples.Systems
 {
-   public static class ActorCreationService
+   public static class ActorCreationSystem
    {
       private static Player _player = null;
 

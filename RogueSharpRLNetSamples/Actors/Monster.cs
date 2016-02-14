@@ -2,7 +2,7 @@
 using RLNET;
 using RogueSharp;
 using RogueSharpRLNetSamples.Behaviors;
-using RogueSharpRLNetSamples.Services;
+using RogueSharpRLNetSamples.Systems;
 
 namespace RogueSharpRLNetSamples.Actors
 {
@@ -56,10 +56,10 @@ namespace RogueSharpRLNetSamples.Actors
          };
       }
 
-      public virtual void PerformAction( CommandService commandService )
+      public virtual void PerformAction( CommandSystem commandSystem )
       {
          var behavior = new StandardMoveAndAttack();
-         behavior.Act( this, commandService );
+         behavior.Act( this, commandSystem );
       }
    }
 }

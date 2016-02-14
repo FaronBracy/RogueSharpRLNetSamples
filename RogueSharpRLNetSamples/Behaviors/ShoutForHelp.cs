@@ -1,16 +1,16 @@
 ﻿using RogueSharp;
 using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Interfaces;
-using RogueSharpRLNetSamples.Services;
+using RogueSharpRLNetSamples.Systems;
 
 namespace RogueSharpRLNetSamples.Behaviors
 {
    public class ShoutForHelp : IBehavior
    {
-      public bool Act( Monster monster, CommandService commandService )
+      public bool Act( Monster monster, CommandSystem commandSystem )
       {
          bool didShoutForHelp = false;
-         DungeonMap dungeonMap = commandService.DungeonMap;
+         DungeonMap dungeonMap = commandSystem.DungeonMap;
          FieldOfView monsterFov = new FieldOfView( dungeonMap );
 
          monsterFov.ComputeFov( monster.X, monster.Y, monster.Awareness, true );

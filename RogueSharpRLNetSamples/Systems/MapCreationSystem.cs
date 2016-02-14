@@ -6,11 +6,10 @@ using RogueSharp.DiceNotation;
 using RogueSharp.Random;
 using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Interfaces;
-using RogueSharpRLNetSamples.Inventory;
 
-namespace RogueSharpRLNetSamples.Services
+namespace RogueSharpRLNetSamples.Systems
 {
-   public class MapCreationService
+   public class MapCreationSystem
    {
       private readonly IRandom _random;
       private readonly int _width;
@@ -20,9 +19,9 @@ namespace RogueSharpRLNetSamples.Services
       private readonly int _roomMinSize;
       private readonly int _level;
       private readonly DungeonMap _map;
-      private readonly EquipmentCreationService _equipmentCreationService;
+      private readonly EquipmentCreationSystem _equipmentCreationSystem;
 
-      public MapCreationService( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int level, IRandom random )
+      public MapCreationSystem( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int level, IRandom random )
       {
          _width = width;
          _height = height;
@@ -32,7 +31,7 @@ namespace RogueSharpRLNetSamples.Services
          _level = level;
          _random = random;
          _map = new DungeonMap();
-         _equipmentCreationService = new EquipmentCreationService( level );
+         _equipmentCreationSystem = new EquipmentCreationSystem( level );
       }
 
       public DungeonMap CreateMap()
@@ -216,7 +215,7 @@ namespace RogueSharpRLNetSamples.Services
                      Point randomRoomLocation = _map.GetRandomLocationInRoom( room, _random );
                      if ( randomRoomLocation != null )
                      {
-                        _map.AddMonster( ActorCreationService.CreateMonster( _level, _map.GetRandomLocationInRoom( room, _random ) ) );
+                        _map.AddMonster( ActorCreationSystem.CreateMonster( _level, _map.GetRandomLocationInRoom( room, _random ) ) );
                      }
                   }
                }
@@ -235,10 +234,10 @@ namespace RogueSharpRLNetSamples.Services
                   Point randomRoomLocation = _map.GetRandomLocationInRoom( room, _random );
                   if ( randomRoomLocation != null )
                   {
-                     Equipment equipment;
+                     Equipment.Equipment equipment;
                      try
                      {
-                        equipment = _equipmentCreationService.CreateEquipment();
+                        equipment = _equipmentCreationSystem.CreateEquipment();
                      }
                      catch ( InvalidOperationException )
                      {
@@ -264,7 +263,7 @@ namespace RogueSharpRLNetSamples.Services
                   Point randomRoomLocation = _map.GetRandomLocationInRoom( room, _random );
                   if ( randomRoomLocation != null )
                   {
-                     IItem item = ItemCreationService.CreateItem();
+                     IItem item = ItemCreationSystem.CreateItem();
                      Point location = _map.GetRandomLocationInRoom( room, _random );
                      _map.AddItem( location.X, location.Y, item );
                   }
@@ -275,7 +274,7 @@ namespace RogueSharpRLNetSamples.Services
 
       private void PlacePlayer()
       {
-         Player player = ActorCreationService.CreatePlayer();
+         Player player = ActorCreationSystem.CreatePlayer();
 
          player.X = _map.Rooms[0].Center.X;
          player.Y = _map.Rooms[0].Center.Y;
@@ -289,7 +288,7 @@ namespace RogueSharpRLNetSamples.Services
          {
             try
             {
-               var ability = AbilityCreationService.CreateAbility();
+               var ability = AbilityCreationSystem.CreateAbility();
                int roomIndex = _random.Next( 0, _map.Rooms.Count - 1 );
                Point location = _map.GetRandomLocationInRoom( _map.Rooms[roomIndex], _random );
                _map.AddAbility( location.X, location.Y, ability );

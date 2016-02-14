@@ -1,6 +1,6 @@
 using RogueSharpRLNetSamples.Interfaces;
 
-namespace RogueSharpRLNetSamples.Inventory
+namespace RogueSharpRLNetSamples.Equipment
 {
    public class Equipment : IHasStats
    {

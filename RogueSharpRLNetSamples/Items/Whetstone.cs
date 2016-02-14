@@ -18,7 +18,7 @@ namespace RogueSharpRLNetSamples.Items
 
       public bool Use()
       {
-         Player player = Game.CommandService.DungeonMap.GetPlayer();
+         Player player = Game.CommandSystem.DungeonMap.GetPlayer();
 
          if ( player.Hand == HandEquipment.None() )
          {

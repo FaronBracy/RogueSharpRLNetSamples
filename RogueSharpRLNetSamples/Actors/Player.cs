@@ -1,8 +1,8 @@
 using System;
 using RLNET;
 using RogueSharpRLNetSamples.Abilities;
+using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
-using RogueSharpRLNetSamples.Inventory;
 using RogueSharpRLNetSamples.Items;
 
 namespace RogueSharpRLNetSamples.Actors

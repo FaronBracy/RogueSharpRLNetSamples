@@ -1,15 +1,15 @@
 ﻿using RogueSharp;
 using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Interfaces;
-using RogueSharpRLNetSamples.Services;
+using RogueSharpRLNetSamples.Systems;
 
 namespace RogueSharpRLNetSamples.Behaviors
 {
    public class RunAway : IBehavior
    {
-      public bool Act( Monster monster, CommandService commandService )
+      public bool Act( Monster monster, CommandSystem commandSystem )
       {
-         DungeonMap dungeonMap = commandService.DungeonMap;
+         DungeonMap dungeonMap = commandSystem.DungeonMap;
 
          // Set the cell the monster is on to be walkable temporarily so that pathfinder won't bail early
          // TODO: This functionality should be automatically done by the GoalMap pathfinder and not required to do manually here.
@@ -24,7 +24,7 @@ namespace RogueSharpRLNetSamples.Behaviors
          dungeonMap.SetIsWalkable( monster.X, monster.Y, false );
          try
          {
-            commandService.MoveMonster( monster, path.StepForward() );
+            commandSystem.MoveMonster( monster, path.StepForward() );
          }
          catch ( NoMoreStepsException )
          {

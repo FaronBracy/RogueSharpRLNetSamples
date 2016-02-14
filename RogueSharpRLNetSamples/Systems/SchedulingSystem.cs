@@ -2,14 +2,14 @@
 using System.Linq;
 using RogueSharpRLNetSamples.Interfaces;
 
-namespace RogueSharpRLNetSamples.Services
+namespace RogueSharpRLNetSamples.Systems
 {
-   public class ScheduleService
+   public class SchedulingSystem
    {
       private int _time;
       private readonly SortedDictionary<int, List<IScheduleable>> _scheduleables;
 
-      public ScheduleService()
+      public SchedulingSystem()
       {
          _time = 0;
          _scheduleables = new SortedDictionary<int, List<IScheduleable>>();

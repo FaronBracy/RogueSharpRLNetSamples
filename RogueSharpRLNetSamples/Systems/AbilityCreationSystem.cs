@@ -1,8 +1,8 @@
 ﻿using RogueSharpRLNetSamples.Abilities;
 
-namespace RogueSharpRLNetSamples.Services
+namespace RogueSharpRLNetSamples.Systems
 {
-   public static class AbilityCreationService
+   public static class AbilityCreationSystem
    {
       public static Pool<Ability> _abilityPool = null;
 

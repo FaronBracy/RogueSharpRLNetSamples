@@ -2,14 +2,13 @@
 using RogueSharp;
 using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Interfaces;
-using RogueSharpRLNetSamples.Inventory;
 
 namespace RogueSharpRLNetSamples
 {
    public class Treasure : IDrawable
    {
       public int Gold { get; set; }
-      public Equipment Equipment { get; set; }
+      public Equipment.Equipment Equipment { get; set; }
       public Ability Ability { get; set; }
       public IItem Item { get; set; }
 
@@ -18,7 +17,7 @@ namespace RogueSharpRLNetSamples
       public int X { get; set; }
       public int Y { get; set; }
 
-      public Treasure( int x, int y, Equipment equipment ) 
+      public Treasure( int x, int y, Equipment.Equipment equipment ) 
          : this( x, y, 0, equipment )
       {
       }
@@ -33,7 +32,7 @@ namespace RogueSharpRLNetSamples
       {
       }
 
-      public Treasure( int x, int y, int gold, Equipment equipment = null, Ability ability = null, IItem item = null )
+      public Treasure( int x, int y, int gold, Equipment.Equipment equipment = null, Ability ability = null, IItem item = null )
       {
          char symbol = '$';
          if ( item != null )

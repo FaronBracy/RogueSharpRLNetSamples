@@ -1,9 +1,8 @@
 ﻿using System;
 using RLNET;
 using RogueSharp.Random;
-using RogueSharpRLNetSamples.Inventory;
 using RogueSharpRLNetSamples.Items;
-using RogueSharpRLNetSamples.Services;
+using RogueSharpRLNetSamples.Systems;
 
 namespace RogueSharpRLNetSamples
 {
@@ -32,9 +31,9 @@ namespace RogueSharpRLNetSamples
       private static bool _renderRequired = true;
 
       public static Messages Messages;
-      public static CommandService CommandService;
-      public static ScheduleService ScheduleService;
-      public static TargetingService TargetingService;
+      public static CommandSystem CommandSystem;
+      public static SchedulingSystem SchedulingSystem;
+      public static TargetingSystem TargetingSystem;
 
       public static void Main()
       {
@@ -46,8 +45,8 @@ namespace RogueSharpRLNetSamples
          Messages.Add( "The rogue arrives on level 1" );
          Messages.Add( $"Level created with seed '{seed}'" );
 
-         MapCreationService mapCreationService = new MapCreationService( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel, new DotNetRandom( seed ) );
-         _map = mapCreationService.CreateMap();
+         MapCreationSystem mapCreationSystem = new MapCreationSystem( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel, new DotNetRandom( seed ) );
+         _map = mapCreationSystem.CreateMap();
 
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
          _mapConsole = new RLConsole( _mapWidth, _mapHeight );
@@ -55,8 +54,8 @@ namespace RogueSharpRLNetSamples
          _statConsole = new RLConsole( _statWidth, _statHeight );
          _inventoryConsole = new RLConsole( _inventoryWidth, _inventoryHeight );
 
-         CommandService = new CommandService( _map );
-         TargetingService = new TargetingService();
+         CommandSystem = new CommandSystem( _map );
+         TargetingSystem = new TargetingSystem();
 
          _map.GetPlayer().Item1 = new RevealMapScroll();
          _map.GetPlayer().Item2 = new RevealMapScroll();
@@ -71,33 +70,33 @@ namespace RogueSharpRLNetSamples
          bool didPlayerAct = false;
          RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
 
-         if ( TargetingService.IsPlayerTargeting )
+         if ( TargetingSystem.IsPlayerTargeting )
          {
             if ( keyPress != null )
             {
                _renderRequired = true;
-               TargetingService.HandleKey( keyPress.Key );
+               TargetingSystem.HandleKey( keyPress.Key );
             }
          }
-         else if ( CommandService.IsPlayerTurn )
+         else if ( CommandSystem.IsPlayerTurn )
          {
             if ( keyPress != null )
             {
                if ( keyPress.Key == RLKey.Up )
                {
-                  didPlayerAct = CommandService.MovePlayer( Direction.Up );
+                  didPlayerAct = CommandSystem.MovePlayer( Direction.Up );
                }
                else if ( keyPress.Key == RLKey.Down )
                {
-                  didPlayerAct = CommandService.MovePlayer( Direction.Down );
+                  didPlayerAct = CommandSystem.MovePlayer( Direction.Down );
                }
                else if ( keyPress.Key == RLKey.Left )
                {
-                  didPlayerAct = CommandService.MovePlayer( Direction.Left );
+                  didPlayerAct = CommandSystem.MovePlayer( Direction.Left );
                }
                else if ( keyPress.Key == RLKey.Right )
                {
-                  didPlayerAct = CommandService.MovePlayer( Direction.Right );
+                  didPlayerAct = CommandSystem.MovePlayer( Direction.Right );
                }
                else if ( keyPress.Key == RLKey.Escape )
                {
@@ -107,29 +106,29 @@ namespace RogueSharpRLNetSamples
                {
                   if ( _map.CanMoveDownToNextLevel() )
                   {
-                     MapCreationService mapCreationService = new MapCreationService( _mapWidth, _mapHeight, 20, 13, 7, ++_mapLevel, new DotNetRandom() );
-                     _map = mapCreationService.CreateMap();
+                     MapCreationSystem mapCreationSystem = new MapCreationSystem( _mapWidth, _mapHeight, 20, 13, 7, ++_mapLevel, new DotNetRandom() );
+                     _map = mapCreationSystem.CreateMap();
                      Messages = new Messages();
-                     CommandService = new CommandService( _map );
+                     CommandSystem = new CommandSystem( _map );
                      _rootConsole.Title = $"RougeSharp RLNet Tutorial - Level {_mapLevel}";
                      didPlayerAct = true;
                   }
                }
                else
                {
-                  didPlayerAct = CommandService.HandleKey( keyPress.Key );
+                  didPlayerAct = CommandSystem.HandleKey( keyPress.Key );
                }
 
                if ( didPlayerAct )
                {
                   _renderRequired = true;
-                  CommandService.EndPlayerTurn();
+                  CommandSystem.EndPlayerTurn();
                }
             }
          }
          else
          {
-            CommandService.ActivateMonsters();
+            CommandSystem.ActivateMonsters();
             _renderRequired = true;
          }
       }
@@ -144,7 +143,7 @@ namespace RogueSharpRLNetSamples
             _inventoryConsole.Clear();
             _map.Draw( _mapConsole, _statConsole, _inventoryConsole );
             Messages.Draw( _messageConsole );
-            TargetingService.Draw( _mapConsole );
+            TargetingSystem.Draw( _mapConsole );
             RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, _inventoryHeight );
             RLConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight, _rootConsole, _mapWidth, 0 );
             RLConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight, _rootConsole, 0, _screenHeight - _messageHeight );

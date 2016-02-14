@@ -18,8 +18,8 @@ namespace RogueSharpRLNetSamples.Items
 
       public bool Use()
       {
-         DungeonMap map = Game.CommandService.DungeonMap;
-         Player player = Game.CommandService.DungeonMap.GetPlayer();
+         DungeonMap map = Game.CommandSystem.DungeonMap;
+         Player player = Game.CommandSystem.DungeonMap.GetPlayer();
 
          Game.Messages.Add( $"{player.Name} uses a {Name} and reappears in another place" );
 

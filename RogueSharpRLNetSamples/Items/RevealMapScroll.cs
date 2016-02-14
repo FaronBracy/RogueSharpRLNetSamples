@@ -17,7 +17,7 @@ namespace RogueSharpRLNetSamples.Items
 
       public bool Use()
       {
-         DungeonMap map = Game.CommandService.DungeonMap;
+         DungeonMap map = Game.CommandSystem.DungeonMap;
          Player player = map.GetPlayer();
 
          Game.Messages.Add( $"{player.Name} reads a {Name} and gains knowledge of the surrounding area" );

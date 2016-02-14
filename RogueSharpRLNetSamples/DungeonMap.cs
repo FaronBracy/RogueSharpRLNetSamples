@@ -5,9 +5,9 @@ using RogueSharp;
 using RogueSharp.Random;
 using RogueSharpRLNetSamples.Abilities;
 using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
-using RogueSharpRLNetSamples.Inventory;
-using RogueSharpRLNetSamples.Services;
+using RogueSharpRLNetSamples.Systems;
 
 namespace RogueSharpRLNetSamples
 {
@@ -26,7 +26,7 @@ namespace RogueSharpRLNetSamples
       {
          _monsters = new List<Monster>();
          _treasurePiles = new List<Treasure>();
-         Game.ScheduleService = new ScheduleService();
+         Game.SchedulingSystem = new SchedulingSystem();
 
          Rooms = new List<Rectangle>();
          Doors = new List<Door>();
@@ -36,14 +36,14 @@ namespace RogueSharpRLNetSamples
       {
          _monsters.Add( monster );
          SetIsWalkable( monster.X, monster.Y, false );
-         Game.ScheduleService.Add( monster );
+         Game.SchedulingSystem.Add( monster );
       }
 
       public void RemoveMonster( Monster monster )
       {
          _monsters.Remove( monster );
          SetIsWalkable( monster.X, monster.Y, true );
-         Game.ScheduleService.Remove( monster );
+         Game.SchedulingSystem.Remove( monster );
       }
 
       public Monster GetMonsterAt( int x, int y )
@@ -66,7 +66,7 @@ namespace RogueSharpRLNetSamples
             .Select( m => new Point { X = m.X, Y = m.Y } );
       }
 
-      public void AddEquipment( int x, int y, Equipment equipment )
+      public void AddEquipment( int x, int y, Equipment.Equipment equipment )
       {
          Treasure treasure = new Treasure( x, y, equipment );
          _treasurePiles.Add( treasure );
@@ -89,7 +89,7 @@ namespace RogueSharpRLNetSamples
          _player = player;
          SetIsWalkable( _player.X, _player.Y, false );
          UpdatePlayerFieldOfView();
-         Game.ScheduleService.Add( player );
+         Game.SchedulingSystem.Add( player );
       }
 
       public Player GetPlayer()

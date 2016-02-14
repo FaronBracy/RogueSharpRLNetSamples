@@ -1,7 +1,7 @@
 ﻿using RogueSharp;
 using RogueSharp.DiceNotation;
 using RogueSharpRLNetSamples.Behaviors;
-using RogueSharpRLNetSamples.Services;
+using RogueSharpRLNetSamples.Systems;
 
 namespace RogueSharpRLNetSamples.Actors
 {
@@ -29,7 +29,7 @@ namespace RogueSharpRLNetSamples.Actors
          };
       }
 
-      public override void PerformAction( CommandService commandService )
+      public override void PerformAction( CommandSystem commandSystem )
       {
          var fullyHealBehavior = new FullyHeal();
          var runAwayBehavior = new RunAway();
@@ -37,12 +37,12 @@ namespace RogueSharpRLNetSamples.Actors
 
          if ( _turnsSpentRunning.HasValue && _turnsSpentRunning.Value > 15 )
          {
-            fullyHealBehavior.Act( this, commandService );
+            fullyHealBehavior.Act( this, commandSystem );
             _turnsSpentRunning = null;
          }
          else if ( Health < MaxHealth )
          {
-            runAwayBehavior.Act( this, commandService );
+            runAwayBehavior.Act( this, commandSystem );
             if ( _turnsSpentRunning.HasValue )
             {
                _turnsSpentRunning += 1;
@@ -54,12 +54,12 @@ namespace RogueSharpRLNetSamples.Actors
 
             if ( !_shoutedForHelp )
             {
-               _shoutedForHelp = shoutForHelpBehavior.Act( this, commandService );
+               _shoutedForHelp = shoutForHelpBehavior.Act( this, commandSystem );
             }
          }
          else
          {
-            base.PerformAction( commandService );
+            base.PerformAction( commandSystem );
          }
       }
    }

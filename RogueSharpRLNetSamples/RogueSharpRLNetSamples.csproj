@@ -90,23 +90,23 @@
     <Compile Include="Items\ArmorScroll.cs" />
     <Compile Include="Items\Whetstone.cs" />
     <Compile Include="Pool.cs" />
-    <Compile Include="Services\AbilityCreationService.cs" />
-    <Compile Include="Services\CommandService.cs" />
+    <Compile Include="Systems\AbilityCreationSystem.cs" />
+    <Compile Include="Systems\CommandSystem.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Door.cs" />
     <Compile Include="DungeonMap.cs" />
-    <Compile Include="Services\ItemCreationService.cs" />
-    <Compile Include="Services\EquipmentCreationService.cs" />
-    <Compile Include="Services\MapCreationService.cs" />
+    <Compile Include="Systems\ItemCreationSystem.cs" />
+    <Compile Include="Systems\EquipmentCreationSystem.cs" />
+    <Compile Include="Systems\MapCreationSystem.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Services\TargetingService.cs" />
+    <Compile Include="Systems\TargetingSystem.cs" />
     <Compile Include="Treasure.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Actors\Monster.cs" />
-    <Compile Include="Services\ActorCreationService.cs" />
+    <Compile Include="Systems\ActorCreationSystem.cs" />
     <Compile Include="Actors\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ScheduleService.cs" />
+    <Compile Include="Systems\SchedulingSystem.cs" />
     <Compile Include="Stairs.cs" />
   </ItemGroup>
   <ItemGroup>

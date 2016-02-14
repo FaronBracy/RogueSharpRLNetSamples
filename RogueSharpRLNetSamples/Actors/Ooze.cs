@@ -1,7 +1,7 @@
 ﻿using RogueSharp;
 using RogueSharp.DiceNotation;
 using RogueSharpRLNetSamples.Behaviors;
-using RogueSharpRLNetSamples.Services;
+using RogueSharpRLNetSamples.Systems;
 
 namespace RogueSharpRLNetSamples.Actors
 {
@@ -26,12 +26,12 @@ namespace RogueSharpRLNetSamples.Actors
          };
       }
 
-      public override void PerformAction( CommandService commandService )
+      public override void PerformAction( CommandSystem commandSystem )
       {
          var splitOozeBehavior = new SplitOoze();
-         if ( !splitOozeBehavior.Act( this, commandService ) )
+         if ( !splitOozeBehavior.Act( this, commandSystem ) )
          {
-            base.PerformAction( commandService );
+            base.PerformAction( commandSystem );
          }
       }
    }

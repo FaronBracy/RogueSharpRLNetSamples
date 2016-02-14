@@ -17,7 +17,7 @@ namespace RogueSharpRLNetSamples.Abilities
 
       protected override bool PerformAbility()
       {
-         Player player = Game.CommandService.DungeonMap.GetPlayer();
+         Player player = Game.CommandSystem.DungeonMap.GetPlayer();
 
          player.Health = Math.Min( player.MaxHealth, player.Health + _amountToHeal );
 

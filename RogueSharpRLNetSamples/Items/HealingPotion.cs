@@ -18,7 +18,7 @@ namespace RogueSharpRLNetSamples.Items
       public bool Use()
       {
          int healAmount = 15;
-         Player player = Game.CommandService.DungeonMap.GetPlayer();
+         Player player = Game.CommandSystem.DungeonMap.GetPlayer();
          Game.Messages.Add( $"{player.Name} consumes a {Name} and recovers {healAmount} health" );  
 
          Heal heal = new Heal( healAmount );

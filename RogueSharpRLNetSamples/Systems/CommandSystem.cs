@@ -7,9 +7,9 @@ using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
 using RogueSharpRLNetSamples.Items;
 
-namespace RogueSharpRLNetSamples.Services
+namespace RogueSharpRLNetSamples.Systems
 {
-   public class CommandService
+   public class CommandSystem
    {
       public bool IsPlayerTurn { get; set; }
 
@@ -18,7 +18,7 @@ namespace RogueSharpRLNetSamples.Services
          get;
       }
 
-      public CommandService( DungeonMap dungeonMap )
+      public CommandSystem( DungeonMap dungeonMap )
       {
          DungeonMap = dungeonMap;
       }
@@ -79,11 +79,11 @@ namespace RogueSharpRLNetSamples.Services
 
       public void ActivateMonsters()
       {
-         IScheduleable scheduleable = Game.ScheduleService.Get();
+         IScheduleable scheduleable = Game.SchedulingSystem.Get();
          if ( scheduleable is Player )
          {
             IsPlayerTurn = true;
-            Game.ScheduleService.Add( DungeonMap.GetPlayer() );
+            Game.SchedulingSystem.Add( DungeonMap.GetPlayer() );
          }
          else
          {
@@ -92,7 +92,7 @@ namespace RogueSharpRLNetSamples.Services
             if ( monster != null )
             {
                monster.PerformAction( this );
-               Game.ScheduleService.Add( monster );
+               Game.SchedulingSystem.Add( monster );
             }
 
             ActivateMonsters();

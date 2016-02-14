@@ -1,15 +1,15 @@
 ﻿using RogueSharp;
 using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Interfaces;
-using RogueSharpRLNetSamples.Services;
+using RogueSharpRLNetSamples.Systems;
 
 namespace RogueSharpRLNetSamples.Behaviors
 {
    public class StandardMoveAndAttack : IBehavior
    {
-      public bool Act( Monster monster, CommandService commandService )
+      public bool Act( Monster monster, CommandSystem commandSystem )
       {
-         DungeonMap dungeonMap = commandService.DungeonMap;
+         DungeonMap dungeonMap = commandSystem.DungeonMap;
          Player player = dungeonMap.GetPlayer();
          FieldOfView monsterFov = new FieldOfView( dungeonMap );
          if ( !monster.TurnsAlerted.HasValue )
@@ -27,7 +27,7 @@ namespace RogueSharpRLNetSamples.Behaviors
             Path path = pathFinder.ShortestPath( dungeonMap.GetCell( monster.X, monster.Y ), dungeonMap.GetCell( player.X, player.Y ) );
             try
             {
-               commandService.MoveMonster( monster, path.StepForward() );
+               commandSystem.MoveMonster( monster, path.StepForward() );
             }
             catch ( NoMoreStepsException )
             {
