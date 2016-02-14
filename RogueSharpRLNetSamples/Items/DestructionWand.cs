@@ -12,7 +12,7 @@ namespace RogueSharpRLNetSamples.Items
          RemainingUses = 3;
       }
 
-      public bool Use()
+      protected override bool UseItem()
       {
          DungeonMap map = Game.CommandSystem.DungeonMap;
          Player player = Game.CommandSystem.DungeonMap.GetPlayer();
