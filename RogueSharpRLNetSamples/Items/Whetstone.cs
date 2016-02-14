@@ -1,7 +1,7 @@
 ﻿using RogueSharp.DiceNotation;
 using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
-using RogueSharpRLNetSamples.Inventory;
 
 namespace RogueSharpRLNetSamples.Items
 {

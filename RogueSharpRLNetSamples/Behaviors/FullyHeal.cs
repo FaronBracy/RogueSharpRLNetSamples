@@ -1,7 +1,8 @@
 ﻿using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Interfaces;
 using RogueSharpRLNetSamples.Services;
 
-namespace RogueSharpRLNetSamples.Behavior
+namespace RogueSharpRLNetSamples.Behaviors
 {
    public class FullyHeal : IBehavior
    {

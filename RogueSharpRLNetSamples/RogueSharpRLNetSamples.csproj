@@ -73,12 +73,12 @@
     <Compile Include="Interfaces\IBehavior.cs" />
     <Compile Include="Interfaces\ITargetable.cs" />
     <Compile Include="Interfaces\IItem.cs" />
-    <Compile Include="Inventory\BodyEquipment.cs" />
+    <Compile Include="Equipment\BodyEquipment.cs" />
     <Compile Include="Colors.cs" />
-    <Compile Include="Inventory\Equipment.cs" />
-    <Compile Include="Inventory\FeetEquipment.cs" />
-    <Compile Include="Inventory\HandEquipment.cs" />
-    <Compile Include="Inventory\HeadEquipment.cs" />
+    <Compile Include="Equipment\Equipment.cs" />
+    <Compile Include="Equipment\FeetEquipment.cs" />
+    <Compile Include="Equipment\HandEquipment.cs" />
+    <Compile Include="Equipment\HeadEquipment.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Interfaces\IHasStats.cs" />
     <Compile Include="Interfaces\IScheduleable.cs" />

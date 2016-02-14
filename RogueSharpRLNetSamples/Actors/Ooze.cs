@@ -1,6 +1,6 @@
 ﻿using RogueSharp;
 using RogueSharp.DiceNotation;
-using RogueSharpRLNetSamples.Behavior;
+using RogueSharpRLNetSamples.Behaviors;
 using RogueSharpRLNetSamples.Services;
 
 namespace RogueSharpRLNetSamples.Actors

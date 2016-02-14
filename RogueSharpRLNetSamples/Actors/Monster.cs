@@ -1,7 +1,7 @@
 ﻿using System;
 using RLNET;
 using RogueSharp;
-using RogueSharpRLNetSamples.Behavior;
+using RogueSharpRLNetSamples.Behaviors;
 using RogueSharpRLNetSamples.Services;
 
 namespace RogueSharpRLNetSamples.Actors

@@ -1,4 +1,4 @@
-﻿namespace RogueSharpRLNetSamples.Inventory
+﻿namespace RogueSharpRLNetSamples.Equipment
 {
    public class FeetEquipment : Equipment
    {

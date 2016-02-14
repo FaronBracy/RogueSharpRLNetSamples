@@ -3,8 +3,8 @@ using RLNET;
 using RogueSharp;
 using RogueSharp.DiceNotation;
 using RogueSharpRLNetSamples.Actors;
+using RogueSharpRLNetSamples.Equipment;
 using RogueSharpRLNetSamples.Interfaces;
-using RogueSharpRLNetSamples.Inventory;
 using RogueSharpRLNetSamples.Items;
 
 namespace RogueSharpRLNetSamples.Services

@@ -1,7 +1,7 @@
 ﻿using RogueSharpRLNetSamples.Actors;
 using RogueSharpRLNetSamples.Services;
 
-namespace RogueSharpRLNetSamples.Behavior
+namespace RogueSharpRLNetSamples.Interfaces
 {
    public interface IBehavior
    {
