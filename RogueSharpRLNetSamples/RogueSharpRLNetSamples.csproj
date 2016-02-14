@@ -70,6 +70,7 @@
     <Compile Include="Behaviors\ShoutForHelp.cs" />
     <Compile Include="Behaviors\StandardMoveAndAttack.cs" />
     <Compile Include="Interfaces\IAbility.cs" />
+    <Compile Include="Interfaces\IActor.cs" />
     <Compile Include="Interfaces\IBehavior.cs" />
     <Compile Include="Interfaces\ITargetable.cs" />
     <Compile Include="Interfaces\IItem.cs" />
@@ -80,7 +81,7 @@
     <Compile Include="Equipment\HandEquipment.cs" />
     <Compile Include="Equipment\HeadEquipment.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
-    <Compile Include="Interfaces\IHasStats.cs" />
+    <Compile Include="Interfaces\IEquipment.cs" />
     <Compile Include="Interfaces\IScheduleable.cs" />
     <Compile Include="Items\TeleportScroll.cs" />
     <Compile Include="Items\RevealMapScroll.cs" />

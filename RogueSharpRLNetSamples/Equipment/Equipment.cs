@@ -2,7 +2,7 @@ using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Equipment
 {
-   public class Equipment : IHasStats
+   public class Equipment : IEquipment
    {
       public int Attack { get; set; }
       public int AttackChance { get; set; }

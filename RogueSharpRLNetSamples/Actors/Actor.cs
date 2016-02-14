@@ -4,7 +4,7 @@ using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Actors
 {
-   public class Actor : IHasStats, IDrawable, IScheduleable
+   public class Actor : IActor, IDrawable, IScheduleable
    {
       public Actor()
       {
@@ -14,12 +14,12 @@ namespace RogueSharpRLNetSamples.Actors
          Feet = FeetEquipment.None();
       }
 
+      // IActor
       public HeadEquipment Head { get; set; }
       public BodyEquipment Body { get; set; }
       public HandEquipment Hand { get; set; }
       public FeetEquipment Feet { get; set; }
 
-      // IHasStats
       private int _attack;
       private int _attackChance;
       private int _awareness;

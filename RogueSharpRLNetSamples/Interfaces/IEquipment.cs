@@ -1,6 +1,6 @@
 namespace RogueSharpRLNetSamples.Interfaces
 {
-   public interface IHasStats
+   public interface IEquipment
    {
       int Attack { get; set; }
       int AttackChance { get; set; }
