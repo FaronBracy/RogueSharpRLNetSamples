@@ -17,8 +17,8 @@ namespace RogueSharpRLNetSamples.Abilities
 
       protected override bool PerformAbility()
       {
-         DungeonMap map = Game.CommandSystem.DungeonMap;
-         Player player = map.GetPlayer();
+         DungeonMap map = Game.DungeonMap;
+         Player player = Game.Player;
 
          foreach ( Cell cell in map.GetCellsInArea( player.X, player.Y, _revealDistance ) )
          {

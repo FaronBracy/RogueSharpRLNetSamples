@@ -4,7 +4,6 @@ using RLNET;
 using RogueSharp;
 using RogueSharp.Random;
 using RogueSharpRLNetSamples.Interfaces;
-using RogueSharpRLNetSamples.Systems;
 
 namespace RogueSharpRLNetSamples.Core
 {
@@ -12,7 +11,6 @@ namespace RogueSharpRLNetSamples.Core
    {
       private readonly List<Monster> _monsters;
       private readonly List<TreasurePile> _treasurePiles;
-      private Player _player;
 
       public List<Rectangle> Rooms;
       public List<Door> Doors;
@@ -23,7 +21,7 @@ namespace RogueSharpRLNetSamples.Core
       {
          _monsters = new List<Monster>();
          _treasurePiles = new List<TreasurePile>();
-         Game.SchedulingSystem = new SchedulingSystem();
+         Game.SchedulingSystem.Clear();
 
          Rooms = new List<Rectangle>();
          Doors = new List<Door>();
@@ -45,8 +43,8 @@ namespace RogueSharpRLNetSamples.Core
 
       public Monster GetMonsterAt( int x, int y )
       {
-         // TODO: Sometimes this throws an exception because 2 monsters occupy the same space. Not sure how this happens
-         return _monsters.SingleOrDefault( m => m.X == x && m.Y == y );
+         // BUG: This should be single except sometiems monsters occupy the same space.
+         return _monsters.FirstOrDefault( m => m.X == x && m.Y == y );
       }
 
       public IEnumerable<Point> GetMonsterLocations()
@@ -70,20 +68,16 @@ namespace RogueSharpRLNetSamples.Core
 
       public void AddPlayer( Player player )
       {
-         _player = player;
-         SetIsWalkable( _player.X, _player.Y, false );
+         Game.Player = player;
+         SetIsWalkable( player.X, player.Y, false );
          UpdatePlayerFieldOfView();
          Game.SchedulingSystem.Add( player );
       }
 
-      public Player GetPlayer()
-      {
-         return _player;
-      }
-
       public void UpdatePlayerFieldOfView()
       {
-         ComputeFov( _player.X, _player.Y, _player.Awareness, true );
+         Player player = Game.Player;
+         ComputeFov( player.X, player.Y, player.Awareness, true );
          foreach ( Cell cell in GetAllCells() )
          {
             if ( IsInFov( cell.X, cell.Y ) )
@@ -152,7 +146,9 @@ namespace RogueSharpRLNetSamples.Core
 
       public bool CanMoveDownToNextLevel()
       {
-         return StairsDown.X == _player.X && StairsDown.Y == _player.Y;
+         Player player = Game.Player;
+
+         return StairsDown.X == player.X && StairsDown.Y == player.Y;
       }
 
       public void SetIsWalkable( int x, int y, bool isWalkable )
@@ -234,9 +230,11 @@ namespace RogueSharpRLNetSamples.Core
             }
          }
 
-         _player.Draw( mapConsole, this );
-         _player.DrawStats( statConsole );
-         _player.DrawInventory( inventoryConsole );
+         Player player = Game.Player;
+
+         player.Draw( mapConsole, this );
+         player.DrawStats( statConsole );
+         player.DrawInventory( inventoryConsole );
       }
 
       private void SetConsoleSymbolForCell( RLConsole console, Cell cell )

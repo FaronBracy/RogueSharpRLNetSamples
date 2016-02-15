@@ -10,7 +10,7 @@ namespace RogueSharpRLNetSamples.Behaviors
       public bool Act( Monster monster, CommandSystem commandSystem )
       {
          bool didShoutForHelp = false;
-         DungeonMap dungeonMap = commandSystem.DungeonMap;
+         DungeonMap dungeonMap = Game.DungeonMap;
          FieldOfView monsterFov = new FieldOfView( dungeonMap );
 
          monsterFov.ComputeFov( monster.X, monster.Y, monster.Awareness, true );

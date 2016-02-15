@@ -13,7 +13,7 @@ namespace RogueSharpRLNetSamples.Items
 
       protected override bool UseItem()
       {
-         Player player = Game.CommandSystem.DungeonMap.GetPlayer();
+         Player player = Game.Player;
 
          if ( player.Body == BodyEquipment.None() )
          {

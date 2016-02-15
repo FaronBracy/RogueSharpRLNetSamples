@@ -30,7 +30,7 @@ namespace RogueSharpRLNetSamples.Systems
       {
          Initialize();
          _selectionType = SelectionType.Target;
-         DungeonMap map = Game.CommandSystem.DungeonMap;
+         DungeonMap map = Game.DungeonMap;
          _selectableTargets = map.GetMonsterLocationsInFieldOfView().ToList();
          _targetable = targetable;
          _cursorPosition = _selectableTargets.FirstOrDefault();
@@ -48,7 +48,7 @@ namespace RogueSharpRLNetSamples.Systems
       {
          Initialize();
          _selectionType = SelectionType.Area;
-         Player player = Game.CommandSystem.DungeonMap.GetPlayer();
+         Player player = Game.Player;
          _cursorPosition = new Point { X = player.X, Y = player.Y };
          _targetable = targetable;
          _area = area;
@@ -61,7 +61,7 @@ namespace RogueSharpRLNetSamples.Systems
       {
          Initialize();
          _selectionType = SelectionType.Line;
-         Player player = Game.CommandSystem.DungeonMap.GetPlayer();
+         Player player = Game.Player;
          _cursorPosition = new Point { X = player.X, Y = player.Y };
          _targetable = targetable;
 
@@ -136,7 +136,7 @@ namespace RogueSharpRLNetSamples.Systems
       {
          int x = _cursorPosition.X;
          int y = _cursorPosition.Y;
-         DungeonMap map = Game.CommandSystem.DungeonMap;
+         DungeonMap map = Game.DungeonMap;
 
          if ( key == RLKey.Right )
          {
@@ -166,8 +166,8 @@ namespace RogueSharpRLNetSamples.Systems
       {
          if ( IsPlayerTargeting )
          {
-            DungeonMap map = Game.CommandSystem.DungeonMap;
-            Player player = map.GetPlayer();
+            DungeonMap map = Game.DungeonMap;
+            Player player = Game.Player;
             if ( _selectionType == SelectionType.Area )
             {
                foreach ( Cell cell in map.GetCellsInArea( _cursorPosition.X, _cursorPosition.Y, _area ) )

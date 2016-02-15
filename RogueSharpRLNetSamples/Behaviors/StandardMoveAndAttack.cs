@@ -9,8 +9,8 @@ namespace RogueSharpRLNetSamples.Behaviors
    {
       public bool Act( Monster monster, CommandSystem commandSystem )
       {
-         DungeonMap dungeonMap = commandSystem.DungeonMap;
-         Player player = dungeonMap.GetPlayer();
+         DungeonMap dungeonMap = Game.DungeonMap;
+         Player player = Game.Player;
          FieldOfView monsterFov = new FieldOfView( dungeonMap );
          if ( !monster.TurnsAlerted.HasValue )
          {

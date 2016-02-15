@@ -9,13 +9,13 @@ namespace RogueSharpRLNetSamples.Behaviors
    {
       public bool Act( Monster monster, CommandSystem commandSystem )
       {
-         DungeonMap dungeonMap = commandSystem.DungeonMap;
+         DungeonMap dungeonMap = Game.DungeonMap;
 
          // Set the cell the monster is on to be walkable temporarily so that pathfinder won't bail early
          // TODO: This functionality should be automatically done by the GoalMap pathfinder and not required to do manually here.
          dungeonMap.SetIsWalkable( monster.X, monster.Y, true );
 
-         Player player = dungeonMap.GetPlayer();
+         Player player = Game.Player;
          GoalMap goalMap = new GoalMap( dungeonMap );
          goalMap.AddGoal( player.X, player.Y, 0 );
          Path path = goalMap.FindPathAvoidingGoals( monster.X, monster.Y );

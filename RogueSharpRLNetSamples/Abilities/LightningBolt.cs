@@ -25,8 +25,8 @@ namespace RogueSharpRLNetSamples.Abilities
 
       public void SelectTarget( Point target )
       {
-         DungeonMap map = Game.CommandSystem.DungeonMap;
-         Player player = map.GetPlayer();
+         DungeonMap map = Game.DungeonMap;
+         Player player = Game.Player;
          Game.MessageLog.Add( $"{player.Name} casts a {Name}" );
 
          Actor lightningBoltActor = new Actor {

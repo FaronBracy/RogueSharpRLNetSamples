@@ -10,6 +10,8 @@ namespace RogueSharpRLNetSamples.Behaviors
    {
       public bool Act( Monster monster, CommandSystem commandSystem )
       {
+         DungeonMap map = Game.DungeonMap;
+
          // Ooze only splits when wounded
          if ( monster.Health >= monster.MaxHealth )
          {
@@ -23,7 +25,7 @@ namespace RogueSharpRLNetSamples.Behaviors
             return false;
          }
 
-         Cell cell = FindClosestUnoccupiedCell( commandSystem.DungeonMap, monster.X, monster.Y );
+         Cell cell = FindClosestUnoccupiedCell( map, monster.X, monster.Y );
          
          if ( cell == null )
          {
@@ -40,7 +42,7 @@ namespace RogueSharpRLNetSamples.Behaviors
             newOoze.Y = cell.Y;
             newOoze.MaxHealth = halfHealth;
             newOoze.Health = halfHealth;
-            commandSystem.DungeonMap.AddMonster( newOoze );
+            map.AddMonster( newOoze );
             Game.MessageLog.Add( $"{monster.Name} splits itself in two" );
          }
          else

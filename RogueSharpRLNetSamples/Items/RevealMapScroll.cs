@@ -13,10 +13,9 @@ namespace RogueSharpRLNetSamples.Items
 
       protected override bool UseItem()
       {
-         DungeonMap map = Game.CommandSystem.DungeonMap;
-         Player player = map.GetPlayer();
+         DungeonMap map = Game.DungeonMap;
 
-         Game.MessageLog.Add( $"{player.Name} reads a {Name} and gains knowledge of the surrounding area" );
+         Game.MessageLog.Add( $"{Game.Player.Name} reads a {Name} and gains knowledge of the surrounding area" );
 
          foreach ( Cell cell in map.GetAllCells() )
          {

@@ -27,14 +27,14 @@ namespace RogueSharpRLNetSamples
       private static RLConsole _inventoryConsole;
 
       private static int _mapLevel = 1;
-      private static DungeonMap _map;
-
       private static bool _renderRequired = true;
 
-      public static MessageLog MessageLog;
-      public static CommandSystem CommandSystem;
-      public static SchedulingSystem SchedulingSystem;
-      public static TargetingSystem TargetingSystem;
+      public static Player Player { get; set; }
+      public static DungeonMap DungeonMap { get; private set; }
+      public static MessageLog MessageLog { get; private set; }
+      public static CommandSystem CommandSystem { get; private set; }
+      public static SchedulingSystem SchedulingSystem { get; private set; }
+      public static TargetingSystem TargetingSystem { get; private set; }
 
       public static void Main()
       {
@@ -46,8 +46,11 @@ namespace RogueSharpRLNetSamples
          MessageLog.Add( "The rogue arrives on level 1" );
          MessageLog.Add( $"Level created with seed '{seed}'" );
 
+         Player = new Player();
+         SchedulingSystem = new SchedulingSystem();
+
          MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel, new DotNetRandom( seed ) );
-         _map = mapGenerator.CreateMap();
+         DungeonMap = mapGenerator.CreateMap();
 
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
          _mapConsole = new RLConsole( _mapWidth, _mapHeight );
@@ -55,11 +58,11 @@ namespace RogueSharpRLNetSamples
          _statConsole = new RLConsole( _statWidth, _statHeight );
          _inventoryConsole = new RLConsole( _inventoryWidth, _inventoryHeight );
 
-         CommandSystem = new CommandSystem( _map );
+         CommandSystem = new CommandSystem();
          TargetingSystem = new TargetingSystem();
 
-         _map.GetPlayer().Item1 = new RevealMapScroll();
-         _map.GetPlayer().Item2 = new RevealMapScroll();
+         Player.Item1 = new RevealMapScroll();
+         Player.Item2 = new RevealMapScroll();
 
          _rootConsole.Update += OnRootConsoleUpdate;
          _rootConsole.Render += OnRootConsoleRender;
@@ -105,12 +108,12 @@ namespace RogueSharpRLNetSamples
                }
                else if ( keyPress.Key == RLKey.Period )
                {
-                  if ( _map.CanMoveDownToNextLevel() )
+                  if ( DungeonMap.CanMoveDownToNextLevel() )
                   {
                      MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 20, 13, 7, ++_mapLevel, new DotNetRandom() );
-                     _map = mapGenerator.CreateMap();
+                     DungeonMap = mapGenerator.CreateMap();
                      MessageLog = new MessageLog();
-                     CommandSystem = new CommandSystem( _map );
+                     CommandSystem = new CommandSystem();
                      _rootConsole.Title = $"RougeSharp RLNet Tutorial - Level {_mapLevel}";
                      didPlayerAct = true;
                   }
@@ -142,7 +145,7 @@ namespace RogueSharpRLNetSamples
             _messageConsole.Clear();
             _statConsole.Clear();
             _inventoryConsole.Clear();
-            _map.Draw( _mapConsole, _statConsole, _inventoryConsole );
+            DungeonMap.Draw( _mapConsole, _statConsole, _inventoryConsole );
             MessageLog.Draw( _messageConsole );
             TargetingSystem.Draw( _mapConsole );
             RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight, _rootConsole, 0, _inventoryHeight );

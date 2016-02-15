@@ -60,5 +60,11 @@ namespace RogueSharpRLNetSamples.Systems
       {
          return _time;
       }
+
+      public void Clear()
+      {
+         _time = 0;
+         _scheduleables.Clear();
+      }
    }
 }

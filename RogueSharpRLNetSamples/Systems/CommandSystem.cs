@@ -12,20 +12,9 @@ namespace RogueSharpRLNetSamples.Systems
    public class CommandSystem
    {
       public bool IsPlayerTurn { get; set; }
-
-      public DungeonMap DungeonMap
-      {
-         get;
-      }
-
-      public CommandSystem( DungeonMap dungeonMap )
-      {
-         DungeonMap = dungeonMap;
-      }
-
+      
       public bool MovePlayer( Direction direction )
       {
-         Player player = DungeonMap.GetPlayer();
          int x;
          int y;
 
@@ -33,26 +22,26 @@ namespace RogueSharpRLNetSamples.Systems
          {
             case Direction.Up:
             {
-               x = player.X;
-               y = player.Y - 1;
+               x = Game.Player.X;
+               y = Game.Player.Y - 1;
                break;
             }
             case Direction.Down:
             {
-               x = player.X;
-               y = player.Y + 1;
+               x = Game.Player.X;
+               y = Game.Player.Y + 1;
                break;
             }
             case Direction.Left:
             {
-               x = player.X - 1;
-               y = player.Y;
+               x = Game.Player.X - 1;
+               y = Game.Player.Y;
                break;
             }
             case Direction.Right:
             {
-               x = player.X + 1;
-               y = player.Y;
+               x = Game.Player.X + 1;
+               y = Game.Player.Y;
                break;
             }
             default:
@@ -61,16 +50,16 @@ namespace RogueSharpRLNetSamples.Systems
             }
          }
 
-         if ( DungeonMap.SetActorPosition( player, x, y ) )
+         if ( Game.DungeonMap.SetActorPosition( Game.Player, x, y ) )
          {
             return true;
          }
 
-         Monster monster = DungeonMap.GetMonsterAt( x, y );
+         Monster monster = Game.DungeonMap.GetMonsterAt( x, y );
 
          if ( monster != null )
          {
-            Attack( player, monster );
+            Attack( Game.Player, monster );
             return true;
          }
 
@@ -83,7 +72,7 @@ namespace RogueSharpRLNetSamples.Systems
          if ( scheduleable is Player )
          {
             IsPlayerTurn = true;
-            Game.SchedulingSystem.Add( DungeonMap.GetPlayer() );
+            Game.SchedulingSystem.Add( Game.Player );
          }
          else
          {
@@ -101,12 +90,11 @@ namespace RogueSharpRLNetSamples.Systems
 
       public void MoveMonster( Monster monster, Cell cell )
       {
-         if ( !DungeonMap.SetActorPosition( monster, cell.X, cell.Y ) )
+         if ( !Game.DungeonMap.SetActorPosition( monster, cell.X, cell.Y ) )
          {
-            Player player = DungeonMap.GetPlayer();
-            if ( player.X == cell.X && player.Y == cell.Y )
+            if ( Game.Player.X == cell.X && Game.Player.Y == cell.Y )
             {
-               Attack( monster, player );
+               Attack( monster, Game.Player );
             }
          }
       }
@@ -179,22 +167,22 @@ namespace RogueSharpRLNetSamples.Systems
                {
                   if ( defender.Head != null && defender.Head != HeadEquipment.None() )
                   {
-                     DungeonMap.AddTreasure( defender.X, defender.Y, defender.Head );
+                     Game.DungeonMap.AddTreasure( defender.X, defender.Y, defender.Head );
                   }
                   if ( defender.Body != null && defender.Body != BodyEquipment.None() )
                   {
-                     DungeonMap.AddTreasure( defender.X, defender.Y, defender.Body );
+                     Game.DungeonMap.AddTreasure( defender.X, defender.Y, defender.Body );
                   }
                   if ( defender.Hand != null && defender.Hand != HandEquipment.None() )
                   {
-                     DungeonMap.AddTreasure( defender.X, defender.Y, defender.Hand );
+                     Game.DungeonMap.AddTreasure( defender.X, defender.Y, defender.Hand );
                   }
                   if ( defender.Feet != null && defender.Feet != FeetEquipment.None() )
                   {
-                     DungeonMap.AddTreasure( defender.X, defender.Y, defender.Feet );
+                     Game.DungeonMap.AddTreasure( defender.X, defender.Y, defender.Feet );
                   }
-                  DungeonMap.AddGold( defender.X, defender.Y, defender.Gold );
-                  DungeonMap.RemoveMonster( (Monster) defender );
+                  Game.DungeonMap.AddGold( defender.X, defender.Y, defender.Gold );
+                  Game.DungeonMap.RemoveMonster( (Monster) defender );
 
                   Game.MessageLog.Add( $"  {defender.Name} died and dropped {defender.Gold} gold" );
                }
@@ -208,61 +196,59 @@ namespace RogueSharpRLNetSamples.Systems
 
       public bool HandleKey( RLKey key )
       {
-         Player player = DungeonMap.GetPlayer();
-
          if ( key == RLKey.Q )
          {
-            return player.QAbility.Perform();
+            return Game.Player.QAbility.Perform();
          }
          if ( key == RLKey.W )
          {
-            return player.WAbility.Perform();
+            return Game.Player.WAbility.Perform();
          }
          if ( key == RLKey.E )
          {
-            return player.EAbility.Perform();
+            return Game.Player.EAbility.Perform();
          }
          if ( key == RLKey.R )
          {
-            return player.RAbility.Perform();
+            return Game.Player.RAbility.Perform();
          }
 
 
          bool didUseItem = false;
          if ( key == RLKey.Number1 )
          {
-            didUseItem = player.Item1.Use();
+            didUseItem = Game.Player.Item1.Use();
          }
          else if ( key == RLKey.Number2 )
          {
-            didUseItem = player.Item2.Use();
+            didUseItem = Game.Player.Item2.Use();
          }
          else if ( key == RLKey.Number3 )
          {
-            didUseItem = player.Item3.Use();
+            didUseItem = Game.Player.Item3.Use();
          }
          else if ( key == RLKey.Number4 )
          {
-            didUseItem = player.Item4.Use();
+            didUseItem = Game.Player.Item4.Use();
          }
 
          if ( didUseItem )
          {
-            if ( player.Item1.RemainingUses <= 0 )
+            if ( Game.Player.Item1.RemainingUses <= 0 )
             {
-               player.Item1 = new NoItem();
+               Game.Player.Item1 = new NoItem();
             }
-            if ( player.Item2.RemainingUses <= 0 )
+            if ( Game.Player.Item2.RemainingUses <= 0 )
             {
-               player.Item2 = new NoItem();
+               Game.Player.Item2 = new NoItem();
             }
-            if ( player.Item3.RemainingUses <= 0 )
+            if ( Game.Player.Item3.RemainingUses <= 0 )
             {
-               player.Item3 = new NoItem();
+               Game.Player.Item3 = new NoItem();
             }
-            if ( player.Item4.RemainingUses <= 0 )
+            if ( Game.Player.Item4.RemainingUses <= 0 )
             {
-               player.Item4 = new NoItem();
+               Game.Player.Item4 = new NoItem();
             }
          }
 
@@ -272,7 +258,7 @@ namespace RogueSharpRLNetSamples.Systems
       public void EndPlayerTurn()
       {
          IsPlayerTurn = false;
-         DungeonMap.GetPlayer().Tick();
+         Game.Player.Tick();
       }
    }
 }

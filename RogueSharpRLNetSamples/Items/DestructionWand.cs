@@ -14,8 +14,8 @@ namespace RogueSharpRLNetSamples.Items
 
       protected override bool UseItem()
       {
-         DungeonMap map = Game.CommandSystem.DungeonMap;
-         Player player = Game.CommandSystem.DungeonMap.GetPlayer();
+         DungeonMap map = Game.DungeonMap;
+         Player player = Game.Player;
          Point edgePoint = GetRandomEdgePoint( map );
 
          Game.MessageLog.Add( $"{player.Name} uses a {Name} and chaotically unleashes a void beam" );

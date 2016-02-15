@@ -15,9 +15,9 @@ namespace RogueSharpRLNetSamples.Abilities
 
       protected override bool PerformAbility()
       {
-         DungeonMap map = Game.CommandSystem.DungeonMap;
+         DungeonMap map = Game.DungeonMap;
+         Player player = Game.Player;
 
-         Player player = map.GetPlayer();
          Game.MessageLog.Add( $"{player.Name} performs a whirlwind attack against all adjacent enemies" );
 
          List<Point> monsterLocations = new List<Point>();
