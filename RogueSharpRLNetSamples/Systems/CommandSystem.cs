@@ -12,7 +12,7 @@ namespace RogueSharpRLNetSamples.Systems
    public class CommandSystem
    {
       public bool IsPlayerTurn { get; set; }
-      
+
       public bool MovePlayer( Direction direction )
       {
          int x;
@@ -102,12 +102,29 @@ namespace RogueSharpRLNetSamples.Systems
       public void Attack( Actor attacker, Actor defender )
       {
          StringBuilder attackMessage = new StringBuilder();
-         attackMessage.AppendFormat( "{0} attacks {1} and rolls: ", attacker.Name, defender.Name );
-         DiceExpression attackDice = new DiceExpression()
-            .Dice( attacker.Attack, 100 );
+         StringBuilder defenseMessage = new StringBuilder();
 
+         int hits = ResolveAttack( attacker, defender, attackMessage );
+
+         int blocks = ResolveDefense( defender, hits, attackMessage, defenseMessage );
+
+         Game.MessageLog.Add( attackMessage.ToString() );
+         if ( !string.IsNullOrWhiteSpace( defenseMessage.ToString() ) )
+         {
+            Game.MessageLog.Add( defenseMessage.ToString() );
+         }
+
+         int damage = hits - blocks;
+
+         ResolveDamage( defender, damage );
+      }
+
+      private static int ResolveAttack( Actor attacker, Actor defender, StringBuilder attackMessage )
+      {
          int hits = 0;
-         int blocks = 0;
+
+         attackMessage.AppendFormat( "{0} attacks {1} and rolls: ", attacker.Name, defender.Name );
+         DiceExpression attackDice = new DiceExpression().Dice( attacker.Attack, 100 );
 
          DiceResult attackResult = attackDice.Roll();
          foreach ( TermResult termResult in attackResult.Results )
@@ -119,13 +136,18 @@ namespace RogueSharpRLNetSamples.Systems
             }
          }
 
-         StringBuilder defenseMessage = new StringBuilder();
+         return hits;
+      }
+
+      private static int ResolveDefense( Actor defender, int hits, StringBuilder attackMessage, StringBuilder defenseMessage )
+      {
+         int blocks = 0;
+
          if ( hits > 0 )
          {
             attackMessage.AppendFormat( "scoring {0} hits.", hits );
             defenseMessage.AppendFormat( "  {0} defends and rolls: ", defender.Name );
-            DiceExpression defenseDice = new DiceExpression()
-               .Dice( defender.Defense, 100 );
+            DiceExpression defenseDice = new DiceExpression().Dice( defender.Defense, 100 );
 
             DiceResult defenseRoll = defenseDice.Roll();
             foreach ( TermResult termResult in defenseRoll.Results )
@@ -143,14 +165,11 @@ namespace RogueSharpRLNetSamples.Systems
             attackMessage.Append( "and misses completely." );
          }
 
-         Game.MessageLog.Add( attackMessage.ToString() );
-         if ( !string.IsNullOrEmpty( defenseMessage.ToString() ) )
-         {
-            Game.MessageLog.Add( defenseMessage.ToString() );
-         }
+         return blocks;
+      }
 
-         int damage = hits - blocks;
-
+      private static void ResolveDamage( Actor defender, int damage )
+      {
          if ( damage > 0 )
          {
             defender.Health = defender.Health - damage;
@@ -159,38 +178,43 @@ namespace RogueSharpRLNetSamples.Systems
 
             if ( defender.Health <= 0 )
             {
-               if ( defender is Player )
-               {
-                  Game.MessageLog.Add( $"  {defender.Name} was killed, GAME OVER MAN!" );
-               }
-               else if ( defender is Monster )
-               {
-                  if ( defender.Head != null && defender.Head != HeadEquipment.None() )
-                  {
-                     Game.DungeonMap.AddTreasure( defender.X, defender.Y, defender.Head );
-                  }
-                  if ( defender.Body != null && defender.Body != BodyEquipment.None() )
-                  {
-                     Game.DungeonMap.AddTreasure( defender.X, defender.Y, defender.Body );
-                  }
-                  if ( defender.Hand != null && defender.Hand != HandEquipment.None() )
-                  {
-                     Game.DungeonMap.AddTreasure( defender.X, defender.Y, defender.Hand );
-                  }
-                  if ( defender.Feet != null && defender.Feet != FeetEquipment.None() )
-                  {
-                     Game.DungeonMap.AddTreasure( defender.X, defender.Y, defender.Feet );
-                  }
-                  Game.DungeonMap.AddGold( defender.X, defender.Y, defender.Gold );
-                  Game.DungeonMap.RemoveMonster( (Monster) defender );
-
-                  Game.MessageLog.Add( $"  {defender.Name} died and dropped {defender.Gold} gold" );
-               }
+               ResolveDeath( defender );
             }
          }
          else
          {
             Game.MessageLog.Add( $"  {defender.Name} blocked all damage" );
+         }
+      }
+
+      private static void ResolveDeath( Actor defender )
+      {
+         if ( defender is Player )
+         {
+            Game.MessageLog.Add( $"  {defender.Name} was killed, GAME OVER MAN!" );
+         }
+         else if ( defender is Monster )
+         {
+            if ( defender.Head != null && defender.Head != HeadEquipment.None() )
+            {
+               Game.DungeonMap.AddTreasure( defender.X, defender.Y, defender.Head );
+            }
+            if ( defender.Body != null && defender.Body != BodyEquipment.None() )
+            {
+               Game.DungeonMap.AddTreasure( defender.X, defender.Y, defender.Body );
+            }
+            if ( defender.Hand != null && defender.Hand != HandEquipment.None() )
+            {
+               Game.DungeonMap.AddTreasure( defender.X, defender.Y, defender.Hand );
+            }
+            if ( defender.Feet != null && defender.Feet != FeetEquipment.None() )
+            {
+               Game.DungeonMap.AddTreasure( defender.X, defender.Y, defender.Feet );
+            }
+            Game.DungeonMap.AddGold( defender.X, defender.Y, defender.Gold );
+            Game.DungeonMap.RemoveMonster( (Monster) defender );
+
+            Game.MessageLog.Add( $"  {defender.Name} died and dropped {defender.Gold} gold" );
          }
       }
 
@@ -234,25 +258,30 @@ namespace RogueSharpRLNetSamples.Systems
 
          if ( didUseItem )
          {
-            if ( Game.Player.Item1.RemainingUses <= 0 )
-            {
-               Game.Player.Item1 = new NoItem();
-            }
-            if ( Game.Player.Item2.RemainingUses <= 0 )
-            {
-               Game.Player.Item2 = new NoItem();
-            }
-            if ( Game.Player.Item3.RemainingUses <= 0 )
-            {
-               Game.Player.Item3 = new NoItem();
-            }
-            if ( Game.Player.Item4.RemainingUses <= 0 )
-            {
-               Game.Player.Item4 = new NoItem();
-            }
+            RemoveItemsWithNoRemainingUses();
          }
 
          return didUseItem;
+      }
+
+      private static void RemoveItemsWithNoRemainingUses()
+      {
+         if ( Game.Player.Item1.RemainingUses <= 0 )
+         {
+            Game.Player.Item1 = new NoItem();
+         }
+         if ( Game.Player.Item2.RemainingUses <= 0 )
+         {
+            Game.Player.Item2 = new NoItem();
+         }
+         if ( Game.Player.Item3.RemainingUses <= 0 )
+         {
+            Game.Player.Item3 = new NoItem();
+         }
+         if ( Game.Player.Item4.RemainingUses <= 0 )
+         {
+            Game.Player.Item4 = new NoItem();
+         }
       }
 
       public void EndPlayerTurn()
