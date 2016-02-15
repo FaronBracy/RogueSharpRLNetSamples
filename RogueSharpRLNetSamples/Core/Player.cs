@@ -31,7 +31,7 @@ namespace RogueSharpRLNetSamples.Core
          Item4 = new NoItem();
       }
 
-      public void AddAbility( IAbility ability )
+      public bool AddAbility( IAbility ability )
       {
          if ( QAbility is DoNothing )
          {
@@ -49,9 +49,15 @@ namespace RogueSharpRLNetSamples.Core
          {
             RAbility = ability;
          }
+         else
+         {
+            return false;
+         }
+
+         return true;
       }
 
-      public void AddItem( IItem item )
+      public bool AddItem( IItem item )
       {
          if ( Item1 is NoItem )
          {
@@ -69,6 +75,12 @@ namespace RogueSharpRLNetSamples.Core
          {
             Item4 = item;
          }
+         else
+         {
+            return false;
+         }
+
+         return true;
       }
 
       public void DrawStats( RLConsole statConsole )
