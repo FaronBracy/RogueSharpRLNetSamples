@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using RogueSharp;
 using RogueSharp.DiceNotation;
-using RogueSharp.Random;
 using RogueSharpRLNetSamples.Core;
 
 namespace RogueSharpRLNetSamples.Systems
 {
    public class MapGenerator
    {
-      private readonly IRandom _random;
       private readonly int _width;
       private readonly int _height;
       private readonly int _maxRooms;
@@ -20,7 +18,7 @@ namespace RogueSharpRLNetSamples.Systems
       private readonly DungeonMap _map;
       private readonly EquipmentGenerator _equipmentGenerator;
 
-      public MapGenerator( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int level, IRandom random )
+      public MapGenerator( int width, int height, int maxRooms, int roomMaxSize, int roomMinSize, int level )
       {
          _width = width;
          _height = height;
@@ -28,7 +26,6 @@ namespace RogueSharpRLNetSamples.Systems
          _roomMaxSize = roomMaxSize;
          _roomMinSize = roomMinSize;
          _level = level;
-         _random = random;
          _map = new DungeonMap();
          _equipmentGenerator = new EquipmentGenerator( level );
       }
@@ -39,10 +36,10 @@ namespace RogueSharpRLNetSamples.Systems
 
          for ( int r = 0; r < _maxRooms; r++ )
          {
-            int roomWidth = _random.Next( _roomMinSize, _roomMaxSize );
-            int roomHeight = _random.Next( _roomMinSize, _roomMaxSize );
-            int roomXPosition = _random.Next( 0, _width - roomWidth - 1 );
-            int roomYPosition = _random.Next( 0, _height - roomHeight - 1 );
+            int roomWidth = Game.Random.Next( _roomMinSize, _roomMaxSize );
+            int roomHeight = Game.Random.Next( _roomMinSize, _roomMaxSize );
+            int roomXPosition = Game.Random.Next( 0, _width - roomWidth - 1 );
+            int roomYPosition = Game.Random.Next( 0, _height - roomHeight - 1 );
 
             var newRoom = new Rectangle( roomXPosition, roomYPosition, roomWidth, roomHeight );
             bool newRoomIntersects = _map.Rooms.Any( room => newRoom.Intersects( room ) );
@@ -69,7 +66,7 @@ namespace RogueSharpRLNetSamples.Systems
             int currentRoomCenterX = _map.Rooms[r].Center.X;
             int currentRoomCenterY = _map.Rooms[r].Center.Y;
 
-            if ( _random.Next( 0, 2 ) == 0 )
+            if ( Game.Random.Next( 0, 2 ) == 0 )
             {
                CreateHorizontalTunnel( previousRoomCenterX, currentRoomCenterX, previousRoomCenterY );
                CreateVerticalTunnel( previousRoomCenterY, currentRoomCenterY, currentRoomCenterX );
@@ -211,10 +208,10 @@ namespace RogueSharpRLNetSamples.Systems
                {
                   if ( _map.DoesRoomHaveWalkableSpace( room ) )
                   {
-                     Point randomRoomLocation = _map.GetRandomLocationInRoom( room, _random );
+                     Point randomRoomLocation = _map.GetRandomLocationInRoom( room );
                      if ( randomRoomLocation != null )
                      {
-                        _map.AddMonster( ActorGenerator.CreateMonster( _level, _map.GetRandomLocationInRoom( room, _random ) ) );
+                        _map.AddMonster( ActorGenerator.CreateMonster( _level, _map.GetRandomLocationInRoom( room ) ) );
                      }
                   }
                }
@@ -230,7 +227,7 @@ namespace RogueSharpRLNetSamples.Systems
             {
                if ( _map.DoesRoomHaveWalkableSpace( room ) )
                {
-                  Point randomRoomLocation = _map.GetRandomLocationInRoom( room, _random );
+                  Point randomRoomLocation = _map.GetRandomLocationInRoom( room );
                   if ( randomRoomLocation != null )
                   {
                      Core.Equipment equipment;
@@ -243,7 +240,7 @@ namespace RogueSharpRLNetSamples.Systems
                         // no more equipment to generate so just quit adding to this level
                         return;
                      }
-                     Point location = _map.GetRandomLocationInRoom( room, _random );
+                     Point location = _map.GetRandomLocationInRoom( room );
                      _map.AddTreasure( location.X, location.Y, equipment );
                   }
                }
@@ -259,11 +256,11 @@ namespace RogueSharpRLNetSamples.Systems
             {
                if ( _map.DoesRoomHaveWalkableSpace( room ) )
                {
-                  Point randomRoomLocation = _map.GetRandomLocationInRoom( room, _random );
+                  Point randomRoomLocation = _map.GetRandomLocationInRoom( room );
                   if ( randomRoomLocation != null )
                   {
                      Item item = ItemGenerator.CreateItem();
-                     Point location = _map.GetRandomLocationInRoom( room, _random );
+                     Point location = _map.GetRandomLocationInRoom( room );
                      _map.AddTreasure( location.X, location.Y, item );
                   }
                }
@@ -288,8 +285,8 @@ namespace RogueSharpRLNetSamples.Systems
             try
             {
                var ability = AbilityGenerator.CreateAbility();
-               int roomIndex = _random.Next( 0, _map.Rooms.Count - 1 );
-               Point location = _map.GetRandomLocationInRoom( _map.Rooms[roomIndex], _random );
+               int roomIndex = Game.Random.Next( 0, _map.Rooms.Count - 1 );
+               Point location = _map.GetRandomLocationInRoom( _map.Rooms[roomIndex] );
                _map.AddTreasure( location.X, location.Y, ability );
             }
             catch ( InvalidOperationException )

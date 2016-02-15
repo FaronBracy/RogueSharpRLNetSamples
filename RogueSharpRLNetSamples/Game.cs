@@ -35,12 +35,14 @@ namespace RogueSharpRLNetSamples
       public static CommandSystem CommandSystem { get; private set; }
       public static SchedulingSystem SchedulingSystem { get; private set; }
       public static TargetingSystem TargetingSystem { get; private set; }
+      public static IRandom Random { get; private set; }
 
       public static void Main()
       {
          string fontFileName = "terminal8x8.png";
          string consoleTitle = "RougeSharp RLNet Tutorial - Level 1";
          int seed = (int) DateTime.UtcNow.Ticks;
+         Random = new DotNetRandom( seed );
 
          MessageLog = new MessageLog();
          MessageLog.Add( "The rogue arrives on level 1" );
@@ -49,7 +51,7 @@ namespace RogueSharpRLNetSamples
          Player = new Player();
          SchedulingSystem = new SchedulingSystem();
 
-         MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel, new DotNetRandom( seed ) );
+         MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 20, 13, 7, _mapLevel );
          DungeonMap = mapGenerator.CreateMap();
 
          _rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
@@ -110,7 +112,7 @@ namespace RogueSharpRLNetSamples
                {
                   if ( DungeonMap.CanMoveDownToNextLevel() )
                   {
-                     MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 20, 13, 7, ++_mapLevel, new DotNetRandom() );
+                     MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 20, 13, 7, ++_mapLevel );
                      DungeonMap = mapGenerator.CreateMap();
                      MessageLog = new MessageLog();
                      CommandSystem = new CommandSystem();

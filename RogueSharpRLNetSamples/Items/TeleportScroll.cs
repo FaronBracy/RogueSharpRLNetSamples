@@ -1,5 +1,4 @@
 ﻿using RogueSharp;
-using RogueSharp.Random;
 using RogueSharpRLNetSamples.Core;
 
 namespace RogueSharpRLNetSamples.Items
@@ -19,7 +18,7 @@ namespace RogueSharpRLNetSamples.Items
 
          Game.MessageLog.Add( $"{player.Name} uses a {Name} and reappears in another place" );
 
-         Point point = map.GetRandomLocation( new DotNetRandom() );
+         Point point = map.GetRandomLocation();
          
          map.SetActorPosition( player, point.X, point.Y );
          
