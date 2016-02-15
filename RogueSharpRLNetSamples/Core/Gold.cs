@@ -6,17 +6,13 @@ namespace RogueSharpRLNetSamples.Core
 {
    public class Gold : ITreasure, IDrawable 
    {
-      public Gold()
-      {
-         Symbol = '$';
-         Color = RLColor.Yellow;
-      }
-
       public int Amount { get; set; }
 
       public Gold( int amount )
       {
          Amount = amount;
+         Symbol = '$';
+         Color = RLColor.Yellow;
       }
 
       public bool PickUp( IActor actor )
@@ -39,7 +35,7 @@ namespace RogueSharpRLNetSamples.Core
 
          if ( map.IsInFov( X, Y ) )
          {
-            console.Set( X, Y, Color, null, Symbol );
+            console.Set( X, Y, Color, Colors.FloorBackgroundFov, Symbol );
          }
          else
          {
