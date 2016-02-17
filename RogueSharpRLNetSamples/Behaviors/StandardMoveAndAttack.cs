@@ -23,8 +23,14 @@ namespace RogueSharpRLNetSamples.Behaviors
          }
          if ( monster.TurnsAlerted.HasValue )
          {
+            dungeonMap.SetIsWalkable( monster.X, monster.Y, true );
+            dungeonMap.SetIsWalkable( player.X, player.Y, true );
+
             PathFinder pathFinder = new PathFinder( dungeonMap );
             Path path = pathFinder.ShortestPath( dungeonMap.GetCell( monster.X, monster.Y ), dungeonMap.GetCell( player.X, player.Y ) );
+
+            dungeonMap.SetIsWalkable( monster.X, monster.Y, false );
+            dungeonMap.SetIsWalkable( player.X, player.Y, false );
             try
             {
                commandSystem.MoveMonster( monster, path.StepForward() );
