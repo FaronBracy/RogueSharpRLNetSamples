@@ -10,26 +10,42 @@ namespace RogueSharpRLNetSamples.Behaviors
       public bool Act( Monster monster, CommandSystem commandSystem )
       {
          DungeonMap dungeonMap = Game.DungeonMap;
-
-         // Set the cell the monster is on to be walkable temporarily so that pathfinder won't bail early
-         // TODO: This functionality should be automatically done by the GoalMap pathfinder and not required to do manually here.
-         dungeonMap.SetIsWalkable( monster.X, monster.Y, true );
-
          Player player = Game.Player;
+
+         // Set the cells the monster and player are on to walkable so the pathfinder doesn't bail early
+         dungeonMap.SetIsWalkable( monster.X, monster.Y, true );
+         dungeonMap.SetIsWalkable( player.X, player.Y, true );
+
          GoalMap goalMap = new GoalMap( dungeonMap );
          goalMap.AddGoal( player.X, player.Y, 0 );
-         Path path = goalMap.FindPathAvoidingGoals( monster.X, monster.Y );
 
-         // Reset the cell the monster is on back to not walkable
-         dungeonMap.SetIsWalkable( monster.X, monster.Y, false );
+         Path path = null;
          try
          {
-            commandSystem.MoveMonster( monster, path.StepForward() );
+            path = goalMap.FindPathAvoidingGoals( monster.X, monster.Y );
          }
-         catch ( NoMoreStepsException )
+         catch ( PathNotFoundException )
          {
             Game.MessageLog.Add( $"{monster.Name} cowers in fear" );
          }
+
+
+         // Reset the cell the monster and player are on  back to not walkable
+         dungeonMap.SetIsWalkable( monster.X, monster.Y, false );
+         dungeonMap.SetIsWalkable( player.X, player.Y, false );
+
+         if ( path != null )
+         {
+            try
+            {
+               commandSystem.MoveMonster( monster, path.StepForward() );
+            }
+            catch ( NoMoreStepsException )
+            {
+               Game.MessageLog.Add( $"{monster.Name} cowers in fear" );
+            }
+         }
+
          return true;
       }
    }
