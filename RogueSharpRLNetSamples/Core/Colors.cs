@@ -10,7 +10,7 @@ namespace RogueSharpRLNetSamples.Core
       public static RLColor DoorFov = Swatch.ComplimentLightest;
       public static RLColor FloorBackground = RLColor.Black;
       public static RLColor Floor = Swatch.AlternateDarkest;
-      public static RLColor FloorBackgroundFov = RLColor.Black;
+      public static RLColor FloorBackgroundFov = Swatch.DbDark;
       public static RLColor FloorFov = Swatch.Alternate;
       public static RLColor WallBackground = Swatch.SecondaryDarkest;
       public static RLColor Wall = Swatch.Secondary;
@@ -19,8 +19,8 @@ namespace RogueSharpRLNetSamples.Core
       public static RLColor GoblinColor = RLColor.Green;
       public static RLColor KoboldColor = new RLColor( 255, 165, 0 );
       public static RLColor OozeColor = new RLColor( 102, 205, 170 );
-      public static RLColor Player = RLColor.White;
-      public static RLColor InventoryHeading = RLColor.White;
+      public static RLColor Player = Swatch.DbLight;
+      public static RLColor InventoryHeading = Swatch.DbLight;
    }
 
    public static class Swatch
