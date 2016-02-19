@@ -94,19 +94,19 @@ namespace RogueSharpRLNetSamples.Core
 
       public void DrawInventory( RLConsole inventoryConsole )
       {
-         inventoryConsole.Print( 1, 1, "Equipment", RLColor.White );
+         inventoryConsole.Print( 1, 1, "Equipment", Colors.InventoryHeading );
          inventoryConsole.Print( 1, 3, $"Head: {Head.Name}", Head == HeadEquipment.None() ? Swatch.DbOldStone : Swatch.DbLight );
          inventoryConsole.Print( 1, 5, $"Body: {Body.Name}", Body == BodyEquipment.None() ? Swatch.DbOldStone : Swatch.DbLight );
          inventoryConsole.Print( 1, 7, $"Hand: {Hand.Name}", Hand == HandEquipment.None() ? Swatch.DbOldStone : Swatch.DbLight );
          inventoryConsole.Print( 1, 9, $"Feet: {Feet.Name}", Feet == FeetEquipment.None() ? Swatch.DbOldStone : Swatch.DbLight );
 
-         inventoryConsole.Print( 28, 1, "Abilities", RLColor.White );
+         inventoryConsole.Print( 28, 1, "Abilities", Colors.InventoryHeading );
          DrawAbility( QAbility, inventoryConsole, 0 );
          DrawAbility( WAbility, inventoryConsole, 1 );
          DrawAbility( EAbility, inventoryConsole, 2 );
          DrawAbility( RAbility, inventoryConsole, 3 );
 
-         inventoryConsole.Print( 55, 1, "Items", RLColor.White );
+         inventoryConsole.Print( 55, 1, "Items", Colors.InventoryHeading );
          DrawItem( Item1, inventoryConsole, 0 );
          DrawItem( Item2, inventoryConsole, 1 );
          DrawItem( Item3, inventoryConsole, 2 );
