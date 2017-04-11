@@ -39,10 +39,6 @@
       <HintPath>..\packages\RLNET.1.0.6\lib\RLNET.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RogueSharp, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RogueSharp.3.0.0-pre\lib\portable-net40+sl50+win+wpa81+wp80\RogueSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -63,6 +59,12 @@
     <Content Include="terminal8x8.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\roguesharp\RogueSharp\RogueSharp.csproj">
+      <Project>{ebca7ea9-1c80-481a-8025-a465d6ba5f71}</Project>
+      <Name>RogueSharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
