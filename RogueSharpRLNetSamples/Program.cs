@@ -21,7 +21,7 @@ namespace RogueSharpRLNetSamples
       {
          // Use RogueSharp to create a new cave map the same size as the screen.
          _map = Map.Create( new CaveMapCreationStrategy<Map>( _screenWidth, _screenHeight, 45, 4, 3 ) );
-         _pathFinder = new PathFinder( _map );
+         _pathFinder = new PathFinder( _map, 1.5 );
          _start = Point.Zero;
          _end = Point.Zero;
          _path = null;
