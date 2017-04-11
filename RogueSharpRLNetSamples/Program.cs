@@ -32,7 +32,7 @@ namespace RogueSharpRLNetSamples
          // Initialize the List of Points that are selected to be Obstacles for the GoalMap calculations
          _obstacles = new List<Point>();
          // Starting location to begin calculating GoalMaps from. This will be selected with the left mouse button
-         _start = null;
+         _start = Point.Zero;
          // This will hold the chosen "best" path after the GoalMap calculation has been completed
          _path = null;
          // This will hold one more paths that all determined to have the shortest length after the GoalMap calculation completes
@@ -82,7 +82,7 @@ namespace RogueSharpRLNetSamples
             // Check for the "C" key to clear all Goals, Paths, and Obstacles
             else if ( keyPress.Key == RLKey.C )
             {
-               _start = null;
+               _start = Point.Zero;
                _goalMap.ClearGoals();
                _goals = new List<Point>();
                _obstacles = new List<Point>();
@@ -128,9 +128,9 @@ namespace RogueSharpRLNetSamples
          {
             foreach ( Path path in _allPaths )
             {
-               foreach ( Cell cell in path.Steps )
+               foreach ( ICell cell in path.Steps )
                {
-                  if ( cell == path.Start || cell == path.End )
+                  if ( cell.Equals( path.Start ) || cell.Equals( path.End ) )
                   {
                      continue;
                   }
@@ -142,9 +142,9 @@ namespace RogueSharpRLNetSamples
          // Set the background color of the first minimum distance path to Blue
          if ( _path != null )
          {
-            foreach ( Cell cell in _path.Steps )
+            foreach ( ICell cell in _path.Steps )
             {
-               if ( cell == _path.Start || cell == _path.End )
+               if ( cell.Equals( _path.Start ) || cell.Equals( _path.End ) )
                {
                   continue;
                }
@@ -165,10 +165,6 @@ namespace RogueSharpRLNetSamples
       private static void ToggleGoalAtMouseLocation()
       {
          var mouseLocataion = GetMouseLocation();
-         if ( mouseLocataion == null )
-         {
-            return;
-         }
 
          // Check to see if we already have the Goal so we know to toggle it on or off
          if ( _goals.Contains( mouseLocataion ) )
@@ -186,19 +182,13 @@ namespace RogueSharpRLNetSamples
             // Set the weight to 0 which is the highest priority Goal
             _goalMap.AddGoal( mouseLocataion.X, mouseLocataion.Y, 0 );
          }
-         if ( _start != null )
-         {
-            UpdateGoalMapPaths();
-         }
+
+         UpdateGoalMapPaths();
       }
 
       private static void SetStartLocation()
       {
          var mouseLocataion = GetMouseLocation();
-         if ( mouseLocataion == null )
-         {
-            return;
-         }
 
          // Set the starting location for the GoalMap calculation to the current mouse location
          _start = mouseLocataion;
@@ -208,10 +198,6 @@ namespace RogueSharpRLNetSamples
       private static void ToggleObstacleAtMouseLocation()
       {
          var mouseLocataion = GetMouseLocation();
-         if ( mouseLocataion == null )
-         {
-            return;
-         }
 
          // Check to see if we already have the obstacle so we know to toggle it on or off
          if ( _obstacles.Contains( mouseLocataion ) )
@@ -233,7 +219,7 @@ namespace RogueSharpRLNetSamples
          if ( x < 0 || x >= _screenWidth || y < 0 || y >= _screenHeight )
          {
             // When the mouse cursor is not on the screen return null.
-            return null;
+            return Point.Zero;
          }
          Point mouseLocataion = new Point( x, y );
          return mouseLocataion;
@@ -251,17 +237,17 @@ namespace RogueSharpRLNetSamples
          if ( _avoidGoals )
          {
             // Get the best path avoiding the Goals specified
-            _path = _goalMap.FindPathAvoidingGoals( _start.X, _start.Y );
+            _path = _goalMap.TryFindPathAvoidingGoals( _start.X, _start.Y );
          }
          else
          {
             // Get the best path seeking the Goals specified
-            _path = _goalMap.FindPath( _start.X, _start.Y );
+            _path = _goalMap.TryFindPath( _start.X, _start.Y );
          }
 
          // Sometimes there is more than one path that has an equally short length
          // FindPaths will return them all so that we can decide which one to take
-         _allPaths = _goalMap.FindPaths( _start.X, _start.Y );
+         _allPaths = _goalMap.TryFindPaths( _start.X, _start.Y );
       }
 
       // Switch between seeking Goals and avoiding them
