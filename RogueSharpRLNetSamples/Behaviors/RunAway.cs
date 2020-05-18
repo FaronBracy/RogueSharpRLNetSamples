@@ -16,7 +16,7 @@ namespace RogueSharpRLNetSamples.Behaviors
          dungeonMap.SetIsWalkable( monster.X, monster.Y, true );
          dungeonMap.SetIsWalkable( player.X, player.Y, true );
 
-         GoalMap goalMap = new GoalMap( dungeonMap );
+         GoalMap<DungeonCell> goalMap = new GoalMap<DungeonCell>( dungeonMap );
          goalMap.AddGoal( player.X, player.Y, 0 );
 
          Path path = null;

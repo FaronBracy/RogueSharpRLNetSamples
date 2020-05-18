@@ -7,11 +7,20 @@ using RogueSharpRLNetSamples.Interfaces;
 
 namespace RogueSharpRLNetSamples.Core
 {
-   public class DungeonMap : Map
+   public class DungeonCell : Cell
+   {
+      public bool IsExplored
+      {
+         get;
+         set;
+      }
+   }
+
+   public class DungeonMap : Map<DungeonCell>
    {
       private readonly List<Monster> _monsters;
       private readonly List<TreasurePile> _treasurePiles;
-      private readonly FieldOfView _fieldOfView;
+      private readonly FieldOfView<DungeonCell> _fieldOfView;
 
       public List<Rectangle> Rooms;
       public List<Door> Doors;
@@ -22,7 +31,7 @@ namespace RogueSharpRLNetSamples.Core
       {
          _monsters = new List<Monster>();
          _treasurePiles = new List<TreasurePile>();
-         _fieldOfView = new FieldOfView( this );
+         _fieldOfView = new FieldOfView<DungeonCell>( this );
          Game.SchedulingSystem.Clear();
 
          Rooms = new List<Rectangle>();
@@ -51,7 +60,8 @@ namespace RogueSharpRLNetSamples.Core
 
       public IEnumerable<Point> GetMonsterLocations()
       {
-         return _monsters.Select( m => new Point {
+         return _monsters.Select( m => new Point
+         {
             X = m.X,
             Y = m.Y
          } );
@@ -89,14 +99,26 @@ namespace RogueSharpRLNetSamples.Core
          }
       }
 
-      public bool IsInFov( int x, int y )
+      public bool IsExplored( int x, int y )
       {
-          return _fieldOfView.IsInFov( x, y );
+         return _cells[x, y].IsExplored;
       }
 
-      public ReadOnlyCollection<Cell> ComputeFov( int xOrigin, int yOrigin, int radius, bool lightWalls )
+      public void SetCellProperties( int x, int y, bool isTransparent, bool isWalkable, bool isExplored )
       {
-          return _fieldOfView.ComputeFov( xOrigin, yOrigin, radius, lightWalls );
+         _cells[x, y].IsTransparent = isTransparent;
+         _cells[x, y].IsWalkable = isWalkable;
+         _cells[x, y].IsExplored = isExplored;
+      }
+
+      public bool IsInFov( int x, int y )
+      {
+         return _fieldOfView.IsInFov( x, y );
+      }
+
+      public ReadOnlyCollection<DungeonCell> ComputeFov( int xOrigin, int yOrigin, int radius, bool lightWalls )
+      {
+         return _fieldOfView.ComputeFov( xOrigin, yOrigin, radius, lightWalls );
       }
 
       public bool SetActorPosition( Actor actor, int x, int y )
@@ -165,7 +187,7 @@ namespace RogueSharpRLNetSamples.Core
 
       public void SetIsWalkable( int x, int y, bool isWalkable )
       {
-         Cell cell = GetCell( x, y );
+         DungeonCell cell = GetCell( x, y );
          SetCellProperties( cell.X, cell.Y, cell.IsTransparent, isWalkable, cell.IsExplored );
       }
 
@@ -211,7 +233,7 @@ namespace RogueSharpRLNetSamples.Core
       public void Draw( RLConsole mapConsole, RLConsole statConsole, RLConsole inventoryConsole )
       {
          mapConsole.Clear();
-         foreach ( Cell cell in GetAllCells() )
+         foreach ( DungeonCell cell in GetAllCells() )
          {
             SetConsoleSymbolForCell( mapConsole, cell );
          }
@@ -249,7 +271,7 @@ namespace RogueSharpRLNetSamples.Core
          player.DrawInventory( inventoryConsole );
       }
 
-      private void SetConsoleSymbolForCell( RLConsole console, Cell cell )
+      private void SetConsoleSymbolForCell( RLConsole console, DungeonCell cell )
       {
          if ( !cell.IsExplored )
          {

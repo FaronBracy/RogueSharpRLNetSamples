@@ -1,5 +1,4 @@
-﻿using System;
-using RogueSharp;
+﻿using RogueSharp;
 using RogueSharpRLNetSamples.Core;
 using RogueSharpRLNetSamples.Interfaces;
 using RogueSharpRLNetSamples.Systems;
@@ -12,7 +11,7 @@ namespace RogueSharpRLNetSamples.Behaviors
       {
          DungeonMap dungeonMap = Game.DungeonMap;
          Player player = Game.Player;
-         FieldOfView monsterFov = new FieldOfView( dungeonMap );
+         FieldOfView<DungeonCell> monsterFov = new FieldOfView<DungeonCell>( dungeonMap );
          if ( !monster.TurnsAlerted.HasValue )
          {
             monsterFov.ComputeFov( monster.X, monster.Y, monster.Awareness, true );
@@ -27,7 +26,7 @@ namespace RogueSharpRLNetSamples.Behaviors
             dungeonMap.SetIsWalkable( monster.X, monster.Y, true );
             dungeonMap.SetIsWalkable( player.X, player.Y, true );
 
-            PathFinder pathFinder = new PathFinder( dungeonMap );
+            PathFinder<DungeonCell> pathFinder = new PathFinder<DungeonCell>( dungeonMap );
             Path path = null;
 
             try

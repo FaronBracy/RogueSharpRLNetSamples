@@ -132,7 +132,7 @@ namespace RogueSharpRLNetSamples.Systems
          int yMin = room.Top;
          int yMax = room.Bottom;
 
-         List<Cell> borderCells = _map.GetCellsAlongLine( xMin, yMin, xMax, yMin ).ToList();
+         List<DungeonCell> borderCells = _map.GetCellsAlongLine( xMin, yMin, xMax, yMin ).ToList();
          borderCells.AddRange( _map.GetCellsAlongLine( xMin, yMin, xMin, yMax ) );
          borderCells.AddRange( _map.GetCellsAlongLine( xMin, yMax, xMax, yMax ) );
          borderCells.AddRange( _map.GetCellsAlongLine( xMax, yMin, xMax, yMax ) );
