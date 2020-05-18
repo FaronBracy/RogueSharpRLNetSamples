@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using RLNET;
 using RogueSharp;
@@ -10,6 +11,7 @@ namespace RogueSharpRLNetSamples.Core
    {
       private readonly List<Monster> _monsters;
       private readonly List<TreasurePile> _treasurePiles;
+      private readonly FieldOfView _fieldOfView;
 
       public List<Rectangle> Rooms;
       public List<Door> Doors;
@@ -20,6 +22,7 @@ namespace RogueSharpRLNetSamples.Core
       {
          _monsters = new List<Monster>();
          _treasurePiles = new List<TreasurePile>();
+         _fieldOfView = new FieldOfView( this );
          Game.SchedulingSystem.Clear();
 
          Rooms = new List<Rectangle>();
@@ -84,6 +87,16 @@ namespace RogueSharpRLNetSamples.Core
                SetCellProperties( cell.X, cell.Y, cell.IsTransparent, cell.IsWalkable, true );
             }
          }
+      }
+
+      public bool IsInFov( int x, int y )
+      {
+          return _fieldOfView.IsInFov( x, y );
+      }
+
+      public ReadOnlyCollection<Cell> ComputeFov( int xOrigin, int yOrigin, int radius, bool lightWalls )
+      {
+          return _fieldOfView.ComputeFov( xOrigin, yOrigin, radius, lightWalls );
       }
 
       public bool SetActorPosition( Actor actor, int x, int y )

@@ -22,7 +22,7 @@ namespace RogueSharpRLNetSamples.Abilities
 
          List<Point> monsterLocations = new List<Point>();
 
-         foreach ( Cell cell in map.GetCellsInArea( player.X, player.Y, 1 ) )
+         foreach ( Cell cell in map.GetAdjacentCells( player.X, player.Y, true ) )
          {
             foreach ( Point monsterLocation in map.GetMonsterLocations() )
             {

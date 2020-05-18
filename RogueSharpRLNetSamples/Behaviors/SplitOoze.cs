@@ -62,7 +62,7 @@ namespace RogueSharpRLNetSamples.Behaviors
       {
          for ( int i = 1; i < 5; i++ )
          {
-            foreach ( Cell cell in dungeonMap.GetBorderCellsInArea( x, y, i ) )
+            foreach ( Cell cell in dungeonMap.GetBorderCellsInSquare( x, y, i ) )
             {
                if ( cell.IsWalkable )
                {

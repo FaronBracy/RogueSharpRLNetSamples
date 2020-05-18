@@ -35,7 +35,7 @@ namespace RogueSharpRLNetSamples.Abilities
             AttackChance = _attackChance,
             Name = Name
          };
-         foreach ( Cell cell in map.GetCellsInArea( target.X, target.Y, _area ) )
+         foreach ( Cell cell in map.GetCellsInSquare( target.X, target.Y, _area ) )
          {
             Monster monster = map.GetMonsterAt( cell.X, cell.Y );
             if ( monster != null )

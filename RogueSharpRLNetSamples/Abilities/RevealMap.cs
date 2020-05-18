@@ -20,7 +20,7 @@ namespace RogueSharpRLNetSamples.Abilities
          DungeonMap map = Game.DungeonMap;
          Player player = Game.Player;
 
-         foreach ( Cell cell in map.GetCellsInArea( player.X, player.Y, _revealDistance ) )
+         foreach ( Cell cell in map.GetCellsInSquare( player.X, player.Y, _revealDistance ) )
          {
             if ( cell.IsWalkable )
             {

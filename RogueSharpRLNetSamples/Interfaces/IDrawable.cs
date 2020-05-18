@@ -1,5 +1,5 @@
 ﻿using RLNET;
-using RogueSharp;
+using RogueSharpRLNetSamples.Core;
 
 namespace RogueSharpRLNetSamples.Interfaces
 {
@@ -10,6 +10,6 @@ namespace RogueSharpRLNetSamples.Interfaces
       int X { get; set; }
       int Y { get; set; }
 
-      void Draw( RLConsole console, IMap map );
+      void Draw( RLConsole console, DungeonMap map );
    }
 }
