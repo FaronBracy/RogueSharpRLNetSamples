@@ -101,14 +101,14 @@ namespace RogueSharpRLNetSamples.Core
 
       public bool IsExplored( int x, int y )
       {
-         return _cells[x, y].IsExplored;
+         return this[x, y].IsExplored;
       }
 
       public void SetCellProperties( int x, int y, bool isTransparent, bool isWalkable, bool isExplored )
       {
-         _cells[x, y].IsTransparent = isTransparent;
-         _cells[x, y].IsWalkable = isWalkable;
-         _cells[x, y].IsExplored = isExplored;
+         this[x, y].IsTransparent = isTransparent;
+         this[x, y].IsWalkable = isWalkable;
+         this[x, y].IsExplored = isExplored;
       }
 
       public bool IsInFov( int x, int y )
